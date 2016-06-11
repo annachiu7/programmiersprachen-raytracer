@@ -2,12 +2,13 @@
 #define BUW_SPHERE_HPP
 #include "shape.hpp"
 #include <glm/vec3.hpp>
+#include "color.hpp"
 
 class Sphere : public Shape 
 {
 public:
 	Sphere();
-	Sphere(glm::vec3 mp, float radius);
+	Sphere(Color clr, std::string name, glm::vec3 mp, float radius);
 	float area() const override;
 	float volume() const override;
 
@@ -16,7 +17,7 @@ public:
 	float const& get_radius() const;
 
 private:
-	glm::vec3 middel_;
+	glm::vec3 middle_;
 	float radius_;
 };
 
