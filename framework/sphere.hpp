@@ -18,6 +18,10 @@ public:
 
 	std::ostream& print(std::ostream& os) const;
 
+	bool intersect(glm::vec3 const& ray_origin, 
+					glm::vec3 const& ray_direction,
+					float& distance) const;
+
 private:
 	glm::vec3 middle_;
 	float radius_;

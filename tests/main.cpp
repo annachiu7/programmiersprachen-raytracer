@@ -5,6 +5,8 @@
 #include "sphere.hpp"
 #include "color.hpp"
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
 
 TEST_CASE("test_box")
 {
@@ -51,6 +53,33 @@ TEST_CASE("test_print_5.5")
 	REQUIRE(1 == 1);
 	std::cout << s << std::endl;
 	std::cout << b << std::endl;
+}
+
+TEST_CASE ("intersectRaySphere", "[intersect]")
+{
+// Ray
+glm::vec3 ray_origin{0.0, 0.0, 0.0};
+// ray direction has to be normalized !
+// you can use :
+//v = glm :: normalize ( some_vector )
+glm::vec3 ray_direction{0.0, 0.0, 1.0};
+// Sphere
+glm::vec3 sphere_center{0.0, 0.0, 5.0};
+float sphere_radius{2.0};
+float distance{0.0};
+auto result = glm::intersectRaySphere(
+	ray_origin , ray_direction ,
+	sphere_center , sphere_radius*sphere_radius ,
+	distance );
+REQUIRE(distance == Approx (3.0f));
+}
+
+TEST_CASE("test_intersect_Sphere_5.6")
+{
+	Sphere s{{1,1,1},"sphere",{0.0,0.0,5.0}, 2.0};
+	float distance{0.0};
+	auto result = s.intersect({0.0,0.0,0.0}, {0.0,0.0,1.0}, distance);
+	REQUIRE(distance == Approx(3.0f));
 }
 
 int main(int argc, char *argv[])

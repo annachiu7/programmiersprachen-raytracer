@@ -2,7 +2,8 @@
 #include <glm/vec3.hpp>
 #include <cmath>
 #include "color.hpp"
-
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
 
 Sphere::Sphere():
 Shape::Shape(),
@@ -46,4 +47,12 @@ std::ostream& Sphere::print(std::ostream& os) const
 	os << "middle: <" << middle_.x << "," << middle_.y << "> \n" 
 	   << "radius: " << radius_ <<"\n" ;
 	return os; 
+}
+
+//aufgabe5.6
+bool Sphere::intersect(glm::vec3 const& ray_origin, 
+				glm::vec3 const& ray_direction,
+				float& distance) const  			// change the value of distance
+{
+	return glm::intersectRaySphere(ray_origin, ray_direction, middle_, radius_*radius_, distance);
 }
