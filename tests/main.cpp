@@ -4,6 +4,7 @@
 #include "box.hpp"
 #include "sphere.hpp"
 #include "color.hpp"
+#include <iostream>
 
 TEST_CASE("test_box")
 {
@@ -41,6 +42,15 @@ TEST_CASE("test_shape_base_member_5.3")
 	Box b2{{1,0,1},"box",{0,0,0},{1,1,1}};
 	REQUIRE(b2.get_color().r == Approx(1));
 	REQUIRE(b2.get_name() == "box");
+}
+
+TEST_CASE("test_print_5.5")
+{
+	Sphere s{{1,1,0},"sphere",{1,1,1}, 3.0f};
+	Box b{{1,0,1},"box",{0,0,0},{1,1,1}};
+	REQUIRE(1 == 1);
+	std::cout << s << std::endl;
+	std::cout << b << std::endl;
 }
 
 int main(int argc, char *argv[])

@@ -15,6 +15,8 @@ public:
 	//getter
 	glm::vec3 const& get_min() const;
 	glm::vec3 const& get_max() const;
+	
+	std::ostream& print(std::ostream& os) const;
 
 private:
 	glm::vec3 min_;

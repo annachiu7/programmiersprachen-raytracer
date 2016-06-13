@@ -7,17 +7,16 @@
 
 
 Box::Box():
+Shape::Shape(),
 min_{0.0},
 max_{0.0}
 {}
 
 Box::Box(Color clr, std::string name, glm::vec3 min, glm::vec3 max):
+Shape::Shape(clr, name),
 min_{min},
 max_{max}
-{
-	color_ = clr;
-	name_ = name;
-}
+{}
 
 float Box::area() const
 {
@@ -42,4 +41,13 @@ glm::vec3 const& Box::get_min() const
 glm::vec3 const& Box::get_max() const
 {
 	return max_;
+}
+
+//aufgabe5.5
+std::ostream& Box::print(std::ostream& os) const
+{
+	Shape::print(os) ;
+	os << "min:    <" << min_.x << "," << min_.y << "> \n" 
+	   << "max:    <" << max_.x << "," << max_.y << "> \n" ;
+	return os; 
 }

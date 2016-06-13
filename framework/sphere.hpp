@@ -14,7 +14,9 @@ public:
 
 	//getter 
 	glm::vec3 const& get_middle() const;
-	float const& get_radius() const;
+	float get_radius() const;
+
+	std::ostream& print(std::ostream& os) const;
 
 private:
 	glm::vec3 middle_;
