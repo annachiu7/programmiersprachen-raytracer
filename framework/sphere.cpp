@@ -50,7 +50,7 @@ float Sphere::get_radius() const
 	return radius_;
 }
 
-//aufgabe5.5
+// aufgabe5.5
 std::ostream& Sphere::print(std::ostream& os) const
 {
 	Shape::print(os) ;
@@ -59,7 +59,7 @@ std::ostream& Sphere::print(std::ostream& os) const
 	return os; 
 }
 
-//aufgabe5.6
+// aufgabe5.6
 bool Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
 {
 	return glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
