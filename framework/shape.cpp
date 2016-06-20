@@ -6,12 +6,21 @@
 Shape::Shape():
 color_{0,0,0},
 name_{""}
-{}
+{
+	//std::cout<<"construct class shape"<<std::endl;
+}
 
-Shape::Shape(Color clr, std::string name):
+Shape::Shape(Color const& clr, std::string name):
 color_{clr},
 name_{name}
-{}
+{
+	//std::cout<<"construct class shape"<<std::endl;
+}
+
+Shape::~Shape()
+{
+	//std::cout<<"destruct class shape"<<std::endl;
+}
 
 
 //aufgabe 5.4

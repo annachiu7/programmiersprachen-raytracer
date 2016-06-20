@@ -7,7 +7,8 @@ class Shape
 {
 public:
 	Shape();
-	Shape(Color clr, std::string name);
+	Shape(Color const& clr, std::string name);
+	~Shape();
 	//virtual void draw() const = 0;
 	virtual float area() const = 0;
 	virtual float volume() const = 0;

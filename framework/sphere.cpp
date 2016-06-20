@@ -4,18 +4,28 @@
 #include "color.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
+#include "ray.hpp"
 
 Sphere::Sphere():
 Shape::Shape(),
 middle_{0.0},
 radius_{0.0f}
-{}
+{
+	//std::cout<<"construct class "<<name_<<std::endl;
+}
 
-Sphere::Sphere(Color clr, std::string name, glm::vec3 mp, float radius):
+Sphere::Sphere(Color const& clr, std::string name, glm::vec3 const& mp, float radius):
 Shape::Shape(clr, name),
 middle_{mp},
 radius_{radius}
-{}
+{
+	//std::cout<<"construct class "<<name_<<std::endl;
+}
+
+Sphere::~Sphere()
+{
+	//std::cout<<"destruct class "<<name_<<std::endl;
+}
 
 float Sphere::area() const
 {
@@ -50,9 +60,7 @@ std::ostream& Sphere::print(std::ostream& os) const
 }
 
 //aufgabe5.6
-bool Sphere::intersect(glm::vec3 const& ray_origin, 
-				glm::vec3 const& ray_direction,
-				float& distance) const  			// change the value of distance
+bool Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
 {
-	return glm::intersectRaySphere(ray_origin, ray_direction, middle_, radius_*radius_, distance);
+	return glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
 }

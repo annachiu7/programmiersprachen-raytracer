@@ -3,12 +3,14 @@
 #include "shape.hpp"
 #include <glm/vec3.hpp>
 #include "color.hpp"
+#include "ray.hpp"
 
 class Sphere : public Shape 
 {
 public:
 	Sphere();
-	Sphere(Color clr, std::string name, glm::vec3 mp, float radius);
+	Sphere(Color const& clr, std::string name, glm::vec3 const& mp, float radius);
+	~Sphere();
 	float area() const override;
 	float volume() const override;
 
@@ -18,9 +20,7 @@ public:
 
 	std::ostream& print(std::ostream& os) const;
 
-	bool intersect(glm::vec3 const& ray_origin, 
-					glm::vec3 const& ray_direction,
-					float& distance) const;
+	bool intersect(Ray const& ray, float& distance) const;
 
 private:
 	glm::vec3 middle_;

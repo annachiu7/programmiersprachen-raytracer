@@ -7,7 +7,8 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
-
+#include "ray.hpp"
+/*
 TEST_CASE("test_box")
 {
 	Box b1{};
@@ -51,6 +52,7 @@ TEST_CASE("test_print_5.5")
 	Sphere s{{1,1,0},"sphere",{1,1,1}, 3.0f};
 	Box b{{1,0,1},"box",{0,0,0},{1,1,1}};
 	REQUIRE(1 == 1);
+	std::cout<<"\n" << "=============Aufgabe 5.5 test print============="<<"\n";
 	std::cout << s << std::endl;
 	std::cout << b << std::endl;
 }
@@ -59,16 +61,13 @@ TEST_CASE ("intersectRaySphere", "[intersect]")
 {
 // Ray
 glm::vec3 ray_origin{0.0, 0.0, 0.0};
-// ray direction has to be normalized !
-// you can use :
-//v = glm :: normalize ( some_vector )
 glm::vec3 ray_direction{0.0, 0.0, 1.0};
 // Sphere
 glm::vec3 sphere_center{0.0, 0.0, 5.0};
 float sphere_radius{2.0};
 float distance{0.0};
 auto result = glm::intersectRaySphere(
-	ray_origin , ray_direction ,
+	ray_origin , glm::normalize(ray_direction) ,   // normalization
 	sphere_center , sphere_radius*sphere_radius ,
 	distance );
 REQUIRE(distance == Approx (3.0f));
@@ -78,10 +77,53 @@ TEST_CASE("test_intersect_Sphere_5.6")
 {
 	Sphere s{{1,1,1},"sphere",{0.0,0.0,5.0}, 2.0};
 	float distance{0.0};
-	auto result = s.intersect({0.0,0.0,0.0}, {0.0,0.0,1.0}, distance);
+	auto result = s.intersect({{0.0,0.0,0.0}, {0.0,0.0,1.0}}, distance);
 	REQUIRE(distance == Approx(3.0f));
 }
 
+TEST_CASE("5.7")
+{
+	Color red(255 , 0 , 0);
+	glm::vec3 position(0 ,0,0);
+	std::shared_ptr < Sphere > s1 =
+	std::make_shared < Sphere >( red , " sphere0 ", position , 1.2);
+	// die statische Klasse von s2 ist Shape, es kann nur die Methode der Klasse Shape aufrufen
+	std::shared_ptr < Shape > s2 =
+	std::make_shared < Sphere >( red , " sphere1 ", position , 1.2);
+	std::cout<<"\n =============Aufgabe 5.7 statischer Typ vs dynamischer Typ============= \n" ;
+	s1->print( std :: cout );
+	std::cout<<"\n";
+	s2->print( std :: cout );
+}
+*/
+
+TEST_CASE("5.8")
+{
+	Color red (255 , 0 , 0);
+	glm::vec3 position (0 ,0, 0);
+	Sphere*s1 = new Sphere ( red , " sphere0 ", position , 1.2);
+	Shape*s2 = new Sphere ( red , " sphere1 ", position , 1.2);
+	s1->print( std :: cout );
+	s2->print( std :: cout );
+	delete s1 ;
+	delete s2 ;
+}
+
+/*
+TEST_CASE("test_intersect_box_5.10")
+{
+	Box a{{1,1,1},"Box",{0.0,0.0,0.0},{8.0,3.0,3.0}};
+	Box b{{1,1,1},"Box",{5.0,0.0,0.0},{8.0,3.0,3.0}};
+	Box c{{1,1,1},"Box",{0.0,0.0,1.0},{8.0,3.0,3.0}};
+	Box d{{1,1,1},"Box",{4.0,0.0,0.0},{8.0,3.0,3.0}};
+	Ray r1{{0,0,0},{1,0,0}};
+	Ray r2{{0,0,0},{4,0,3}};
+	std::cout<<"a intersect r1: "<<a.intersect(r1)<<std::endl;
+	std::cout<<"b intersect r1: "<<b.intersect(r1)<<std::endl;
+	std::cout<<"c intersect r1: "<<c.intersect(r1)<<std::endl;
+	std::cout<<"d intersect r2: "<<d.intersect(r2)<<std::endl;
+}
+*/
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);
