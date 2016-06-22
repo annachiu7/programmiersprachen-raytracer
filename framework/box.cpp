@@ -5,28 +5,23 @@
 #include <algorithm>  // std::max
 #include "color.hpp"
 #include "ray.hpp"
-
+#include <string>
+#include "material.hpp"
 
 Box::Box():
 Shape::Shape(),
 min_{0.0},
 max_{0.0}
-{
-	//std::cout<<"construct class "<<name_<<std::endl;
-}
+{}
 
-Box::Box(Color const& clr, std::string name, glm::vec3 const& min, glm::vec3 const& max):
-Shape::Shape(clr, name),
+Box::Box(Material const& mat, std::string const& name, glm::vec3 const& min, glm::vec3 const& max):
+Shape::Shape(mat, name),
 min_{min},
 max_{max}
-{
-	//std::cout<<"construct class "<<name_<<std::endl;
-}
+{}
 
 Box::~Box()
-{
-	//std::cout<<"destruct class "<<name_<<std::endl;
-}
+{}
 
 float Box::area() const
 {
@@ -63,9 +58,10 @@ std::ostream& Box::print(std::ostream& os) const
 }
 
 //aufgabe5.10
-float Box::intersect(Ray const& ray) const
+bool Box::intersect(Ray const& ray, float& distance) const
 {
 	float tnear,tfar;
+	distance = -1;
 
 	if (ray.direction_.x != 0.0)
 	{
@@ -76,7 +72,7 @@ float Box::intersect(Ray const& ray) const
 	}
 	else 
 	{
-		if(min_.x > ray.origin_.x || max_.x < ray.origin_.x) {return -1;}
+		if(min_.x > ray.origin_.x || max_.x < ray.origin_.x) {return false;}
 	}
 
 	if (ray.direction_.y != 0.0)
@@ -87,12 +83,12 @@ float Box::intersect(Ray const& ray) const
 		float tfar = std::min(tfar, std::max(t1,t2));
 		if (tnear > tfar)
 		{
-			return -1;
+			return false;
 		}
 	}
 	else 
 	{
-		if(min_.y > ray.origin_.y || max_.y < ray.origin_.y) {return -1;}
+		if(min_.y > ray.origin_.y || max_.y < ray.origin_.y) {return false;}
 	}
 
 	if (ray.direction_.z != 0.0)
@@ -103,15 +99,16 @@ float Box::intersect(Ray const& ray) const
 		tfar = std::min(tfar, std::max(t1,t2));
 		if (tnear > tfar)
 		{
-			return -1;
+			return false;
 		}
 	}
 	else 
 	{
-		if(min_.z > ray.origin_.z || max_.z < ray.origin_.z) {return -1;}
+		if(min_.z > ray.origin_.z || max_.z < ray.origin_.z) {return false;}
 	}
 
-	return tnear*sqrt(ray.direction_.x*ray.direction_.x +
-					  ray.direction_.y*ray.direction_.y +
-					  ray.direction_.z*ray.direction_.z);
+	distance = tnear*sqrt(ray.direction_.x*ray.direction_.x +
+					      ray.direction_.y*ray.direction_.y +
+					      ray.direction_.z*ray.direction_.z);
+	return true;
 }

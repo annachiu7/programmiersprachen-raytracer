@@ -2,12 +2,14 @@
 #define BUW_SHAPE_HPP
 #include "color.hpp"
 #include <iostream>
+#include <string>
+#include "material.hpp"
 
 class Shape
 {
 public:
 	Shape();
-	Shape(Color const& clr, std::string name);
+	Shape(Material const& mat, std::string const& name);
 	~Shape();
 	//virtual void draw() const = 0;
 	virtual float area() const = 0;
@@ -17,11 +19,14 @@ public:
 	virtual std::ostream& print(std::ostream& os) const;
 
 	//getter
-	Color const& get_color() const;
+	Material const& get_mat() const;
 	std::string const& get_name() const;
 
+	//aufgabe 6.3
+	bool intersect(Ray const& ray, float& t) = 0 ;
+
 protected:
-	Color color_;
+	Material mat_;
 	std::string name_;
 };
 

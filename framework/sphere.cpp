@@ -5,27 +5,23 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
 #include "ray.hpp"
+#include <string>
+#include "material.hpp"
 
 Sphere::Sphere():
 Shape::Shape(),
 middle_{0.0},
 radius_{0.0f}
-{
-	//std::cout<<"construct class "<<name_<<std::endl;
-}
+{}
 
-Sphere::Sphere(Color const& clr, std::string name, glm::vec3 const& mp, float radius):
-Shape::Shape(clr, name),
+Sphere::Sphere(Material const& mat, std::string const& name, glm::vec3 const& mp, float radius):
+Shape::Shape(mat, name),
 middle_{mp},
 radius_{radius}
-{
-	//std::cout<<"construct class "<<name_<<std::endl;
-}
+{}
 
 Sphere::~Sphere()
-{
-	//std::cout<<"destruct class "<<name_<<std::endl;
-}
+{}
 
 float Sphere::area() const
 {

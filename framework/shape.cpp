@@ -1,39 +1,34 @@
 #include "shape.hpp"
 #include "color.hpp"
 #include <iostream>
-
+#include <string>
+#include "material.hpp"
 
 Shape::Shape():
-color_{0,0,0},
+mat_{},
 name_{""}
-{
-	//std::cout<<"construct class shape"<<std::endl;
-}
+{}
 
-Shape::Shape(Color const& clr, std::string name):
-color_{clr},
+Shape::Shape(Material const& mat, std::string const& name):
+mat_{mat},
 name_{name}
-{
-	//std::cout<<"construct class shape"<<std::endl;
-}
+{}
 
 Shape::~Shape()
-{
-	//std::cout<<"destruct class shape"<<std::endl;
-}
+{}
 
 
 //aufgabe 5.4
 std::ostream& Shape::print(std::ostream& os) const
 {
-	os << "name:   " << name_ << "\n"
-	   << "color:  <" << color_.r << "," << color_.g << ","<< color_.b << "> \n"; 
+	os << "name:      " << name_ << "\n"
+	   << "material:  " << mat_ << "\n"; 
 	return os;
 }
 
-Color const& Shape::get_color() const
+Material const& Shape::get_mat() const
 {
-	return color_;
+	return mat_;
 }
 
 std::string const& Shape::get_name() const

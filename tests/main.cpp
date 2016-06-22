@@ -8,7 +8,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
 #include "ray.hpp"
-
+#include <string>
+#include "material.hpp"
+/*
 TEST_CASE("test_box")
 {
 	Box b1{};
@@ -108,21 +110,26 @@ TEST_CASE("5.8")
 	delete s1 ;
 	delete s2 ;
 }
-
+*/
 
 TEST_CASE("test_intersect_box_5.10")
 {
-	Box a{{1,1,1},"Box",{0.0,0.0,0.0},{8.0,3.0,3.0}};
-	Box b{{1,1,1},"Box",{5.0,0.0,0.0},{8.0,3.0,3.0}};
-	Box c{{1,1,1},"Box",{0.0,0.0,1.0},{8.0,3.0,3.0}};
-	Box d{{1,1,1},"Box",{4.0,0.0,0.0},{8.0,3.0,3.0}};
+	Box a{{},"Box",{0.0,0.0,0.0},{8.0,3.0,3.0}};
+	Box b{{},"Box",{5.0,0.0,0.0},{8.0,3.0,3.0}};
+	Box c{{},"Box",{0.0,0.0,1.0},{8.0,3.0,3.0}};
+	Box d{{},"Box",{4.0,0.0,0.0},{8.0,3.0,3.0}};
 	Ray r1{{0,0,0},{1,0,0}};
 	Ray r2{{0,0,0},{4,0,3}};
+	float distance = 0;
 	std::cout<<"=============Aufgabe 5.10 Ray Box Intersection=============\n";
-	std::cout<<"a intersect r1: "<<a.intersect(r1)<<std::endl;
-	std::cout<<"b intersect r1: "<<b.intersect(r1)<<std::endl;
-	std::cout<<"c intersect r1: "<<c.intersect(r1)<<std::endl;
-	std::cout<<"d intersect r2: "<<d.intersect(r2)<<std::endl;
+	auto result = a.intersect(r1,distance);
+	std::cout<<"a intersect r1: "<<distance<<std::endl;
+	result = b.intersect(r1,distance);
+	std::cout<<"b intersect r1: "<<distance<<std::endl;
+	result = c.intersect(r1,distance);
+	std::cout<<"c intersect r1: "<<distance<<std::endl;
+	result = d.intersect(r2,distance);
+	std::cout<<"d intersect r2: "<<distance<<std::endl;
 }
 
 int main(int argc, char *argv[])
