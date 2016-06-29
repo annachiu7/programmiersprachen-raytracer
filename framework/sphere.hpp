@@ -22,7 +22,7 @@ public:
 
 	std::ostream& print(std::ostream& os) const override;
 
-	bool intersect(Ray const& ray, float& distance) const;
+	bool intersect(Ray const& ray, float& distance) const override;
 
 private:
 	glm::vec3 middle_;

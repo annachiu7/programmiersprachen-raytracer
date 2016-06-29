@@ -111,7 +111,7 @@ TEST_CASE("5.8")
 	delete s2 ;
 }
 */
-
+/*
 TEST_CASE("test_intersect_box_5.10")
 {
 	Box a{{},"Box",{0.0,0.0,0.0},{8.0,3.0,3.0}};
@@ -131,6 +131,7 @@ TEST_CASE("test_intersect_box_5.10")
 	result = d.intersect(r2,distance);
 	std::cout<<"d intersect r2: "<<distance<<std::endl;
 }
+*/
 
 int main(int argc, char *argv[])
 {

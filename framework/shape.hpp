@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "material.hpp"
+#include "ray.hpp"
 
 class Shape
 {
@@ -23,7 +24,7 @@ public:
 	std::string const& get_name() const;
 
 	//aufgabe 6.3
-	bool intersect(Ray const& ray, float& t) = 0 ;
+	virtual bool intersect(Ray const& ray, float& t) const = 0 ;
 
 protected:
 	Material mat_;

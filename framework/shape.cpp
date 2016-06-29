@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include "material.hpp"
+#include "ray.hpp"
+
 
 Shape::Shape():
 mat_{},
