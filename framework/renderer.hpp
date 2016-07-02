@@ -19,6 +19,7 @@
 class Renderer
 {
 public:
+  //Renderer(Scene const& scene);
   Renderer(unsigned w, unsigned h, std::string const& file);
 
   void render();
@@ -30,6 +31,7 @@ public:
   }
 
 private:
+  // Scene scene_;
   unsigned width_;
   unsigned height_;
   std::vector<Color> colorbuffer_;

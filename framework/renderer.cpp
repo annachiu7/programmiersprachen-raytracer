@@ -24,6 +24,8 @@ void Renderer::render()
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
+      // Ray ray = scene_.camera.calc_eye_ray(x,y);
+      // p.color = raytrace(ray, 3);
       if ( ((x/checkersize)%2) != ((y/checkersize)%2)) {
         p.color = Color(0.0, 1.0, float(x)/height_);
       } else {
