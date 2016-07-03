@@ -37,6 +37,7 @@ struct Material
 	Color kd_; //diffuse
 	Color ks_; //specular
 	float m_;
+
 	/*
 	std::ostream& print(std::ostream& os)
 	{

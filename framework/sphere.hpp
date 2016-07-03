@@ -1,11 +1,8 @@
 #ifndef BUW_SPHERE_HPP
 #define BUW_SPHERE_HPP
 #include "shape.hpp"
+#include <iostream>
 #include <glm/vec3.hpp>
-#include "color.hpp"
-#include "ray.hpp"
-#include <string>
-#include "material.hpp"
 
 class Sphere : public Shape 
 {

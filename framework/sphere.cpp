@@ -1,12 +1,4 @@
 #include "sphere.hpp"
-#include <glm/vec3.hpp>
-#include <cmath>
-#include "color.hpp"
-#include <glm/glm.hpp>
-#include <glm/gtx/intersect.hpp>
-#include "ray.hpp"
-#include <string>
-#include "material.hpp"
 
 Sphere::Sphere():
 Shape::Shape(),

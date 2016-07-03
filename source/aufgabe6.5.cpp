@@ -1,9 +1,12 @@
 #include <iostream>
 #include <string>
+#include "material.hpp"
 #include <fstream>  //getline
 #include <sstream>
 #include <map>
-#include "material.hpp"
+#include <vector>
+#include "box.hpp"
+#include "sphere.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -16,7 +19,11 @@ int main(int argc, char const *argv[])
 		while(std::getline(file, line))
 		{
 			Material mat;
+      //Box box;
+      //Sphere sphere;
+
 			std::map<std::string, Material> materialmap;
+      //std::vector<std::shared_ptr<Shape>> shapevec;
 		
 			std::stringstream ss;
 			std::string keyword;
@@ -26,7 +33,7 @@ int main(int argc, char const *argv[])
 			if (keyword == "define")
 			{
 				ss>>keyword;
-				if (keyword == "material")
+				if (keyword == "material")//{{{
 				{
 					ss>>mat.name_;
 					ss>>mat.ka_.r;
@@ -43,7 +50,27 @@ int main(int argc, char const *argv[])
 					materialmap[mat.name_] = mat;
 	
 					std::cout << mat << std::endl;
-				}
+				}//}}}
+//        if (keyword == "shape")
+//        {
+//          ss>>keyword;
+//          if (keyword == "box")
+//          {
+//            ss>>box.name_;
+//            ss>>box.min().x;
+//            ss>>box.min().y;
+//            ss>>box.min().z;
+//
+//            ss>>box.max().x;
+//            ss>>box.max().y;
+//            ss>>box.max().z;
+//
+//            box.mat[red];
+//
+//
+//          }
+//        }
+
 			}
 			else{std::cout << "undefined material! \n";}
 		}

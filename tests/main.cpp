@@ -3,15 +3,121 @@
 #include "shape.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
-#include "color.hpp"
 #include <iostream>
-#include <glm/glm.hpp>
-#include <glm/gtx/intersect.hpp>
-#include "ray.hpp"
-#include <string>
-#include "material.hpp"
+
+TEST_CASE("ctor test","aufgabe5.2"){//{{{
+  //Box b1{};
+  auto b1 = std::make_shared<Box> ();
+  REQUIRE (b1->get_min().x == 0.0f);
+  REQUIRE (b1->get_min().y == 0.0f);
+  REQUIRE (b1->get_min().z == 0.0f);
+  auto s1 = std::make_shared<Sphere> ();
+  REQUIRE (s1->get_radius() == .0f);
+  REQUIRE (s1->get_middle().x == .0f);
+  REQUIRE (s1->get_middle().y == .0f);
+  REQUIRE (s1->get_middle().z == .0f);
+}//}}}
+
+TEST_CASE("methoden area volume","aufgabe5.2"){//{{{
+  //Box b1{};
+  auto b1 = std::make_shared<Box> ();
+  auto s1 = std::make_shared<Sphere> ();
+  REQUIRE (b1->area() == 0.0f );
+  REQUIRE (b1->volume() == 0.0f);
+  REQUIRE (s1->area() == Approx(.0f));
+  REQUIRE (s1->volume() == Approx(.0f));
+}//}}}
+
+TEST_CASE("ctor name & color","aufgabe bis5.5")//{{{
+{
+  Material m1{{"???"},{1.0,0.5,0.75},{1.0,0.5,0.75},{1.0,0.5,0.75},{0.9}};
+  Sphere s1 {m1,{"bla"},{2.0f,1.0f,2.0f},{2.0f}};
+
+  Box b1 {m1,{"bla"},{3.0f,2.0f,1.0f},{4.0f,3.0f,2.0f}};
+  std::cout << "name von s1 " << s1.get_name() << "\n";
+  REQUIRE ( s1.get_name() == "bla"); 
+  REQUIRE ( b1.get_name() == "bla"); 
+  REQUIRE (s1.get_mat().ka_.r == 1.0f); 
+  REQUIRE (s1.get_mat().ka_.g == 0.5f); 
+  REQUIRE (s1.get_mat().ka_.b == 0.75f); 
+  REQUIRE (b1.get_mat().ka_.r == 1.0f); 
+  REQUIRE (b1.get_mat().ka_.g == 0.5f); 
+  REQUIRE (b1.get_mat().ka_.b == 0.75f); 
+//  Shape sh1 {{"bla"},{1.0,0.5,0.75}};kann man nicht aufrufen,da abstrackter typ
+//  REQUIRE (sh1.name() == "bla"); 
+  std::cout << b1 << "\n";
+  std::cout << s1 << "\n";
+}//}}}
+
+TEST_CASE("intersectRaySphere","[intersect]")//{{{
+{
+  Material m1{{"???"},{1.0,0.5,0.75},{1.0,0.5,0.75},{1.0,0.5,0.75},{0.9}};
+  glm::vec3 ray_origin{0.0,0.0,0.0};
+
+  glm::vec3 ray_direction{0.0,0.0,1.0};
+
+  glm::vec3 sphere_center{0.0,0.0,5.0};
+  float sphere_radius{1.0};
+
+  float distance{0.0};
+  auto result = glm::intersectRaySphere(
+    ray_origin, ray_direction,
+    sphere_center, sphere_radius, distance);
+
+  REQUIRE ( distance == Approx(4.0f));
+
+  glm::vec3 origin{0,0,1};
+  glm::vec3 direction{0,0,1};
+  //direction = glm::normalize{direction};
+  Ray ray{origin, direction};
+
+  Sphere s1{m1,{"bla"},{0,5,0},{2.0}};
+  REQUIRE (!s1.intersect(ray,distance));
+  Sphere s2{m1,{"bla"},{0,0,0},{2.0}};
+  REQUIRE (s2.intersect(ray,distance));
+
+}//}}}
+
+TEST_CASE("dctor","5.8")//{{{
+{
+  std::cout << "----------------------\n";
+  std::cout << "hier faengt dector an!!!\n";
+  std::cout << "----------------------\n";
+  Color red(255,0,0);
+  glm::vec3 position(0,0,0);
+  Material m1{{"???"},{1.0,0.5,0.75},{1.0,0.5,0.75},{1.0,0.5,0.75},{0.9}};
+
+  Sphere* s1 = new Sphere(m1, "sphere0",position, 1.2f );
+  Shape* s2 = new Sphere(m1, "sphere0",position, 1.2f );
+  
+  s1->print(std::cout);
+  s2->print(std::cout);
+  
+  delete s1;
+  delete s2;
+}//}}}
+TEST_CASE("test_intersect_box_5.10")
+{
+  Material m1{{"???"},{1.0,0.5,0.75},{1.0,0.5,0.75},{1.0,0.5,0.75},{0.9}};
+	Box a{m1,"Box",{0.0,0.0,0.0},{8.0,3.0,3.0}};
+	Box b{m1,"Box",{5.0,0.0,0.0},{8.0,3.0,3.0}};
+	Box c{m1,"Box",{0.0,0.0,1.0},{8.0,3.0,3.0}};
+	Box d{m1,"Box",{4.0,0.0,0.0},{8.0,3.0,3.0}};
+	Ray r1{{0,0,0},{1,0,0}};
+	Ray r2{{0,0,0},{4,0,3}};
+	float distance = 0;
+	std::cout<<"=============Aufgabe 5.10 Ray Box Intersection=============\n";
+	auto result = a.intersect(r1,distance);
+	std::cout<<"a intersect r1: "<<distance<<std::endl;
+	result = b.intersect(r1,distance);
+	std::cout<<"b intersect r1: "<<distance<<std::endl;
+	result = c.intersect(r1,distance);
+	std::cout<<"c intersect r1: "<<distance<<std::endl;
+	result = d.intersect(r2,distance);
+	std::cout<<"d intersect r2: "<<distance<<std::endl;
+}
 /*
-TEST_CASE("test_box")
+TEST_CASE("test_box")//{{{
 {
 	Box b1{};
 	Box b2{{1,0,1},"box",{0,0,0},{1,1,1}};
@@ -131,7 +237,7 @@ TEST_CASE("test_intersect_box_5.10")
 	result = d.intersect(r2,distance);
 	std::cout<<"d intersect r2: "<<distance<<std::endl;
 }
-*/
+*///}}}
 
 int main(int argc, char *argv[])
 {

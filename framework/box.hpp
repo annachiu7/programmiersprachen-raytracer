@@ -2,10 +2,6 @@
 #define BUW_BOX_HPP
 #include "shape.hpp"
 #include <glm/vec3.hpp>
-#include "color.hpp"
-#include "ray.hpp"
-#include <string>
-#include "material.hpp"
 
 class Box : public Shape
 {

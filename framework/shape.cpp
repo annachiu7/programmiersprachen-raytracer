@@ -1,9 +1,4 @@
 #include "shape.hpp"
-#include "color.hpp"
-#include <iostream>
-#include <string>
-#include "material.hpp"
-#include "ray.hpp"
 
 
 Shape::Shape():

@@ -1,12 +1,4 @@
 #include "box.hpp"
-#include "shape.hpp"
-#include <glm/vec3.hpp>
-#include <cmath>
-#include <algorithm>  // std::max
-#include "color.hpp"
-#include "ray.hpp"
-#include <string>
-#include "material.hpp"
 
 Box::Box():
 Shape::Shape(),
