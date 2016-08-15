@@ -7,12 +7,12 @@
 #include <sstream>
 #include <map>
 #include <memory>
+#include <vector>
 #include "material.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
-#include <vector>
+#include "camera.hpp"
 //#include "light.hpp"
-//#include "camera.hpp"
 
 
 struct Scene {
@@ -23,7 +23,7 @@ struct Scene {
   std::vector<std::shared_ptr<Shape>> shapes;
  // std::vector<Light> lights;
   std::map<std::string, Material> materials;
-  //Camera camera;
+  Camera camera;
 
  
   void sdfloader()
@@ -103,6 +103,14 @@ struct Scene {
 
             }
           }
+          if (keyword == "camera")
+          {
+            ss>>camera.name_;
+            ss>>camera.fov_x_;
+            ss>>camera.pos_.x;
+            ss>>camera.pos_.y;
+            ss>>camera.pos_.z;
+          } 
         }
       }
     }

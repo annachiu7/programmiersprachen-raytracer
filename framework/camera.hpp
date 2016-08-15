@@ -9,7 +9,6 @@ struct Camera
 {
 	Camera();
 	Camera(std::string const& name, glm::vec3 const& pos, double fov_x);
-	~Camera();
 	std::string name_;
 	glm::vec3 pos_;
 	double fov_x_;
