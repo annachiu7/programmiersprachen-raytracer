@@ -9,8 +9,9 @@
 
 #include "renderer.hpp"
 
-Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
-  : width_(w)
+Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const& file)
+  : scene_(scene)
+  , width_(w)
   , height_(h)
   , colorbuffer_(w*h, Color(0.0, 0.0, 0.0))
   , filename_(file)
