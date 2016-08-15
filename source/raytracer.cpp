@@ -2,9 +2,10 @@
 #include <renderer.hpp>
 #include <fensterchen.hpp>
 
+
 int main(int argc, char* argv[])
 {
-  Scene scene;
+  Scene scene = scene.sdfloader();
   unsigned const width = 600;
   unsigned const height = 600;
   std::string const filename = "./checkerboard.ppm";

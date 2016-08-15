@@ -18,7 +18,14 @@
 struct Scene {
   //Scene load_stf(std::string const& A);
   //OptionalHit(Ray const&) const;
-  
+//  Scene(std::vector<std::shared_ptr<Shape>> const& shape,
+//                    std::map<std::string, Material> const& material,
+//                    Camera const& cam):
+//        shapes{shape},
+//        materials{material},
+//        camera{cam}
+//        {}
+//
 
   std::vector<std::shared_ptr<Shape>> shapes;
  // std::vector<Light> lights;
@@ -26,7 +33,7 @@ struct Scene {
   Camera camera;
 
  
-  void sdfloader()
+  Scene sdfloader()
   {
   std::ifstream file;
   file.open("defineMaterial.txt");
@@ -114,6 +121,7 @@ struct Scene {
         }
       }
     }
+//    Scene{shapes, materials, camera};
   }
 
   int width, height;

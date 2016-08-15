@@ -7,6 +7,7 @@
 #include <vector>
 #include "box.hpp"
 #include "sphere.hpp"
+#include "scene.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -57,7 +58,7 @@ int main(int argc, char const *argv[])
 //          if (keyword == "box")
 //          {
 //            ss>>box.name_;
-//            ss>>box.min().x;
+//            ss>>box.set_min().x;
 //            ss>>box.min().y;
 //            ss>>box.min().z;
 //
