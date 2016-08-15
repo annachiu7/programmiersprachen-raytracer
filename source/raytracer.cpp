@@ -4,11 +4,12 @@
 
 int main(int argc, char* argv[])
 {
+  Scene scene;
   unsigned const width = 600;
   unsigned const height = 600;
   std::string const filename = "./checkerboard.ppm";
 
-  Renderer app(width, height, filename);
+  Renderer app(scene, width, height, filename);
 
   std::thread thr([&app]() { app.render(); });
 
