@@ -8,7 +8,9 @@
 #include <map>
 #include <memory>
 #include "material.hpp"
-#include "shape.hpp"
+#include "box.hpp"
+#include "sphere.hpp"
+#include <vector>
 //#include "light.hpp"
 //#include "camera.hpp"
 
@@ -16,6 +18,7 @@
 struct Scene {
   //Scene load_stf(std::string const& A);
   //OptionalHit(Ray const&) const;
+  
 
   std::vector<std::shared_ptr<Shape>> shapes;
  // std::vector<Light> lights;
@@ -66,21 +69,38 @@ struct Scene {
             if (keyword =="box")
             {
               std::string name,color;
-              int minx,miny,minz,maxx,maxy,maxz;
+              glm::vec3 min, max;
 
               ss>>name;
-              ss>>minx;
-              ss>>miny;
-              ss>>minz;
-              ss>>maxx;
-              ss>>maxy;
-              ss>>maxz;
+              ss>>min.x;
+              ss>>min.y;
+              ss>>min.z;
+              ss>>max.x;
+              ss>>max.y;
+              ss>>max.z;
               ss>>color;
 
-              Box box{materials[color],name,{minx,miny,minz},{maxx,maxy,maxz}};
-              std::cout << box << std::endl;
-              //std::shared_ptr<Shape> box0 = std::make_shared<Box> (materials[color],name,{minx,miny,minz},{maxx,maxy,maxz});
-              //shapes.push_back(box0);
+              //std::cout << box << std::endl;
+              std::shared_ptr<Shape> box0 = std::make_shared<Box> (materials[color],name,min,max);
+              shapes.push_back(box0);
+            }
+            if (keyword == "sphere")
+            {
+              std::string name, color;
+              glm::vec3 middlpt;
+              float r;
+
+              ss>>name;
+              ss>>middlpt.x;
+              ss>>middlpt.y;
+              ss>>middlpt.z;
+              ss>>r;
+              ss>>color;
+
+              std::shared_ptr<Shape> sphere0 = std::make_shared<Sphere> (materials[color],name,
+                middlpt,r);
+              shapes.push_back(sphere0);
+
             }
           }
         }
