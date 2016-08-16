@@ -34,8 +34,8 @@ void Renderer::render()
 
       float nearest_t = 10000.0;
       Shape* closest = nullptr;
+      float t = 0.0;
       for (auto const& shape : scene_.shapes) {
-        float t = 0.0;
         bool hit = shape->intersect(ray, t);
         if (hit && 0 < t && t < nearest_t) {
           nearest_t = t;
@@ -43,10 +43,17 @@ void Renderer::render()
         }
       }
 
+      glm::vec3 normal{ray.origin_ + ray.direction_*t};
+      normal.x = normal.x-0;
+      normal.y = normal.y-0;
+      normal.z = normal.z+3;
+      normal = glm::normalize(normal);
+      auto tmpN = normal * 0.5f + 0.5f;
+
       // p.color = raytrace(ray, 3);
       if ( closest ) {
-        // p.color = normal * 0.5f + 0.5f:
-        p.color = Color(1.0,1.0,1.0);
+        p.color = Color(tmpN.x,tmpN.y,tmpN.z);
+        //p.color = Color(1.0,1.0,1.0);
       } else {
         p.color = Color(0,0,0);
       }
