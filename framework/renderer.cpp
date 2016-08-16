@@ -27,10 +27,10 @@ void Renderer::render()
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-      // Ray ray = scene_.camera.calc_eye_ray(x,y);
-      glm::vec3 origin{float(x)*2.0/float(width_) - 1.0,float(y)*2.0/float(height_) - 1.0,0};
-      glm::vec3 direction{0,0,-1};
-      Ray ray{origin, direction};
+      Ray ray = scene_.camera.calc_eye_ray(x,y,height_,width_);
+//      glm::vec3 origin{float(x)*2.0/float(width_) - 1.0,float(y)*2.0/float(height_) - 1.0,0};
+//      glm::vec3 direction{0,0,-1};
+//      Ray ray{origin, direction};
 
       float nearest_t = 10000.0;
       Shape* closest = nullptr;

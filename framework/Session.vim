@@ -51,11 +51,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +0 renderer.cpp
-badd +0 renderer.hpp
-badd +0 ppmwriter.cpp
-badd +0 ppmwriter.hpp
-badd +0 ../source/raytracer.cpp
+badd +1 renderer.cpp
+badd +1 renderer.hpp
+badd +1 ppmwriter.cpp
+badd +1 ppmwriter.hpp
+badd +1 ../source/raytracer.cpp
 argglobal
 silent! argdel *
 argadd renderer.cpp
