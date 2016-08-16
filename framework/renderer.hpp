@@ -15,6 +15,7 @@
 #include "ppmwriter.hpp"
 #include <glm/glm.hpp>
 #include "scene.hpp"
+#include "camera.hpp"
 
 class Renderer
 {

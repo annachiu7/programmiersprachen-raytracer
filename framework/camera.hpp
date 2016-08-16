@@ -12,6 +12,8 @@ struct Camera
 	std::string name_;
 	glm::vec3 pos_;
 	double fov_x_;
+
+  Ray calc_eye_ray(int x, int y, int height, int width);
 };
 
 
