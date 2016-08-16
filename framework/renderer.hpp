@@ -20,7 +20,7 @@
 class Renderer
 {
 public:
-  //Renderer(Scene const& scene);
+  Renderer(Scene const& scene);
   Renderer(Scene const& scene, unsigned w, unsigned h, std::string const& file);
 
   void render();

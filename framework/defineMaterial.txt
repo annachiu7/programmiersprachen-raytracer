@@ -8,5 +8,5 @@ define light sun 1000 700 0 .2 .2 .2 .8 .8 .8
 #camera
 define camera eye 45.0 0 0 0
 # renderer
-render eye image.ppm 480 320
+render eye image.ppm 600 600 
 	

@@ -8,6 +8,11 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
+Renderer::Renderer(Scene const& scene)
+  :scene_(scene)
+  , colorbuffer_(scene.width*scene.height, Color(0.0, 0.0, 0.0))
+  , ppm_(scene.width, scene.height)
+{}
 
 Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const& file)
   : scene_(scene)
@@ -21,16 +26,11 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
 void Renderer::render()
 {
   const std::size_t checkersize = 20;
-  std::cout << "Achtung Achtung: Ueberschreibe scene_\n";
-  scene_.shapes.push_back(std::make_shared<Sphere>(Material(), "gugel", glm::vec3(0,0,-3.0), 1.0));
 
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
-      Ray ray = scene_.camera.calc_eye_ray(x,y,height_,width_);
-//      glm::vec3 origin{float(x)*2.0/float(width_) - 1.0,float(y)*2.0/float(height_) - 1.0,0};
-//      glm::vec3 direction{0,0,-1};
-//      Ray ray{origin, direction};
+      Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
 
       float nearest_t = 10000.0;
       Shape* closest = nullptr;
