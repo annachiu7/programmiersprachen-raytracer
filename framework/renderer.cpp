@@ -21,16 +21,34 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
 void Renderer::render()
 {
   const std::size_t checkersize = 20;
+  std::cout << "Achtung Achtung: Ueberschreibe scene_\n";
+  scene_.shapes.push_back(std::make_shared<Sphere>(Material(), "gugel", glm::vec3(0,0,-3.0), 1.0));
 
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
       // Ray ray = scene_.camera.calc_eye_ray(x,y);
+      glm::vec3 origin{float(x)*2.0/float(width_) - 1.0,float(y)*2.0/float(height_) - 1.0,0};
+      glm::vec3 direction{0,0,-1};
+      Ray ray{origin, direction};
+
+      float nearest_t = 10000.0;
+      Shape* closest = nullptr;
+      for (auto const& shape : scene_.shapes) {
+        float t = 0.0;
+        bool hit = shape->intersect(ray, t);
+        if (hit && 0 < t && t < nearest_t) {
+          nearest_t = t;
+          closest = shape.get();
+        }
+      }
+
       // p.color = raytrace(ray, 3);
-      if ( ((x/checkersize)%2) != ((y/checkersize)%2)) {
-        p.color = Color(0.0, 1.0, float(x)/height_);
+      if ( closest ) {
+        // p.color = normal * 0.5f + 0.5f:
+        p.color = Color(1.0,1.0,1.0);
       } else {
-        p.color = Color(1.0, 0.0, float(y)/width_);
+        p.color = Color(0,0,0);
       }
 
       write(p);

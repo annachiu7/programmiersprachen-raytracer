@@ -5,7 +5,13 @@
 
 int main(int argc, char* argv[])
 {
-  Scene scene = scene.sdfloader();
+  if (argc != 2) {
+     std::cout << "usage: raytracer file.sdf\n";
+     return 1;
+  }
+  Scene scene; // = loadSDF(argv[1]);
+  scene.width = 600;
+  scene.height = 600;
   unsigned const width = 600;
   unsigned const height = 600;
   std::string const filename = "./checkerboard.ppm";

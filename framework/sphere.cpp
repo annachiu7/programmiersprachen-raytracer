@@ -3,7 +3,7 @@
 Sphere::Sphere():
 Shape::Shape(),
 middle_{0.0},
-radius_{0.0f}
+radius_{1.0f}
 {}
 
 Sphere::Sphere(Material const& mat, std::string const& name, glm::vec3 const& mp, float radius):

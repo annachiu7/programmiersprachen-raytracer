@@ -12,8 +12,11 @@
 #include "box.hpp"
 #include "sphere.hpp"
 #include "camera.hpp"
-//#include "light.hpp"
+#include "light.hpp"
 
+
+// Scene loadSDF(std::string const& filename)
+// 
 
 struct Scene {
   //Scene load_stf(std::string const& A);
@@ -28,9 +31,10 @@ struct Scene {
 //
 
   std::vector<std::shared_ptr<Shape>> shapes;
- // std::vector<Light> lights;
+  std::vector<Light> lights;
   std::map<std::string, Material> materials;
   Camera camera;
+
 
  
   Scene sdfloader()
