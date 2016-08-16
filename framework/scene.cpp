@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include <iostream>
 
 Scene loadSDF(std::string const& filename)
 {
@@ -88,8 +89,41 @@ Scene loadSDF(std::string const& filename)
             ss>>scene.camera.pos_.z;
             std::cout << "another camera added to scene...\n";
           } 
+          if (keyword == "light")
+          {
+          	std::string name;
+          	glm::vec3 pos;
+          	Color ambient;
+          	Color diffuse;
+
+          	ss>>name;
+          	ss>>pos.x;
+          	ss>>pos.y;
+          	ss>>pos.z;
+          	ss>>ambient.r;
+          	ss>>ambient.g;
+          	ss>>ambient.b;
+          	ss>>diffuse.r;
+          	ss>>diffuse.g;
+          	ss>>diffuse.b;
+
+          	std::shared_ptr<Light> light = std::make_shared<Light> (name,pos,ambient,diffuse);
+            scene.lights.push_back(light);
+            std::cout << "another light added to scene...\n";
+
+          }
+        }
+        else if (keyword == "render")
+        {
+        	ss>>keyword;
+        	ss>>scene.filename;
+        	ss>>scene.width;
+        	ss>>scene.height;
+
+        	std::cout << "rendering taking place...\n" ;
         }
       }
     }
   return scene;
 }
+

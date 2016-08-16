@@ -30,7 +30,7 @@ struct Scene {
 
 /*  member  */
   std::vector<std::shared_ptr<Shape>> shapes;
-  std::vector<Light> lights;
+  std::vector<std::shared_ptr<Light>> lights;
   std::map<std::string, Material> materials;
   Camera camera;
   int width, height;
