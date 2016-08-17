@@ -8,7 +8,7 @@ struct OptiHit
 {
   bool hit;//wird in calc_optihit berechnet
   float distance;//wird in calc_optihit berechnet
-  std::shared_ptr<Shape> closest_shape;//wird in calc_optihit berechnet
+  Shape* closest_shape;//wird in calc_optihit berechnet
   glm::vec3 n;
   glm::vec3 surface_ptr;
   float angle;//hit_angle between n and ray

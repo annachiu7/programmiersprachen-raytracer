@@ -10,7 +10,7 @@ OptiHit calc_optihit(Scene const& scene,Ray const& ray)
     optihit.hit = shape->intersect(ray, optihit.distance);
     if (optihit.hit && 0 < optihit.distance && optihit.distance < nearest_distance) {
       nearest_distance=optihit.distance;
-      optihit.closest_shape = shape;
+      optihit.closest_shape = shape.get();
     }
   }
   return optihit;

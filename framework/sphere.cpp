@@ -1,4 +1,5 @@
 #include "sphere.hpp"
+#include "optiHit.hpp"
 
 Sphere::Sphere():
 Shape::Shape(),
@@ -48,18 +49,19 @@ std::ostream& Sphere::print(std::ostream& os) const
 }
 
 // aufgabe5.6
+//OptiHit Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
 bool Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
 {
-	return glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
+  OptiHit hit;
+	hit.hit = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
+  // if (hit.hit)
+  //   hit.closest_shape = this;
+  //   hit.n =
+  //   hit.surface_pt =
+	return hit.hit;
 }
 
-glm::vec3 Sphere::calc_n(glm::vec3 const& s_pt) const
+glm::vec3 Sphere::calc_n(glm::vec3 const& p) const
 {
-  glm::vec3 n;
-  n.x = s_pt.x - middle_.x;
-  n.y = s_pt.y - middle_.y;
-  n.z = s_pt.z - middle_.z;
-  n = glm::normalize(n);
-  n = n * 0.5f + 0.5f;
-  return n;
+  return glm::normalize(p - middle_);
 }
