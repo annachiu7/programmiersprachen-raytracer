@@ -52,3 +52,14 @@ bool Sphere::intersect(Ray const& ray, float& distance) const  			// change the 
 {
 	return glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
 }
+
+glm::vec3 Sphere::calc_n(glm::vec3 const& s_pt) const
+{
+  glm::vec3 n;
+  n.x = s_pt.x - middle_.x;
+  n.y = s_pt.y - middle_.y;
+  n.z = s_pt.z - middle_.z;
+  n = glm::normalize(n);
+  n = n * 0.5f + 0.5f;
+  return n;
+}

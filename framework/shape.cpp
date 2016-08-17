@@ -37,3 +37,10 @@ std::ostream& operator<<(std::ostream& os, Shape const& s)
 {
 	return s.print(os);
 }
+
+
+glm::vec3 Shape::calc_surface_pt(Ray const& ray, float distance) const
+{
+  glm::vec3 s_pt{ray.origin_ + ray.direction_*distance};
+  return s_pt;
+}
