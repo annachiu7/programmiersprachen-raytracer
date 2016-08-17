@@ -26,7 +26,10 @@ public:
 	//aufgabe 6.3
 	virtual bool intersect(Ray const& ray, float& t) const = 0 ;
 
-  //virtual bool calc_n
+  glm::vec3 calc_surface_pt(Ray const& ray, float distance) const;
+
+  virtual glm::vec3 calc_n(glm::vec3 const& s_pt) const = 0;
+
 
 protected:
 	Material mat_;

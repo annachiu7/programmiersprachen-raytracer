@@ -104,3 +104,9 @@ bool Box::intersect(Ray const& ray, float& distance) const
 					      ray.direction_.z*ray.direction_.z);
 	return true;
 }
+
+glm::vec3 Box::calc_n(glm::vec3 const& s_pt) const
+{
+  glm::vec3 debug{0,0,1};
+  return debug;
+}

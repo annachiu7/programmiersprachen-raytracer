@@ -21,6 +21,8 @@ public:
 
 	bool intersect(Ray const& ray, float& distance) const override;
 
+  glm::vec3 calc_n(glm::vec3 const& s_pt) const override;
+
 private:
 	glm::vec3 middle_;
 	float radius_;
