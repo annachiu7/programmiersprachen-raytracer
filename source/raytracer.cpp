@@ -10,10 +10,8 @@ int main(int argc, char* argv[])
      return 1;
   }
   Scene scene = loadSDF(argv[1]);
-  scene.width = 600;
-  scene.height = 600;
-  unsigned const width = 600;
-  unsigned const height = 600;
+  unsigned const width = scene.width;
+  unsigned const height = scene.height;
   std::string const filename = "./checkerboard.ppm";
 
   Renderer app(scene, width, height, filename);

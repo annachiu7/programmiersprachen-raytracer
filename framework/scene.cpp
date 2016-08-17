@@ -84,9 +84,16 @@ Scene loadSDF(std::string const& filename)
           {
             ss>>scene.camera.name_;
             ss>>scene.camera.fov_x_;
-            ss>>scene.camera.pos_.x;
-            ss>>scene.camera.pos_.y;
-            ss>>scene.camera.pos_.z;
+            ss>>scene.camera.origin_.x;
+            ss>>scene.camera.origin_.y;
+            ss>>scene.camera.origin_.z;
+            ss>>scene.camera.dir_.x;
+            ss>>scene.camera.dir_.y;
+            ss>>scene.camera.dir_.z;
+            ss>>scene.camera.up_.x;
+            ss>>scene.camera.up_.y;
+            ss>>scene.camera.up_.z;
+
             std::cout << "another camera added to scene...\n";
           } 
           if (keyword == "light")
