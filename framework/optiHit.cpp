@@ -13,4 +13,5 @@ OptiHit calc_optihit(Scene const& scene,Ray const& ray)
       optihit.closest_shape = shape;
     }
   }
+  return optihit;
 }
