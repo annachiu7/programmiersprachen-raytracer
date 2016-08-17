@@ -26,6 +26,8 @@ public:
 	//aufgabe 6.3
 	virtual bool intersect(Ray const& ray, float& t) const = 0 ;
 
+  //virtual bool calc_n
+
 protected:
 	Material mat_;
 	std::string name_;

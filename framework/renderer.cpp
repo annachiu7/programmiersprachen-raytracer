@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
+#include "optiHit.hpp"
+
 Renderer::Renderer(Scene const& scene)
   :scene_(scene)
   , colorbuffer_(scene.width*scene.height, Color(0.0, 0.0, 0.0))
@@ -30,20 +32,22 @@ void Renderer::render()
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
+
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
 
-      float nearest_t = 10000.0;
-      Shape* closest = nullptr;
-      float t = 0.0;
-      for (auto const& shape : scene_.shapes) {
-        bool hit = shape->intersect(ray, t);
-        if (hit && 0 < t && t < nearest_t) {
-          nearest_t = t;
-          closest = shape.get();
-        }
-      }
+      OptiHit optihit = calc_optihit(scene_, ray); 
+//      float nearest_t = 10000.0;
+//      Shape* closest = nullptr;
+//      float t = 0.0;
+//      for (auto const& shape : scene_.shapes) {
+//        bool hit = shape->intersect(ray, t);
+//        if (hit && 0 < t && t < nearest_t) {
+//          nearest_t = t;
+//          closest = shape.get();
+//        }
+//      }
 
-      glm::vec3 normal{ray.origin_ + ray.direction_*t};
+      glm::vec3 normal{ray.origin_ + ray.direction_*optihit.distance};
       normal.x = normal.x-0;
       normal.y = normal.y-0;
       normal.z = normal.z+3;
@@ -51,7 +55,7 @@ void Renderer::render()
       auto tmpN = normal * 0.5f + 0.5f;
 
       // p.color = raytrace(ray, 3);
-      if ( closest ) {
+      if ( optihit.closest_shape ) {
         p.color = Color(tmpN.x,tmpN.y,tmpN.z);
         //p.color = Color(1.0,1.0,1.0);
       } else {

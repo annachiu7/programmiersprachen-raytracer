@@ -6,20 +6,18 @@
 
 struct OptiHit
 {
-
-  bool hit;
-  float distance;
-  shared_ptr<Shape> shape;
+  bool hit;//wird in calc_optihit berechnet
+  float distance;//wird in calc_optihit berechnet
+  std::shared_ptr<Shape> closest_shape;//wird in calc_optihit berechnet
   glm::vec3 n;
-  gml::vec3 surface_ptr;
+  glm::vec3 surface_ptr;
   float angle;//hit_angle between n and ray
-  //funktionen
-  //normale berechnen box und sphere
-  //hit berechnen
-
-  hit = shapes->intersect
-
 };
 
-
+OptiHit calc_optihit(Scene const& scene, Ray const& ray);
+//float calc_distance();
+//glm::vec3 calc_surface_ptr();
+//glm::vec3 calc_n();
+//bool calc_hit();
+//std::shared_ptr<Shape> calc_closest_ptr();
 #endif
