@@ -50,6 +50,18 @@ std::ostream& Sphere::print(std::ostream& os) const
 
 // aufgabe5.6
 //OptiHit Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
+//OptiHit Sphere::intersect(Ray const& ray, float& distance) const
+//{
+//  OptiHit hit;
+//	hit.hit = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
+//  if (hit.hit)
+//  {
+//    hit.closest_shape = this;
+//    hit.n =
+//    hit.surface_pt =
+//  }
+//	return hit;
+//}
 bool Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
 {
   OptiHit hit;

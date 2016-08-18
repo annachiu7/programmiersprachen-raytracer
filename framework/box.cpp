@@ -49,6 +49,12 @@ std::ostream& Box::print(std::ostream& os) const
 	return os; 
 }
 
+//OptiHit Box::intersect(Ray const& ray, float distance) const
+//{
+//  OptiHit hit;
+//  return hit;
+//}
+
 //aufgabe5.10
 bool Box::intersect(Ray const& ray, float& distance) const
 {

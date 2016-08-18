@@ -51,6 +51,7 @@ void Renderer::render()
       if ( optihit.closest_shape ) {
         auto surface_pt= optihit.closest_shape->calc_surface_pt(ray, optihit.distance);
         auto n = optihit.closest_shape->calc_n(surface_pt); 
+        n = n * 0.5f + 0.5f;
         //normal.x = normal.x-0;
         //normal.y = normal.y-0;
         //normal.z = normal.z+3;

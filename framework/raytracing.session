@@ -70,15 +70,15 @@ set stal=2
 edit optiHit.hpp
 set splitbelow splitright
 wincmd _ | wincmd |
-vsplit
-1wincmd h
+split
+1wincmd k
 wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 211)
-exe 'vert 2resize ' . ((&columns * 105 + 105) / 211)
+exe '1resize ' . ((&lines * 32 + 33) / 66)
+exe '2resize ' . ((&lines * 31 + 33) / 66)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -188,7 +188,7 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 31) / 63)
+let s:l = 1 - ((0 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -305,15 +305,15 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 1 - ((0 * winheight(0) + 31) / 63)
+let s:l = 1 - ((0 * winheight(0) + 15) / 31)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 1
 normal! 0
 wincmd w
-exe 'vert 1resize ' . ((&columns * 105 + 105) / 211)
-exe 'vert 2resize ' . ((&columns * 105 + 105) / 211)
+exe '1resize ' . ((&lines * 32 + 33) / 66)
+exe '2resize ' . ((&lines * 31 + 33) / 66)
 tabedit shape.hpp
 set splitbelow splitright
 wincmd _ | wincmd |
@@ -1547,9 +1547,10 @@ normal! zt
 88
 normal! 0
 wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 105 + 105) / 211)
 exe 'vert 2resize ' . ((&columns * 105 + 105) / 211)
-tabnext 1
+tabnext 6
 set stal=1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

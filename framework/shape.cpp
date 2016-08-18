@@ -44,3 +44,9 @@ glm::vec3 Shape::calc_surface_pt(Ray const& ray, float distance) const
   glm::vec3 s_pt{ray.origin_ + ray.direction_*distance};
   return s_pt;
 }
+
+glm::vec3 Shape::calc_n(glm::vec3 const& s_pt) const
+{
+  glm::vec3 tnt;
+  return tnt;
+}
