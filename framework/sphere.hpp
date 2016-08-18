@@ -4,14 +4,13 @@
 #include <iostream>
 #include <glm/vec3.hpp>
 
-class Sphere : public Shape 
-{
+class Sphere : public Shape{
 public:
 	Sphere();
 	Sphere(Material const& mat, std::string const& name, glm::vec3 const& mp, float radius);
 	~Sphere();
-	float area() const override;
-	float volume() const override;
+	//float area() const override;
+	//float volume() const override;
 
 	//getter 
 	glm::vec3 const& get_middle() const;
@@ -19,10 +18,10 @@ public:
 
 	std::ostream& print(std::ostream& os) const override;
 
-	bool intersect(Ray const& ray, float& distance) const override;
-  //OptiHit intersect(Ray const& ray, float distance) const override;
+	bool does_intersect(Ray const& ray, float& distance) const override;
+  OptiHit intersect(Ray const& ray, float distance) const override;
 
-  glm::vec3 calc_n(glm::vec3 const& s_pt) const override;
+  glm::vec3 calc_n(OptiHit const& hit) const override;
 
 private:
 	glm::vec3 middle_;

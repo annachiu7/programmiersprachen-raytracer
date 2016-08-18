@@ -15,6 +15,7 @@ max_{max}
 Box::~Box()
 {}
 
+/*
 float Box::area() const
 {
 	auto l = max_.x-min_.x;
@@ -27,6 +28,7 @@ float Box::volume() const
 {
 	return std::abs((max_.x-min_.x)*(max_.y-min_.y)*(max_.z-min_.z));
 }
+*/
 
 
 //getter
@@ -49,14 +51,23 @@ std::ostream& Box::print(std::ostream& os) const
 	return os; 
 }
 
-//OptiHit Box::intersect(Ray const& ray, float distance) const
-//{
-//  OptiHit hit;
-//  return hit;
-//}
+
+OptiHit Box::intersect(Ray const& ray, float distance) const
+{
+  OptiHit hit;
+  hit.hit = this->does_intersect(ray, distance);
+  if (hit.hit)
+  {
+    hit.closest_shape = this;
+    hit.surface_pt = this->calc_surface_pt(ray, distance);
+    hit.n = this->calc_n(hit); 
+  }
+  return hit;
+}
+
 
 //aufgabe5.10
-bool Box::intersect(Ray const& ray, float& distance) const
+bool Box::does_intersect(Ray const& ray, float& distance) const
 {
 	float tnear,tfar;
 	distance = -1;
@@ -111,7 +122,7 @@ bool Box::intersect(Ray const& ray, float& distance) const
 	return true;
 }
 
-glm::vec3 Box::calc_n(glm::vec3 const& s_pt) const
+glm::vec3 Box::calc_n(OptiHit const& hit) const
 {
   glm::vec3 debug{0,0,1};
   return debug;

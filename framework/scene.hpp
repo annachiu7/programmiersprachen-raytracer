@@ -9,10 +9,12 @@
 #include <memory>
 #include <vector>
 #include "material.hpp"
+#include "shape.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
 #include "camera.hpp"
 #include "light.hpp"
+#include "composite.hpp"
 
 
 

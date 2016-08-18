@@ -1,5 +1,4 @@
 #include "sphere.hpp"
-#include "optiHit.hpp"
 
 Sphere::Sphere():
 Shape::Shape(),
@@ -16,15 +15,15 @@ radius_{radius}
 Sphere::~Sphere()
 {}
 
-float Sphere::area() const
-{
-	return 4*M_PI*radius_*radius_;
-}
-
-float Sphere::volume() const
-{
-	return radius_*radius_*radius_*4/3*M_PI;
-}
+//float Sphere::area() const
+//{
+//	return 4*M_PI*radius_*radius_;
+//}
+//
+//float Sphere::volume() const
+//{
+//	return radius_*radius_*radius_*4/3*M_PI;
+//}
 
 
 
@@ -49,20 +48,21 @@ std::ostream& Sphere::print(std::ostream& os) const
 }
 
 // aufgabe5.6
-//OptiHit Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
-//OptiHit Sphere::intersect(Ray const& ray, float& distance) const
-//{
-//  OptiHit hit;
-//	hit.hit = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
-//  if (hit.hit)
-//  {
-//    hit.closest_shape = this;
-//    hit.n =
-//    hit.surface_pt =
-//  }
-//	return hit;
-//}
-bool Sphere::intersect(Ray const& ray, float& distance) const  			// change the value of distance
+
+OptiHit Sphere::intersect(Ray const& ray, float distance) const
+{
+  OptiHit hit;
+	hit.hit = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
+  if (hit.hit)
+  {
+    hit.closest_shape = this;
+    hit.surface_pt = this->calc_surface_pt(ray, distance);
+    hit.n = this->calc_n(hit);
+  }
+	return hit;
+}
+
+bool Sphere::does_intersect(Ray const& ray, float& distance) const  			// change the value of distance
 {
   OptiHit hit;
 	hit.hit = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);
@@ -73,7 +73,9 @@ bool Sphere::intersect(Ray const& ray, float& distance) const  			// change the 
 	return hit.hit;
 }
 
-glm::vec3 Sphere::calc_n(glm::vec3 const& p) const
+glm::vec3 Sphere::calc_n(OptiHit const& hit) const
 {
+  glm::vec3 p = hit.surface_pt;
   return glm::normalize(p - middle_);
+
 }

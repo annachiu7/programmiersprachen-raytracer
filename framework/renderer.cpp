@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
-#include "optiHit.hpp"
+//#include "optiHit.hpp"
 
 Renderer::Renderer(Scene const& scene)
   :scene_(scene)
@@ -35,57 +35,49 @@ void Renderer::render()
 
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
 
-      OptiHit hit = calc_optihit(scene_, ray); 
-
-      if ( hit.closest_shape ) {
-        auto surface_pt= hit.closest_shape->calc_surface_pt(ray, hit.distance);
-        auto n = hit.closest_shape->calc_n(surface_pt); 
-
-<<<<<<< HEAD
-      if ( optihit.closest_shape ) {
-        auto surface_pt= optihit.closest_shape->calc_surface_pt(ray, optihit.distance);
-        auto n = optihit.closest_shape->calc_n(surface_pt); 
-        n = n * 0.5f + 0.5f;
-        //normal.x = normal.x-0;
-        //normal.y = normal.y-0;
-        //normal.z = normal.z+3;
-        //normal = glm::normalize(normal);
-        //auto tmpN = normal * 0.5f + 0.5f;
-=======
-        for (auto const& light : scene_.lights)
-        {
-          Ray pt_to_l{surface_pt, light->pos_};  // make ray: intersection to light sources
-      
-          /* generate shadow
-          // #################### not working yet #######################################
-          float t = 0.0f;
-          bool lighted = true;  // initially with light
-          for (auto const& shape : scene_.shapes)  // see if any other objects in the way?
-          {
-            if (shape.get() != hit.closest_shape ) {  // exclude intersection with self
-              if (shape->intersect(pt_to_l, t) == true)  // in the way, then no light
-              {
-                  lighted = false;
-                  p.color = Color{0,0,0};
-                  break;
-              }
-            } 
-          }*/
-          // ############################################################################
-
-          glm::vec3 l = pt_to_l.direction_;
-          float nl = glm::dot(n,l);
-          // calculate light intensity and return color for the pixel
-           p.color += Color{ (light->ld_.r) * (hit.closest_shape->get_mat().kd_.r) * nl,
-                             (light->ld_.g) * (hit.closest_shape->get_mat().kd_.g) * nl,
-                             (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };
-        }
->>>>>>> 4a9c24da54b194ad6e7735337f177cf37a4b750d
-
-        // p.color = raytrace(ray, 3);
-      } else {
-        p.color = Color(0.1,0.1,0.1);
+      OptiHit hit; 
+      for (auto const& shape : scene_.shapes)
+      {
+        hit = shape->intersect(ray,hit.distance);//hier noch abfragen ob nearest
       }
+
+        if ( hit.closest_shape ) {
+          auto surface_pt= hit.closest_shape->calc_surface_pt(ray, hit.distance);
+          auto n = hit.closest_shape->calc_n(hit); 
+
+          for (auto const& light : scene_.lights)
+          {
+            Ray pt_to_l{surface_pt, light->pos_};  // make ray: intersection to light sources
+        
+            /* generate shadow
+            // #################### not working yet #######################################
+            float t = 0.0f;
+            bool lighted = true;  // initially with light
+            for (auto const& shape : scene_.shapes)  // see if any other objects in the way?
+            {
+              if (shape.get() != hit.closest_shape ) {  // exclude intersection with self
+                if (shape->intersect(pt_to_l, t) == true)  // in the way, then no light
+                {
+                    lighted = false;
+                    p.color = Color{0,0,0};
+                    break;
+                }
+              } 
+            }*/
+            // ############################################################################
+
+            glm::vec3 l = pt_to_l.direction_;
+            float nl = glm::dot(n,l);
+            // calculate light intensity and return color for the pixel
+             p.color += Color{ (light->ld_.r) * (hit.closest_shape->get_mat().kd_.r) * nl,
+                               (light->ld_.g) * (hit.closest_shape->get_mat().kd_.g) * nl,
+                               (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };
+          }
+
+          // p.color = raytrace(ray, 3);
+        } else {
+          p.color = Color(0.1,0.1,0.1);
+        }
 
       write(p);
     }

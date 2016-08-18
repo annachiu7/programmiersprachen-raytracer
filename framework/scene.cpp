@@ -1,9 +1,10 @@
 #include "scene.hpp"
-#include <iostream>
 
 Scene loadSDF(std::string const& filename)
 {
   Scene scene;
+  std::map<std::string,std::shared_ptr<Shape>> tmp_shapes;
+  
 
   std::ifstream file;
   file.open(filename);
@@ -58,7 +59,7 @@ Scene loadSDF(std::string const& filename)
 
               //std::cout << box << std::endl;
               std::shared_ptr<Shape> box0 = std::make_shared<Box> (scene.materials[color],name,min,max);
-              scene.shapes.push_back(box0);
+              tmp_shapes[name] = box0;
               std::cout << "another box added to scene...\n";
             }
             if (keyword == "sphere")
@@ -76,10 +77,25 @@ Scene loadSDF(std::string const& filename)
 
               std::shared_ptr<Shape> sphere0 = std::make_shared<Sphere> (scene.materials[color],name,
                 middlpt,r);
-              scene.shapes.push_back(sphere0);
+              tmp_shapes[name] = sphere0;
               std::cout << "another sphere added to scene...\n";
             }
+            if (keyword == "composite")
+            {
+              std::string name, shape1, shape2;
+
+              ss>>name;
+              ss>>shape1;
+              ss>>shape2;
+
+              std::shared_ptr<Composite> comp0 = std::make_shared<Composite> (name);
+              comp0->add_shape(tmp_shapes[shape1]);
+              comp0->add_shape(tmp_shapes[shape2]);
+              scene.shapes.push_back(comp0);
+            }
           }
+
+
           if (keyword == "camera")
           {
             ss>>scene.camera.name_;

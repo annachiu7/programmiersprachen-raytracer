@@ -11,6 +11,11 @@ mat_{mat},
 name_{name}
 {}
 
+Shape::Shape(std::string const& name):
+mat_{},
+name_{name}
+{}
+
 Shape::~Shape()
 {}
 
@@ -45,7 +50,7 @@ glm::vec3 Shape::calc_surface_pt(Ray const& ray, float distance) const
   return s_pt;
 }
 
-glm::vec3 Shape::calc_n(glm::vec3 const& s_pt) const
+glm::vec3 Shape::calc_n(OptiHit const& hit) const
 {
   glm::vec3 tnt;
   return tnt;

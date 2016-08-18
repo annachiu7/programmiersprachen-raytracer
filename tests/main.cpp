@@ -17,7 +17,7 @@ TEST_CASE("ctor test","aufgabe5.2"){//{{{
   REQUIRE (s1->get_middle().y == .0f);
   REQUIRE (s1->get_middle().z == .0f);
 }//}}}
-
+/*
 TEST_CASE("methoden area volume","aufgabe5.2"){//{{{
   //Box b1{};
   auto b1 = std::make_shared<Box> ();
@@ -116,7 +116,6 @@ TEST_CASE("test_intersect_box_5.10")
 	result = d.intersect(r2,distance);
 	std::cout<<"d intersect r2: "<<distance<<std::endl;
 }
-/*
 TEST_CASE("test_box")//{{{
 {
 	Box b1{};
@@ -216,8 +215,6 @@ TEST_CASE("5.8")
 	delete s1 ;
 	delete s2 ;
 }
-*/
-/*
 TEST_CASE("test_intersect_box_5.10")
 {
 	Box a{{},"Box",{0.0,0.0,0.0},{8.0,3.0,3.0}};
@@ -237,7 +234,8 @@ TEST_CASE("test_intersect_box_5.10")
 	result = d.intersect(r2,distance);
 	std::cout<<"d intersect r2: "<<distance<<std::endl;
 }
-*///}}}
+//}}}
+*/
 
 int main(int argc, char *argv[])
 {
