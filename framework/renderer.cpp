@@ -35,19 +35,13 @@ void Renderer::render()
 
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
 
-      OptiHit optihit = calc_optihit(scene_, ray); 
-//      float nearest_t = 10000.0;
-//      Shape* closest = nullptr;
-//      float t = 0.0;
-//      for (auto const& shape : scene_.shapes) {
-//        bool hit = shape->intersect(ray, t);
-//        if (hit && 0 < t && t < nearest_t) {
-//          nearest_t = t;
-//          closest = shape.get();
-//        }
-//      }
+      OptiHit hit = calc_optihit(scene_, ray); 
 
+      if ( hit.closest_shape ) {
+        auto surface_pt= hit.closest_shape->calc_surface_pt(ray, hit.distance);
+        auto n = hit.closest_shape->calc_n(surface_pt); 
 
+<<<<<<< HEAD
       if ( optihit.closest_shape ) {
         auto surface_pt= optihit.closest_shape->calc_surface_pt(ray, optihit.distance);
         auto n = optihit.closest_shape->calc_n(surface_pt); 
@@ -57,12 +51,40 @@ void Renderer::render()
         //normal.z = normal.z+3;
         //normal = glm::normalize(normal);
         //auto tmpN = normal * 0.5f + 0.5f;
+=======
+        for (auto const& light : scene_.lights)
+        {
+          Ray pt_to_l{surface_pt, light->pos_};  // make ray: intersection to light sources
+      
+          /* generate shadow
+          // #################### not working yet #######################################
+          float t = 0.0f;
+          bool lighted = true;  // initially with light
+          for (auto const& shape : scene_.shapes)  // see if any other objects in the way?
+          {
+            if (shape.get() != hit.closest_shape ) {  // exclude intersection with self
+              if (shape->intersect(pt_to_l, t) == true)  // in the way, then no light
+              {
+                  lighted = false;
+                  p.color = Color{0,0,0};
+                  break;
+              }
+            } 
+          }*/
+          // ############################################################################
+
+          glm::vec3 l = pt_to_l.direction_;
+          float nl = glm::dot(n,l);
+          // calculate light intensity and return color for the pixel
+           p.color += Color{ (light->ld_.r) * (hit.closest_shape->get_mat().kd_.r) * nl,
+                             (light->ld_.g) * (hit.closest_shape->get_mat().kd_.g) * nl,
+                             (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };
+        }
+>>>>>>> 4a9c24da54b194ad6e7735337f177cf37a4b750d
 
         // p.color = raytrace(ray, 3);
-        p.color = Color(n.x,n.y,n.z);
-        //p.color = Color(1.0,1.0,1.0);
       } else {
-        p.color = Color(0,0,0);
+        p.color = Color(0.1,0.1,0.1);
       }
 
       write(p);
@@ -70,6 +92,13 @@ void Renderer::render()
   }
   ppm_.save(filename_);
 }
+/*
+Color raytrace(Ray const& ray) const
+{  
+  
+  return Color;
+}
+*/
 
 void Renderer::write(Pixel const& p)
 {
