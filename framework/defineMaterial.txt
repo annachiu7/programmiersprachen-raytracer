@@ -3,7 +3,7 @@ define material red  1 0 0 1 0 0 1 0 0 1
 define material blue 0 0 1 0 0 1 0 0 1 1
 #geometry 
 define shape sphere bsphere 0 0 -3  1 red
-define shape sphere asphere 0.5 0.5 -2  0.2 red
+define shape sphere asphere 0.5 0.5 -2  0.2 blue
 #composite
 define shape composite root bsphere asphere
 #light - from right above

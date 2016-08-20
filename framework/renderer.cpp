@@ -42,6 +42,7 @@ void Renderer::render()
       }
 
         if ( hit.closest_shape ) {
+          //hit = hit.closest_shape->intersect(ray, 0);
           auto surface_pt= hit.closest_shape->calc_surface_pt(ray, hit.distance);
           auto n = hit.closest_shape->calc_n(hit); 
 
