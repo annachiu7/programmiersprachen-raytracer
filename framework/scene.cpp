@@ -92,6 +92,7 @@ Scene loadSDF(std::string const& filename)
               comp0->add_shape(tmp_shapes[shape1]);
               comp0->add_shape(tmp_shapes[shape2]);
               scene.shapes.push_back(comp0);
+              std::cout << "another composite added to scene...\n";
             }
           }
 

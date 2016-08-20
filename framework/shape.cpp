@@ -50,8 +50,3 @@ glm::vec3 Shape::calc_surface_pt(Ray const& ray, float distance) const
   return s_pt;
 }
 
-glm::vec3 Shape::calc_n(OptiHit const& hit) const
-{
-  glm::vec3 tnt;
-  return tnt;
-}

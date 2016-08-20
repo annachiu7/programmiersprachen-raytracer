@@ -36,7 +36,7 @@ OptiHit Composite::intersect(Ray const& ray, float distance) const
   hit.closest_shape = nullptr;
   hit.distance = 0.0;
   for (auto const& shape : shapes_) {
-    hit.hit = shape->does_intersect(ray, hit.distance);
+    hit = shape->intersect(ray, hit.distance);
     if (hit.hit && 0 < hit.distance && hit.distance < nearest_distance) {
       nearest_distance=hit.distance;
       hit.closest_shape = shape.get();
@@ -50,7 +50,7 @@ OptiHit Composite::intersect(Ray const& ray, float distance) const
 
 glm::vec3 Composite::calc_n(OptiHit const& hit) const
 {
-  hit.closest_shape->calc_n(hit);
+  return hit.closest_shape->calc_n(hit);
 }
  
 

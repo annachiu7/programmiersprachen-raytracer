@@ -42,3 +42,9 @@ private:
 };
 
 #endif // #ifndef BUW_RENDERER_HPP
+//        float nearest_distance = 10000.0;
+//        hit.closest_shape = nullptr;
+//        hit.distance = 0.0;
+//        {
+//          hit = shape->intersect(ray,hit.distance);//hier noch abfragen ob nearest
+//        }

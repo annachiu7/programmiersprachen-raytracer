@@ -36,48 +36,56 @@ void Renderer::render()
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
 
       OptiHit hit; 
+      float nearest_distance = 10000.0;
+      hit.closest_shape = nullptr;
+      hit.distance = 0.0;
       for (auto const& shape : scene_.shapes)
       {
         hit = shape->intersect(ray,hit.distance);//hier noch abfragen ob nearest
+       // if (hit.hit && 0 < hit.distance && hit.distance < nearest_distance) 
+       // {
+       //   nearest_distance=hit.distance;
+       //   hit.closest_shape = shape.get();
+       // }
       }
 
-        if ( hit.closest_shape ) {
-          auto surface_pt= hit.closest_shape->calc_surface_pt(ray, hit.distance);
-          auto n = hit.closest_shape->calc_n(hit); 
+      if ( hit.closest_shape ) {
+        auto surface_pt= hit.surface_pt;
+        auto n = hit.n; 
 
-          for (auto const& light : scene_.lights)
+        for (auto const& light : scene_.lights)
+        {
+          Ray pt_to_l{surface_pt, light->pos_};  // make ray: intersection to light sources
+      
+          /* generate shadow
+          // #################### not working yet #######################################
+          float t = 0.0f;
+          bool lighted = true;  // initially with light
+          for (auto const& shape : scene_.shapes)  // see if any other objects in the way?
           {
-            Ray pt_to_l{surface_pt, light->pos_};  // make ray: intersection to light sources
-        
-            /* generate shadow
-            // #################### not working yet #######################################
-            float t = 0.0f;
-            bool lighted = true;  // initially with light
-            for (auto const& shape : scene_.shapes)  // see if any other objects in the way?
-            {
-              if (shape.get() != hit.closest_shape ) {  // exclude intersection with self
-                if (shape->intersect(pt_to_l, t) == true)  // in the way, then no light
-                {
-                    lighted = false;
-                    p.color = Color{0,0,0};
-                    break;
-                }
-              } 
-            }*/
-            // ############################################################################
+            if (shape.get() != hit.closest_shape ) {  // exclude intersection with self
+              if (shape->intersect(pt_to_l, t) == true)  // in the way, then no light
+              {
+                  lighted = false;
+                  p.color = Color{0,0,0};
+                  break;
+              }
+            } 
+          }*/
+          // ############################################################################
 
-            glm::vec3 l = pt_to_l.direction_;
-            float nl = glm::dot(n,l);
-            // calculate light intensity and return color for the pixel
-             p.color += Color{ (light->ld_.r) * (hit.closest_shape->get_mat().kd_.r) * nl,
-                               (light->ld_.g) * (hit.closest_shape->get_mat().kd_.g) * nl,
-                               (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };
-          }
-
-          // p.color = raytrace(ray, 3);
-        } else {
-          p.color = Color(0.1,0.1,0.1);
+          glm::vec3 l = pt_to_l.direction_;
+          float nl = glm::dot(n,l);
+          // calculate light intensity and return color for the pixel
+           p.color += Color{ (light->ld_.r) * (hit.closest_shape->get_mat().kd_.r) * nl,
+                             (light->ld_.g) * (hit.closest_shape->get_mat().kd_.g) * nl,
+                             (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };
         }
+
+        // p.color = raytrace(ray, 3);
+      } else {
+        p.color = Color(0.1,0.1,0.1);
+      }
 
       write(p);
     }
