@@ -48,31 +48,28 @@ void Renderer::render()
 
           for (auto const& light : scene_.lights)
           {
-            Ray pt_to_l{surface_pt, light->pos_};  // make ray: intersection to light sources
-        
-            /* generate shadow
-            // #################### not working yet #######################################
-            float t = 0.0f;
-            bool lighted = true;  // initially with light
-            for (auto const& shape : scene_.shapes)  // see if any other objects in the way?
-            {
-              if (shape.get() != hit.closest_shape ) {  // exclude intersection with self
-                if (shape->intersect(pt_to_l, t) == true)  // in the way, then no light
-                {
-                    lighted = false;
-                    p.color = Color{0,0,0};
-                    break;
-                }
-              } 
-            }*/
-            // ############################################################################
+            Ray pt_to_l{surface_pt, light->pos_-surface_pt};  // make ray: intersection to light sources
 
             glm::vec3 l = pt_to_l.direction_;
             float nl = glm::dot(n,l);
             // calculate light intensity and return color for the pixel
              p.color += Color{ (light->ld_.r) * (hit.closest_shape->get_mat().kd_.r) * nl,
                                (light->ld_.g) * (hit.closest_shape->get_mat().kd_.g) * nl,
-                               (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };
+                               (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };        
+             //generate shadow
+            // #################### not working yet #######################################
+            float t = 0.0f;
+            for (auto const& comp : scene_.shapes)  // see if any other objects in the way? // iteration through composite vector
+            {
+              if (comp->does_intersect(pt_to_l, t) && t!=0.0f )  // exclude intersection with self
+              {
+                p.color = Color{1,1,1};
+                break;
+              }
+            }
+            // ############################################################################ 
+
+
           }
 
           // p.color = raytrace(ray, 3);
