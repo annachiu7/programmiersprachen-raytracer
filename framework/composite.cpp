@@ -29,7 +29,7 @@ bool Composite::does_intersect(Ray const& ray, float& distance) const
 }
 
 
-OptiHit Composite::intersect(Ray const& ray, float distance) const
+OptiHit Composite::intersect(Ray const& ray, float& distance) const
 {
   OptiHit hit;
   float nearest_distance = 10000.0;
@@ -50,7 +50,7 @@ OptiHit Composite::intersect(Ray const& ray, float distance) const
 
 glm::vec3 Composite::calc_n(OptiHit const& hit) const
 {
-  hit.closest_shape->calc_n(hit);
+  return hit.closest_shape->calc_n(hit);
 }
  
 

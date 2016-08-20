@@ -18,7 +18,7 @@ public:
 	std::ostream& print(std::ostream& os) const override;
 
 	bool does_intersect(Ray const& ray, float& distance) const override;
-  OptiHit intersect(Ray const& ray, float distance) const override;
+  OptiHit intersect(Ray const& ray, float& distance) const override;
 
   glm::vec3 calc_n(OptiHit const& hit) const override;
 

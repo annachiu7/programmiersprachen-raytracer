@@ -49,7 +49,7 @@ std::ostream& Sphere::print(std::ostream& os) const
 
 // aufgabe5.6
 
-OptiHit Sphere::intersect(Ray const& ray, float distance) const
+OptiHit Sphere::intersect(Ray const& ray, float& distance) const
 {
   OptiHit hit;
 	hit.hit = glm::intersectRaySphere(ray.origin_, ray.direction_, middle_, radius_*radius_, distance);

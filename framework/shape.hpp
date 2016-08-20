@@ -29,7 +29,7 @@ public:
 
 	//aufgabe 6.3
 	virtual bool does_intersect(Ray const& ray, float& t) const = 0 ;
-	virtual OptiHit intersect(Ray const& ray, float t) const = 0 ;
+	virtual OptiHit intersect(Ray const& ray, float& t) const = 0 ;
 
   glm::vec3 calc_surface_pt(Ray const& ray, float distance) const;
 
