@@ -82,15 +82,17 @@ Scene loadSDF(std::string const& filename)
             }
             if (keyword == "composite")
             {
-              std::string name, shape1, shape2;
+              std::string name, shape1, shape2, box0;
 
               ss>>name;
               ss>>shape1;
               ss>>shape2;
+              ss>>box0;
 
               std::shared_ptr<Composite> comp0 = std::make_shared<Composite> (name);
               comp0->add_shape(tmp_shapes[shape1]);
               comp0->add_shape(tmp_shapes[shape2]);
+              comp0->add_shape(tmp_shapes[box0]);
               scene.shapes.push_back(comp0);
             }
           }
