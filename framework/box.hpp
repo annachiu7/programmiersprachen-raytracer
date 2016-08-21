@@ -10,8 +10,6 @@ public:
 	Box();
 	Box(Material const& mat, std::string const& name, glm::vec3 const& min, glm::vec3 const& max);
 	~Box();
-	//float area() const override;
-	//float volume() const override;
 
 	//getter
 	glm::vec3 const& get_min() const;

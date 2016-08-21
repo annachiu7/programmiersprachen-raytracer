@@ -26,15 +26,6 @@ OptiHit Composite::intersect(Ray const& ray) const
       hit = tmphit;
     }
   }
-//  float nearest_distance = 10000.0;
-//  hit.closest_shape = nullptr;
-//  for (auto const& shape : shapes_) {
-//    hit = shape->intersect(ray);
-//    if (hit.hit && 0 < hit.distance && hit.distance < nearest_distance) {
-//      nearest_distance=hit.distance;
-//      hit.closest_shape = shape.get();
-//    }
-//  }
 
   return hit;
 }

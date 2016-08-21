@@ -14,11 +14,6 @@ public:
 	Shape(Material const& mat, std::string const& name);
 	Shape(std::string const& name);
 	~Shape();
-	//virtual void draw() const = 0;
-  /*
-	virtual float area() const = 0;
-	virtual float volume() const = 0;
-  */ 
 	
 	//aufgabe 5.4
 	virtual std::ostream& print(std::ostream& os) const;
@@ -42,11 +37,10 @@ protected:
 
 struct OptiHit
 {
-  //OptiHit(bool h, float d, Shape* const& c,glm::vec3 const& n, glm::vec3 const& s);
   OptiHit():
   hit{false},
   distance{10000.0},
-  closest_shape{},
+  closest_shape{nullptr},
   n{},
   surface_pt{}
   {}

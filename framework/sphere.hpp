@@ -9,8 +9,6 @@ public:
 	Sphere();
 	Sphere(Material const& mat, std::string const& name, glm::vec3 const& mp, float radius);
 	~Sphere();
-	//float area() const override;
-	//float volume() const override;
 
 	//getter 
 	glm::vec3 const& get_middle() const;

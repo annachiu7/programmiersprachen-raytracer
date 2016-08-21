@@ -15,20 +15,6 @@ max_{max}
 Box::~Box()
 {}
 
-/*
-float Box::area() const
-{
-	auto l = max_.x-min_.x;
-	auto h = max_.y-min_.y;
-	auto b = max_.z-min_.z;
-	return 2*(l*h + l*b + h*b);
-}
-
-float Box::volume() const
-{
-	return std::abs((max_.x-min_.x)*(max_.y-min_.y)*(max_.z-min_.z));
-}
-*/
 
 
 //getter
@@ -111,6 +97,7 @@ OptiHit Box::intersect(Ray const& ray) const
 					      ray.direction_.y*ray.direction_.y +
 					      ray.direction_.z*ray.direction_.z);
   hit.hit = true;
+  hit.closest_shape = this;
   hit.surface_pt = this->calc_surface_pt(ray,hit.distance);
 	return hit;
 }
