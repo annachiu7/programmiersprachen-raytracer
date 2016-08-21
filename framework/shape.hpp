@@ -28,8 +28,7 @@ public:
 	std::string const& get_name() const;
 
 	//aufgabe 6.3
-	virtual bool does_intersect(Ray const& ray, float& t) const = 0 ;
-	virtual OptiHit intersect(Ray const& ray, float& t) const = 0 ;
+	virtual OptiHit intersect(Ray const& ray) const = 0 ;
 
   glm::vec3 calc_surface_pt(Ray const& ray, float distance) const;
 
@@ -46,7 +45,7 @@ struct OptiHit
   //OptiHit(bool h, float d, Shape* const& c,glm::vec3 const& n, glm::vec3 const& s);
   OptiHit():
   hit{false},
-  distance{0.0},
+  distance{10000.0},
   closest_shape{},
   n{},
   surface_pt{}

@@ -16,8 +16,7 @@ public:
   Composite(std::string const& name);
   ~Composite();
 
-	bool does_intersect(Ray const& ray, float& distance) const override;
-  OptiHit intersect(Ray const& ray, float& distance) const override;
+  OptiHit intersect(Ray const& ray) const override;
   glm::vec3 calc_n(OptiHit const& hit) const override;
   void add_shape(std::shared_ptr<Shape>  s);
 

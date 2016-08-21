@@ -38,13 +38,18 @@ void Renderer::render()
       OptiHit hit; 
       for (auto const& shape : scene_.shapes)
       {
-        hit = shape->intersect(ray,hit.distance);//hier noch abfragen ob nearest
+        hit = shape->intersect(ray);//hier noch abfragen ob nearest
       }
 
         if ( hit.closest_shape ) {
-          hit = hit.closest_shape->intersect(ray, 0);
+
+          /*
+          hit = hit.closest_shape->intersect(ray);
           auto surface_pt= hit.closest_shape->calc_surface_pt(ray, hit.distance);
           auto n = hit.closest_shape->calc_n(hit); 
+          */
+          auto surface_pt = hit.surface_pt;
+          auto n = hit.n;
 
           for (auto const& light : scene_.lights)
           {
@@ -61,7 +66,8 @@ void Renderer::render()
             float t = 0.0f;
             for (auto const& comp : scene_.shapes)  // see if any other objects in the way? // iteration through composite vector
             {
-              if (comp->does_intersect(pt_to_l, t) && t!=0.0f )  // exclude intersection with self
+              OptiHit a = comp->intersect(pt_to_l);
+              if (a.hit && t!=0.0f )  // exclude intersection with self
               {
                 p.color = Color{1,1,1};
                 break;

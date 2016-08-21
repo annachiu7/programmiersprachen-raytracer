@@ -4,6 +4,7 @@ define material blue 0 0 1 0 0 1 0 0 1 1
 #geometry 
 define shape sphere bsphere 0 0 -10  8 red
 define shape sphere asphere 0 0 -1  0.4 blue
+define shape box abox -2 -2 -2 -1 -1 -1 blue
 #composite
 define shape composite root bsphere asphere abox
 #light - from right above

@@ -52,24 +52,8 @@ std::ostream& Box::print(std::ostream& os) const
 }
 
 
-OptiHit Box::intersect(Ray const& ray, float& distance) const
+OptiHit Box::intersect(Ray const& ray) const
 {
-  OptiHit hit;
-  hit.hit = this->does_intersect(ray, distance);
-  if (hit.hit)
-  {
-    hit.closest_shape = this;
-    hit.surface_pt = this->calc_surface_pt(ray, distance);
-    hit.n = this->calc_n(hit); 
-  }
-  return hit;
-}
-
-
-//aufgabe5.10
-bool Box::does_intersect(Ray const& ray, float& distance) const
-{
-
   OptiHit hit;
 	float tnear,tfar;
 	//distance = -1;
@@ -83,7 +67,8 @@ bool Box::does_intersect(Ray const& ray, float& distance) const
 	}
 	else 
 	{
-		if(min_.x > ray.origin_.x || max_.x < ray.origin_.x) {return false;}
+		if(min_.x > ray.origin_.x || max_.x < ray.origin_.x) {hit.hit = false;
+    return hit;}
 	}
 
 	if (ray.direction_.y != 0.0)
@@ -94,12 +79,14 @@ bool Box::does_intersect(Ray const& ray, float& distance) const
 		float tfar = std::min(tfar, std::max(t1,t2));
 		if (tnear > tfar)
 		{
-			return false;
+			hit.hit = false;
+ return hit;
 		}
 	}
 	else 
 	{
-		if(min_.y > ray.origin_.y || max_.y < ray.origin_.y) {return false;}
+		if(min_.y > ray.origin_.y || max_.y < ray.origin_.y) {hit.hit = false;
+    return hit;}
 	}
 
 	if (ray.direction_.z != 0.0)
@@ -110,45 +97,52 @@ bool Box::does_intersect(Ray const& ray, float& distance) const
 		tfar = std::min(tfar, std::max(t1,t2));
 		if (tnear > tfar)
 		{
-			return false;
+			hit.hit = false;
+      return hit;
 		}
 	}
 	else 
 	{
-		if(min_.z > ray.origin_.z || max_.z < ray.origin_.z) {return false;}
+		if(min_.z > ray.origin_.z || max_.z < ray.origin_.z) {hit.hit = false;
+    return hit;}
 	}
 
-	distance = tnear*sqrt(ray.direction_.x*ray.direction_.x +
+	hit.distance = tnear*sqrt(ray.direction_.x*ray.direction_.x +
 					      ray.direction_.y*ray.direction_.y +
 					      ray.direction_.z*ray.direction_.z);
-	return true;
+  hit.hit = true;
+  hit.surface_pt = this->calc_surface_pt(ray,hit.distance);
+	return hit;
 }
+
+
+//aufgabe5.10
 
 glm::vec3 Box::calc_n(OptiHit const& hit) const
 {
   auto surface_pt = hit.surface_pt; 
-  if(min_.x == surface_pt.x)
+  if(surface_pt.x == Approx(min_.x))
   {
-    return glm::normalize(glm::cross(min_, surface_pt));
+    return glm::vec3{-1.0,0.0,0.0};
   }
-  if(min_.y == surface_pt.y)
+  if(surface_pt.y == Approx(min_.y))
   {
-    return glm::normalize(glm::cross(min_, surface_pt));
+    return glm::vec3{0.0,-1.0,0.0};
   }
-  if(min_.z == surface_pt.z)
+  if(surface_pt.z == Approx(min_.z))
   {
-    return glm::normalize(glm::cross(min_, surface_pt));
+    return glm::vec3{0.0,0.0,-1.0};
   }
-  if(max_.x == surface_pt.x)
+  if(surface_pt.x == Approx(max_.x))
   {
-    return glm::normalize(glm::cross(max_, surface_pt));
+    return glm::vec3{1.0,0.0,0.0};
   }
-  if(max_.y == surface_pt.y)
+  if(surface_pt.y == Approx(max_.y))
   {
-    return glm::normalize(glm::cross(max_, surface_pt));
+    return glm::vec3{0.0,1.0,0.0};
   }
-  if(max_.z == surface_pt.z)
+  if(surface_pt.z == Approx(max_.z))
   {
-    return glm::normalize(glm::cross(max_, surface_pt));
+    return glm::vec3{0.0,0.0,1.0};
   }
 }

@@ -12,36 +12,29 @@ Composite::Composite(std::string const& name):
 
 Composite::~Composite() {}
 
-bool Composite::does_intersect(Ray const& ray, float& distance) const
-{
-  OptiHit hit;
-  float nearest_distance = 10000.0;
-  hit.closest_shape = nullptr;
-  hit.distance = 0.0;
-  for (auto const& shape : shapes_) {
-    hit.hit = shape->does_intersect(ray, hit.distance);
-    if (hit.hit && 0 < hit.distance && hit.distance < nearest_distance) {
-      nearest_distance=hit.distance;
-      hit.closest_shape = shape.get();
-    }
-  }
-  return hit.hit;
-}
 
 
-OptiHit Composite::intersect(Ray const& ray, float& distance) const
+OptiHit Composite::intersect(Ray const& ray) const
 {
   OptiHit hit;
-  float nearest_distance = 10000.0;
-  hit.closest_shape = nullptr;
-  hit.distance = 0.0;
-  for (auto const& shape : shapes_) {
-    hit.hit = shape->does_intersect(ray, hit.distance);
-    if (hit.hit && 0 < hit.distance && hit.distance < nearest_distance) {
-      nearest_distance=hit.distance;
-      hit.closest_shape = shape.get();
+  OptiHit tmphit;
+  for (auto const& shape : shapes_)
+  {
+    tmphit = shape->intersect(ray);
+    if(tmphit.distance < hit.distance)
+    {
+      hit = tmphit;
     }
   }
+//  float nearest_distance = 10000.0;
+//  hit.closest_shape = nullptr;
+//  for (auto const& shape : shapes_) {
+//    hit = shape->intersect(ray);
+//    if (hit.hit && 0 < hit.distance && hit.distance < nearest_distance) {
+//      nearest_distance=hit.distance;
+//      hit.closest_shape = shape.get();
+//    }
+//  }
 
   return hit;
 }

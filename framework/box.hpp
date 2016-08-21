@@ -2,6 +2,8 @@
 #define BUW_BOX_HPP
 #include "shape.hpp"
 #include <glm/vec3.hpp>
+#include <catch.hpp>
+#include <algorithm>
 
 class Box : public Shape{
 public:
@@ -17,8 +19,7 @@ public:
 	
 	std::ostream& print(std::ostream& os) const override;
 
-	bool does_intersect(Ray const& ray, float& distance) const override;
-  OptiHit intersect(Ray const& ray, float& distance) const override;
+  OptiHit intersect(Ray const& ray) const override;
 
   glm::vec3 calc_n(OptiHit const& hit) const override;
 
