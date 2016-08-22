@@ -45,6 +45,8 @@ void Renderer::render()
         p.color = Color(.0,.0,.0);
       }
 #endif
+
+//      p.color = raytrace(ray, 3);
 #if 0
       OptiHit hit; 
       for (auto const& shape : scene_.shapes)
@@ -101,10 +103,50 @@ void Renderer::render()
 }
 
 #if 0
-Color raytrace(Ray const& ray) const
+//Color raytrace(Ray const& ray) const
+Color Renderer::raytrace(Ray const& ray, unsigned depth) 
 {  
-  
-  return Color;
+  Color clr;
+
+  OptiHit hit;
+  for (auto const& shape : scene_.shapes)
+  {
+    hit = shape->intersect(ray);
+  }
+
+  if (hit.closest_shape) 
+    {
+      float c = 0.001;
+
+      for (auto const& light : scene_.lights) 
+      {
+        Ray lightray{ hit.surface_pt, light->pos_-hit.surface_pt };  // make ray: point to light source
+        lightray.origin_+= lightray.direction_ * c;  // no intersect with self
+
+        glm::vec3 l = lightray.direction_;
+        float nl = glm::dot(hit.n,l);
+
+        // ambient light !(to be implemented after extension of scene.cpp)
+        clr += (light->la_) * (hit.closest_shape->get_mat().ka_); 
+
+        // diffuse light (generated when not shadow)
+          // see if any other objects in the way? iteration through composite vectors
+        for (auto const& comp : scene_.shapes)  
+        {
+          OptiHit a = comp->intersect(lightray);
+          if ( !a.hit )  
+          {
+            clr += (light->ld_) * (hit.closest_shape->get_mat().kd_) * nl;
+            break;
+          }
+        }
+      }
+    } else 
+    {
+      clr = Color(0.1,0.1,0.1);
+    }
+
+  return clr;
 }
 #endif
 

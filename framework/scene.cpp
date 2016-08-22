@@ -85,16 +85,16 @@ Scene loadSDF(std::string const& filename)
               std::string name, shape1, shape2, box0;
 
               ss>>name;
-#if 0
-//              ss>>shape1;
-//              ss>>shape2;
+#if 1
+              ss>>shape1;
+              ss>>shape2;
 #endif
               ss>>box0;
 
               std::shared_ptr<Composite> comp0 = std::make_shared<Composite> (name);
-//              comp0->add_shape(tmp_shapes[shape1]);
-//              comp0->add_shape(tmp_shapes[shape2]);
-              comp0->add_shape(tmp_shapes[box0]);
+              comp0->add_shape(tmp_shapes[shape1]);
+              comp0->add_shape(tmp_shapes[shape2]);
+//              comp0->add_shape(tmp_shapes[box0]);
               scene.shapes.push_back(comp0);
             }
           }
