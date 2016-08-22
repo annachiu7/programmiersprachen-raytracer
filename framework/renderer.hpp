@@ -25,7 +25,7 @@ public:
 
   void render();
   void write(Pixel const& p);
-  Color raytrace(Ray const& ray, unsigned depth) ;
+  Color raytrace(Ray const& ray, unsigned depth) const;
 
   inline std::vector<Color> const& colorbuffer() const
   {

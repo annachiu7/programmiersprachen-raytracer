@@ -89,7 +89,7 @@ void Renderer::render()
   ppm_.save(filename_);
 }
 
-Color Renderer::raytrace(Ray const& ray, unsigned depth) 
+Color Renderer::raytrace(Ray const& ray, unsigned depth) const
 {  
   Color clr;
 
