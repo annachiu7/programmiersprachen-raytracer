@@ -84,6 +84,10 @@ OptiHit Box::intersect(Ray const& ray) const
 		float t2 = (max_.x - ray.origin_.x) / ray.direction_.x;
 		tfar = std::max(t1,t2);
 		tnear = std::min(t1,t2);
+		if (tnear > tfar)
+		{
+      return OptiHit{};
+		}
 	}
 	else 
 	{

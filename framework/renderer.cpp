@@ -33,7 +33,7 @@ void Renderer::render()
 
 #if 1
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
-      Box box{{},"DEBUG",{-1.0,-1.0,-3},{2.0,2.0,-2.0}};
+      Box box{{},"DEBUG",{0.1,0.1,-3},{1.0,1.0,-2.0}};
       //Sphere box{{},"DEBUG",{0.0,0.0,-5.0},3};
       OptiHit hit = box.intersect(ray);
 
