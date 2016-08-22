@@ -104,7 +104,8 @@ void Renderer::render()
 
 #if 0
 //Color raytrace(Ray const& ray) const
-Color Renderer::raytrace(Ray const& ray, unsigned depth) 
+//Color Renderer::raytrace(Ray const& ray, unsigned depth) 
+Color Renderer::raytrace(Ray const& ray, unsigned depth) const
 {  
   Color clr;
 
