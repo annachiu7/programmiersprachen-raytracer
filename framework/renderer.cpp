@@ -27,21 +27,20 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
 
 void Renderer::render()
 {
-  const std::size_t checkersize = 20;
-
   for (unsigned y = 0; y < height_; ++y) {
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
 
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
-
+#if 0
       OptiHit hit; 
       for (auto const& shape : scene_.shapes)
       {
         hit = shape->intersect(ray);//hier noch abfragen ob nearest
       }
 
-        if ( hit.closest_shape ) {
+        if ( hit.closest_shape ) 
+        {
 
           /*
           hit = hit.closest_shape->intersect(ray);
@@ -78,23 +77,22 @@ void Renderer::render()
 
           }
 
-          // p.color = raytrace(ray, 3);
         } else {
           p.color = Color(0.1,0.1,0.1);
         }
-
+#endif
       write(p);
     }
   }
   ppm_.save(filename_);
 }
-/*
+
 Color raytrace(Ray const& ray) const
 {  
   
   return Color;
 }
-*/
+
 
 void Renderer::write(Pixel const& p)
 {
