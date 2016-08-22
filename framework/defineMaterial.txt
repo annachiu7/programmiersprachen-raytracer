@@ -2,13 +2,11 @@
 define material red  1 0 0 1 0 0 1 0 0 1
 define material blue 0 0 1 0 0 1 0 0 1 1
 #geometry 
-define shape sphere bsphere 0 0 -10  8 red
-define shape sphere asphere 0 0 -1  0.4 blue
-define shape box abox -2 -2 -2 -1 -1 -1 blue
+define shape box abox -3 -3 -5 1 1 -4 blue
 #composite
-define shape composite root bsphere asphere abox
+define shape composite root abox
 #light - from right above
-define light sun  -50 0 100 .2 .2 .2 .8 .8 .8
+define light sun  -50 0 -10 .2 .2 .2 .8 .8 .8
 //define light sun 100 0 50 .2 .2 .2 .8 .8 .8
 #camera
 define camera eye 45.0 0 0 5 0 0 -1 0 1 0

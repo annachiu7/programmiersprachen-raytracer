@@ -6,7 +6,9 @@
 #include "material.hpp"
 #include "ray.hpp"
 //#include "optiHit.hpp"
+
 struct OptiHit;
+
 class Shape
 {
 public:
@@ -45,7 +47,15 @@ struct OptiHit
   surface_pt{}
   {}
 
-  OptiHit(bool h, float d, Shape* const& c,glm::vec3 const& n0, glm::vec3 const& s):
+  OptiHit(const Shape* s):
+    hit{false},
+    distance{10000.0},
+    closest_shape(s),
+    n{},
+    surface_pt{}
+  {}
+
+  OptiHit(bool h, float d, const Shape* c, glm::vec3 const& n0, glm::vec3 const& s):
   hit{h},
   distance{d},
   closest_shape{c},
@@ -53,12 +63,11 @@ struct OptiHit
   surface_pt{s}
   {}
   
-  bool hit;//wird in calc_optihit berechnet
-  float distance;//wird in calc_optihit berechnet
-  Shape* closest_shape;//wird in calc_optihit berechnet
+  bool hit;//wird in intersect berechnet
+  float distance;//wird in intersect berechnet
+  const Shape* closest_shape;//wird in intersect berechnet
   glm::vec3 n;
   glm::vec3 surface_pt;
-  float angle;//hit_angle between n and ray
 };
 //aufgabe 5.4
 

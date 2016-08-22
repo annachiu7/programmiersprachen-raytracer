@@ -40,17 +40,17 @@ std::ostream& Sphere::print(std::ostream& os) const
 
 OptiHit Sphere::intersect(Ray const& ray) const
 {
-  OptiHit hit;
-	hit.hit = glm::intersectRaySphere(ray.origin_, ray.direction_,
-    middle_, radius_*radius_, hit.distance);
-  if (hit.hit)
+  float t = 0.0;
+	bool res = glm::intersectRaySphere(ray.origin_, ray.direction_,
+    middle_, radius_*radius_, t);
+  if (res)
   {
-    hit.closest_shape = this;
-    hit.surface_pt = this->calc_surface_pt(ray, hit.distance);
-    hit.n = this->calc_n(hit);
-    hit.distance = glm::distance(ray.origin_, hit.surface_pt);
+
+    glm::vec3 p = ray.origin_ + t * ray.direction_;
+    glm::vec3 n = glm::normalize(p - middle_);
+    return OptiHit{true, t, this, n, p};
   }
-	return hit;
+	return OptiHit{};
 }
 
 
