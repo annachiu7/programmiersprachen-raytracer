@@ -31,7 +31,20 @@ void Renderer::render()
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
 
+#if 1
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
+      Box box{{},"DEBUG",{-1.0,-1.0,-3},{2.0,2.0,-2.0}};
+      //Sphere box{{},"DEBUG",{0.0,0.0,-5.0},3};
+      OptiHit hit = box.intersect(ray);
+
+      if (hit.hit) 
+      {
+        p.color = Color(1.0,1.0,1.0);
+      }else
+      {
+        p.color = Color(.0,.0,.0);
+      }
+#endif
 #if 0
       OptiHit hit; 
       for (auto const& shape : scene_.shapes)
@@ -87,11 +100,13 @@ void Renderer::render()
   ppm_.save(filename_);
 }
 
+#if 0
 Color raytrace(Ray const& ray) const
 {  
   
   return Color;
 }
+#endif
 
 
 void Renderer::write(Pixel const& p)
