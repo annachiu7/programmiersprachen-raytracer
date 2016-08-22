@@ -16,9 +16,16 @@ struct Ray
 	direction_{glm::normalize(dir)},
   inverse_dir_{1.0f/dir.x,1.0f/dir.y,1.0f/dir.z}
 	{}
+
+	Ray(glm::vec3 const& orig, glm::vec3 const& dir, float d):
+	origin_{orig},
+	direction_{glm::normalize(dir)},
+  inverse_dir_{1.0f/dir.x,1.0f/dir.y,1.0f/dir.z},
+  surface_pt_{orig + dir * d}
+	{}
 	
-	glm::vec3 origin_,inverse_dir_;
-	glm::vec3 direction_;	
+	glm::vec3 origin_,inverse_dir_,direction_,surface_pt_;	
 };
 
 #endif
+	
