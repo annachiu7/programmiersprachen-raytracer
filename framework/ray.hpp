@@ -14,14 +14,14 @@ struct Ray
 	Ray(glm::vec3 const& orig, glm::vec3 const& dir):
 	origin_{orig},
 	direction_{glm::normalize(dir)},
-  inverse_dir_{1.0f/dir.x,1.0f/dir.y,1.0f/dir.z}
+    inverse_dir_{1.0f/direction_.x,1.0f/direction_.y,1.0f/direction_.z}
 	{}
 
 	Ray(glm::vec3 const& orig, glm::vec3 const& dir, float d):
 	origin_{orig},
 	direction_{glm::normalize(dir)},
-  inverse_dir_{1.0f/dir.x,1.0f/dir.y,1.0f/dir.z},
-  surface_pt_{orig + dir * d}
+    inverse_dir_{1.0f/direction_.x,1.0f/direction_.y,1.0f/direction_.z},
+    surface_pt_{orig + direction_ * d}
 	{}
 	
 	glm::vec3 origin_,inverse_dir_,direction_,surface_pt_;	

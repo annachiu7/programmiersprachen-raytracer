@@ -41,39 +41,43 @@ std::ostream& Box::print(std::ostream& os) const
 OptiHit Box::intersect(Ray const& ray) const
 {
 //{{{
-#if 0
+#if 1
   OptiHit hit{this};
-  double t1 = (min_.x - ray.origin_.x)*ray.inverse_dir_.x;
-  double t2 = (max_.x - ray.origin_.x)*ray.inverse_dir_.x;
-  double tmin = std::min(t1,t2);
-  double tmax = std::min(t1,t2);
+  float tmin = -INFINITY, tmax = INFINITY;
 
-  t1 = (min_.y - ray.origin_.y)*ray.inverse_dir_.y;
-  t2 = (max_.y - ray.origin_.y)*ray.inverse_dir_.y;
-  tmin = std::min(t1,t2);
-  tmax = std::min(t1,t2);
+  float t1 = (min_.x - ray.origin_.x)/ray.direction_.x;
+  float t2 = (max_.x - ray.origin_.x)/ray.direction_.x;
+  tmin = std::max(tmin,std::min(t1,t2));
+  tmax = std::min(tmax,std::max(t1,t2));
+  //std::cout<<t1<<t2<<' '<<int(tmin)<<' '<<int(tmax)<<' '<<'\n';
 
-  t1 = (min_.z - ray.origin_.z)*ray.inverse_dir_.z;
-  t2 = (max_.z - ray.origin_.z)*ray.inverse_dir_.z;
-  tmin = std::min(t1,t2);
-  tmax = std::min(t1,t2);
+  t1 = (min_.y - ray.origin_.y)/ray.direction_.y;
+  t2 = (max_.y - ray.origin_.y)/ray.direction_.y;
+  tmin = std::max(tmin,std::min(t1,t2));
+  tmax = std::min(tmax,std::max(t1,t2));
+  //std::cout<<int(tmin)<<' '<<int(tmax)<<' '<<'\n';
 
-  if (tmax > std::max(0.0, tmin))
+  t1 = (min_.z - ray.origin_.z)/ray.direction_.z;
+  t2 = (max_.z - ray.origin_.z)/ray.direction_.z;
+  tmin = std::max(tmin,std::min(t1,t2));
+  tmax = std::min(tmax,std::max(t1,t2));
+  //std::cout<<int(tmin)<<' '<<int(tmax)<<' '<<'\n';
+
+  if (tmax > std::max(0.0F, tmin))
   {
-    float t = sqrt(tmin*tmin*(
+    hit.distance = sqrt(tmin*tmin*(
                       ray.direction_.x*ray.direction_.x +
                       ray.direction_.y*ray.direction_.y +
                       ray.direction_.z*ray.direction_.z ));
     hit.surface_pt = this->calc_surface_pt(ray, hit.distance);
-    hit.surface_pt = ray.origin_ + t * ray.direction_;
-    hit.hit = true;
-    
+    hit.surface_pt = ray.origin_ + hit.distance * ray.direction_;
+    hit.hit = true;    
   }
   return hit;
 }
 #endif
 //}}}
-#if 1
+#if 0
   OptiHit hit{this};
 	float tnear,tfar;
 	//distance = -1;
@@ -84,10 +88,7 @@ OptiHit Box::intersect(Ray const& ray) const
 		float t2 = (max_.x - ray.origin_.x) / ray.direction_.x;
 		tfar = std::max(t1,t2);
 		tnear = std::min(t1,t2);
-		if (tnear > tfar)
-		{
-      return OptiHit{};
-		}
+		
 	}
 	else 
 	{
@@ -135,6 +136,7 @@ OptiHit Box::intersect(Ray const& ray) const
 	hit.distance = tnear*sqrt(ray.direction_.x*ray.direction_.x +
 					      ray.direction_.y*ray.direction_.y +
 					      ray.direction_.z*ray.direction_.z);
+  hit.closest_shape = this;
   hit.hit = true;
   hit.surface_pt = this->calc_surface_pt(ray,hit.distance);
 	return hit;
