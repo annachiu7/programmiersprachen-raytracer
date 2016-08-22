@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
-//#include "optiHit.hpp"
 
 Renderer::Renderer(Scene const& scene)
   :scene_(scene)
@@ -31,78 +30,17 @@ void Renderer::render()
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
 
-#if 1
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
-      Box box{{},"DEBUG",{0.1,0.1,-3},{1.0,1.0,-2.0}};
-      //Sphere box{{},"DEBUG",{0.0,0.0,-5.0},3};
-      OptiHit hit = box.intersect(ray);
 
-      if (hit.hit) 
-      {
-        p.color = Color(1.0,1.0,1.0);
-      }else
-      {
-        p.color = Color(.0,.0,.0);
-      }
-#endif
+      p.color = raytrace(ray, 3);
 
-//      p.color = raytrace(ray, 3);
-#if 0
-      OptiHit hit; 
-      for (auto const& shape : scene_.shapes)
-      {
-        hit = shape->intersect(ray);//hier noch abfragen ob nearest
-      }
-
-        if ( hit.closest_shape ) 
-        {
-
-          /*
-          hit = hit.closest_shape->intersect(ray);
-          auto surface_pt= hit.closest_shape->calc_surface_pt(ray, hit.distance);
-          auto n = hit.closest_shape->calc_n(hit); 
-          */
-          auto surface_pt = hit.surface_pt;
-          auto n = hit.n;
-
-          for (auto const& light : scene_.lights)
-          {
-            Ray pt_to_l{surface_pt, light->pos_-surface_pt};  // make ray: intersection to light sources
-
-            glm::vec3 l = pt_to_l.direction_;
-            float nl = glm::dot(n,l);
-            // calculate light intensity and return color for the pixel
-             p.color += Color{ (light->ld_.r) * (hit.closest_shape->get_mat().kd_.r) * nl,
-                               (light->ld_.g) * (hit.closest_shape->get_mat().kd_.g) * nl,
-                               (light->ld_.b) * (hit.closest_shape->get_mat().kd_.b) * nl };        
-             //generate shadow
-            // #################### not working yet #######################################
-            float t = 0.0f;
-            for (auto const& comp : scene_.shapes)  // see if any other objects in the way? // iteration through composite vector
-            {
-              OptiHit a = comp->intersect(pt_to_l);
-              if (a.hit && t!=0.0f )  // exclude intersection with self
-              {
-                p.color = Color{1,1,1};
-                break;
-              }
-            }
-            // ############################################################################ 
-
-
-          }
-
-        } else {
-          p.color = Color(0.1,0.1,0.1);
-        }
-#endif
       write(p);
     }
   }
   ppm_.save(filename_);
 }
 
-#if 0
+#if 1
 //Color raytrace(Ray const& ray) const
 //Color Renderer::raytrace(Ray const& ray, unsigned depth) 
 Color Renderer::raytrace(Ray const& ray, unsigned depth) const
@@ -115,7 +53,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
     hit = shape->intersect(ray);
   }
 
-  if (hit.closest_shape) 
+  if (hit.hit) 
     {
       float c = 0.001;
 
@@ -132,15 +70,24 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
 
         // diffuse light (generated when not shadow)
           // see if any other objects in the way? iteration through composite vectors
+        OptiHit hitbetween;
         for (auto const& comp : scene_.shapes)  
         {
-          OptiHit a = comp->intersect(lightray);
-          if ( !a.hit )  
-          {
-            clr += (light->ld_) * (hit.closest_shape->get_mat().kd_) * nl;
-            break;
-          }
+          hitbetween = comp->intersect(lightray);
         }
+        if ( !hitbetween.hit )  
+        {
+          clr += (light->ld_) * (hit.closest_shape->get_mat().kd_) * std::max(nl,0.0f);
+
+          // specular light
+          glm::vec3 v = -ray.direction_;   // vector from surface_p to cam
+          glm::vec3 r = glm::normalize(2*nl*hit.n-l);    // reflection vector
+          float rv = glm::dot(r,v);
+
+          clr += (light->ld_) * (hit.closest_shape->get_mat().ks_) 
+                 *pow(std::max(rv,0.0f), hit.closest_shape->get_mat().m_);
+        }
+
       }
     } else 
     {
