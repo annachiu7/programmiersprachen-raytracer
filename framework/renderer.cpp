@@ -31,8 +31,8 @@ void Renderer::render()
     for (unsigned x = 0; x < width_; ++x) {
       Pixel p(x,y);
 
-#if 1
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
+#if 0
       Box box{{},"DEBUG",{0.1,0.1,-3},{1.0,1.0,-2.0}};
       //Sphere box{{},"DEBUG",{0.0,0.0,-5.0},3};
       OptiHit hit = box.intersect(ray);
@@ -46,13 +46,14 @@ void Renderer::render()
       }
 #endif
 
-//      p.color = raytrace(ray, 3);
+      p.color = raytrace(ray, 3);
 #if 0
       OptiHit hit; 
-      for (auto const& shape : scene_.shapes)
-      {
-        hit = shape->intersect(ray);//hier noch abfragen ob nearest
-      }
+    //  for (auto const& shape : scene_.shapes)
+    //  {
+    //    hit = shape->intersect(ray);//hier noch abfragen ob nearest
+    //  }
+        hit = scene_.root->intersect(ray);
 
         if ( hit.closest_shape ) 
         {
@@ -102,7 +103,7 @@ void Renderer::render()
   ppm_.save(filename_);
 }
 
-#if 0
+#if 1
 //Color raytrace(Ray const& ray) const
 //Color Renderer::raytrace(Ray const& ray, unsigned depth) 
 Color Renderer::raytrace(Ray const& ray, unsigned depth) const
@@ -110,10 +111,10 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
   Color clr;
 
   OptiHit hit;
-  for (auto const& shape : scene_.shapes)
-  {
-    hit = shape->intersect(ray);
-  }
+  //for (auto const& shape : scene_.shapes)
+  //{
+    hit = scene_.root->intersect(ray);
+  //}
 
   if (hit.closest_shape) 
     {
@@ -132,15 +133,15 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
 
         // diffuse light (generated when not shadow)
           // see if any other objects in the way? iteration through composite vectors
-        for (auto const& comp : scene_.shapes)  
-        {
-          OptiHit a = comp->intersect(lightray);
+       // for (auto const& comp : scene_.shapes)  
+       // {
+          OptiHit a = scene_.root->intersect(lightray);
           if ( !a.hit )  
           {
             clr += (light->ld_) * (hit.closest_shape->get_mat().kd_) * nl;
             break;
           }
-        }
+        //}
       }
     } else 
     {

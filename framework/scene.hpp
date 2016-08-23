@@ -31,8 +31,8 @@ struct Scene {
 
 
 /*  member  */
-  std::vector<std::shared_ptr<Shape>> shapes;
-  // shared_ptr<Composite> root;
+  //std::vector<std::shared_ptr<Shape>> shapes;
+  std::shared_ptr<Composite> root;
   std::vector<std::shared_ptr<Light>> lights;
   // std::vector<Light> lights;
   std::map<std::string, Material> materials;
