@@ -57,7 +57,6 @@ Scene loadSDF(std::string const& filename)
               ss>>max.z;
               ss>>color;
 
-              //std::cout << box << std::endl;
               std::shared_ptr<Shape> box0 = std::make_shared<Box> (scene.materials[color],name,min,max);
               tmp_shapes[name] = box0;
               std::cout << "another box added to scene...\n";
@@ -75,8 +74,7 @@ Scene loadSDF(std::string const& filename)
               ss>>r;
               ss>>color;
 
-              std::shared_ptr<Shape> sphere0 = std::make_shared<Sphere> (scene.materials[color],name,
-                middlpt,r);
+              std::shared_ptr<Shape> sphere0 = std::make_shared<Sphere> (scene.materials[color],name, middlpt,r);
               tmp_shapes[name] = sphere0;
               std::cout << "another sphere added to scene...\n";
             }
@@ -92,7 +90,6 @@ Scene loadSDF(std::string const& filename)
                 tmp_shapes.erase(shape);
               }
               tmp_shapes[name] = comp0;
-              //scene.shapes.push_back(comp0);
             }
           }
 
@@ -131,8 +128,8 @@ Scene loadSDF(std::string const& filename)
           	ss>>diffuse.g;
           	ss>>diffuse.b;
 
-          	std::shared_ptr<Light> light = std::make_shared<Light> (name,pos,ambient,diffuse);
-            scene.lights.push_back(light);
+            Light* light = new Light{name,pos,ambient,diffuse};
+            scene.lights.push_back(*light);
             std::cout << "another light added to scene...\n";
 
           }

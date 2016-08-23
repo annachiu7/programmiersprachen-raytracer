@@ -1,4 +1,3 @@
-//scene.hpp
 #ifndef SCENE_HPP 
 #define SCENE_HPP
 #include <iostream>
@@ -19,22 +18,10 @@
 
 
 struct Scene {
-  //OptionalHit(Ray const&) const;
-//  Scene(std::vector<std::shared_ptr<Shape>> const& shape,
-//                    std::map<std::string, Material> const& material,
-//                    Camera const& cam):
-//        shapes{shape},
-//        materials{material},
-//        camera{cam}
-//        {}
-//
 
-
-/*  member  */
-  //std::vector<std::shared_ptr<Shape>> shapes;
+  //member
   std::shared_ptr<Composite> root;
-  std::vector<std::shared_ptr<Light>> lights;
-  // std::vector<Light> lights;
+  std::vector<Light> lights;
   std::map<std::string, Material> materials;
   Camera camera;
   int width, height;
@@ -45,4 +32,4 @@ struct Scene {
 Scene loadSDF(std::string const& filename);
 
 
-#endif //scene.hpp
+#endif 

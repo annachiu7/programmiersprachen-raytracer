@@ -28,19 +28,9 @@ glm::vec3 const& Box::get_max() const
 	return max_;
 }
 
-//aufgabe5.5
-std::ostream& Box::print(std::ostream& os) const
-{
-	Shape::print(os) ;
-	os << "min:    <" << min_.x << "," << min_.y << "> \n" 
-	   << "max:    <" << max_.x << "," << max_.y << "> \n" ;
-	return os; 
-}
-
-
+//functions
 OptiHit Box::intersect(Ray const& ray) const
 {
-//{{{
 
   OptiHit hit{this};
   float tmin = -INFINITY, tmax = INFINITY;
@@ -49,19 +39,16 @@ OptiHit Box::intersect(Ray const& ray) const
   float t2 = (max_.x - ray.origin_.x)/ray.direction_.x;
   tmin = std::max(tmin,std::min(t1,t2));
   tmax = std::min(tmax,std::max(t1,t2));
-  //std::cout<<t1<<t2<<' '<<int(tmin)<<' '<<int(tmax)<<' '<<'\n';
 
   t1 = (min_.y - ray.origin_.y)/ray.direction_.y;
   t2 = (max_.y - ray.origin_.y)/ray.direction_.y;
   tmin = std::max(tmin,std::min(t1,t2));
   tmax = std::min(tmax,std::max(t1,t2));
-  //std::cout<<int(tmin)<<' '<<int(tmax)<<' '<<'\n';
 
   t1 = (min_.z - ray.origin_.z)/ray.direction_.z;
   t2 = (max_.z - ray.origin_.z)/ray.direction_.z;
   tmin = std::max(tmin,std::min(t1,t2));
   tmax = std::min(tmax,std::max(t1,t2));
-  //std::cout<<int(tmin)<<' '<<int(tmax)<<' '<<'\n';
 
   if (tmax > std::max(0.0F, tmin))
   {
@@ -70,38 +57,12 @@ OptiHit Box::intersect(Ray const& ray) const
                       ray.direction_.y*ray.direction_.y +
                       ray.direction_.z*ray.direction_.z ));
     hit.surface_pt = this->calc_surface_pt(ray, hit.distance);
-    hit.surface_pt = ray.origin_ + hit.distance * ray.direction_;
-    hit.hit = true;    
-    auto surface_pt = hit.surface_pt; 
-    if(surface_pt.x == Approx(min_.x))
-    {
-      hit.n = glm::vec3{-1.0,0.0,0.0};
-    }
-    if(surface_pt.y == Approx(min_.y))
-    {
-      hit.n = glm::vec3{0.0,-1.0,0.0};
-    }
-    if(surface_pt.z == Approx(min_.z))
-    {
-      hit.n = glm::vec3{0.0,0.0,-1.0};
-    }
-    if(surface_pt.x == Approx(max_.x))
-    {
-      hit.n = glm::vec3{1.0,0.0,0.0};
-    }
-    if(surface_pt.y == Approx(max_.y))
-    {
-      hit.n = glm::vec3{0.0,1.0,0.0};
-    }
-    if(surface_pt.z == Approx(max_.z))
-    {
-      hit.n = glm::vec3{0.0,0.0,1.0};
-    }
+    hit.hit = true;  
+    hit.n = this->calc_n(hit);
   }
   return hit;
 }
 
-//aufgabe5.10
 
 glm::vec3 Box::calc_n(OptiHit const& hit) const
 {
@@ -130,4 +91,14 @@ glm::vec3 Box::calc_n(OptiHit const& hit) const
   {
     return glm::vec3{0.0,0.0,1.0};
   }
+}
+
+
+//aufgabe5.5
+std::ostream& Box::print(std::ostream& os) const
+{
+  Shape::print(os) ;
+  os << "min:    <" << min_.x << "," << min_.y << "> \n" 
+     << "max:    <" << max_.x << "," << max_.y << "> \n" ;
+  return os; 
 }
