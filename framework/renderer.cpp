@@ -32,7 +32,7 @@ void Renderer::render()
 
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
 
-      p.color = raytrace(ray, 3);
+      p.color = raytrace(ray, 2);
 
       write(p);
     }
@@ -50,15 +50,16 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
     {
       float c = 0.001;
 
+    // DIFFUSE ILLUMINATION
       for (auto const& light : scene_.lights) 
       {
         Ray lightray{ hit.surface_pt, light.pos_-hit.surface_pt };  // make ray: point to light source
         lightray.origin_+= lightray.direction_ * c;  // no intersect with self
 
         glm::vec3 l = lightray.direction_;
-        float nl = glm::dot(hit.n,l);
+        float nl = glm::dot(hit.n, l);
 
-        // ambient light !(to be implemented after extension of scene.cpp)
+        // ambient light !(scene.cpp to be extended!)
         clr += (light.la_) * (hit.closest_shape->get_mat().ka_); 
 
         // diffuse light (generated when not shadow)
@@ -77,7 +78,21 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
           clr += (light.ld_) * (hit.closest_shape->get_mat().ks_) 
                  *pow(std::max(rv,0.0f), hit.closest_shape->get_mat().m_);
         }
+      }
+    // REFLECTION ------------(only glossy reflection, but it works!!!)
+      float refl = hit.closest_shape->get_mat().kr_;
+      if (refl>0 && depth>0)
+      {
+        glm::vec3 v = ray.direction_;
+        float vn = glm::dot(hit.n, v);
+        glm::vec3 r = glm::normalize(v-2*vn*hit.n);   // reflection vector
 
+        Ray reflectionRay{hit.surface_pt, r};
+        reflectionRay.origin_+= reflectionRay.direction_ * c;
+
+        Color reflectedColor = raytrace(reflectionRay, depth-1);   // recursion
+        clr += (reflectedColor) * (refl) * (hit.closest_shape->get_mat().kd_);
+        //clr +=  reflectedColor * refl;
       }
     } else 
     {

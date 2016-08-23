@@ -1,16 +1,23 @@
 #materials
-define material red  1 0 0 1 0 0 1 1 1 100
-define material blue 0 0 1 0 0 1 1 1 1 1
+define material red  1 0 0 1 0 0 1 1 1 .2 100
+define material rose 1 .4 .5 1 .4 .5 1 1 1 .2 100
+define material yellow 1 1 0 1 1 0 1 1 1 .2 100
+define material blue .5 .5 1 .5 .5 1 1 1 1 .2 100
+define material white 1 1 1 1 1 1 1 1 1 .8 100
+define material lightgray .8 .8 .8 .8 .8 .8 .2 .2 .2 1 100
 #geometry 
-define shape sphere bsphere 0 5 -10  5 red
-define shape box abox -20 -1 -100 20 0 10 blue
+define shape sphere bsphere .6 3 -5  3 rose
+define shape sphere asphere -4 1.5 1 1.5 yellow
+define shape sphere csphere -.5 .6 5 .6 blue
+define shape box ground -50 -1 -50 50 0 10 lightgray
+//define shape box wall -50 0 -50 50 50 -49 lightgray
 #composite
 define shape composite acomposite bsphere
 #light - from right above
-define light sun  -50 100 100 .2 .2 .2 .8 .8 .8
+define light sun  -50 100 100 .3 .3 .3 .8 .8 .8
 //define light sun 100 0 50 .2 .2 .2 .8 .8 .8
 #camera
-define camera eye 45.0 0 2 8 0 -2 -1 0 1 0
+define camera eye 45.0 -2 2 12 0 0 -1 0 1 0
 # renderer
 render eye image.ppm 600 600
 	
