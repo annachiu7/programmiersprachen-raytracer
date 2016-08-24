@@ -11,16 +11,14 @@ struct Material
 	ka_{0,0,0},
 	kd_{0,0,0},
 	ks_{0,0,0},
-	kr_{0},
 	m_{0.0f}
 	{}
 
-	Material(std::string const& name, Color const& ambient, Color const& diffuse, Color const& specular, float refl, float m):
+	Material(std::string const& name, Color const& ambient, Color const& diffuse, Color const& specular, float m):
 	name_{name},
 	ka_{ambient},
 	kd_{diffuse},
 	ks_{specular},
-	kr_{refl},
 	m_{m}
 	{}
 
@@ -38,7 +36,6 @@ struct Material
 	Color ka_; //ambient
 	Color kd_; //diffuse
 	Color ks_; //specular
-	float kr_; //reflection
 	float m_;
 	
 };

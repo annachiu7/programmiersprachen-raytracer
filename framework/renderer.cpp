@@ -80,8 +80,8 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
         }
       }
     // REFLECTION ------------(only glossy reflection, but it works!!!)
-      float refl = hit.closest_shape->get_mat().kr_;
-      if (refl>0 && depth>0)
+      Color refl = hit.closest_shape->get_mat().ks_;
+      if ((refl.r>0 || refl.g>0 || refl.b>0) && depth>0)
       {
         glm::vec3 v = ray.direction_;
         float vn = glm::dot(hit.n, v);
@@ -91,7 +91,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
         reflectionRay.origin_+= reflectionRay.direction_ * c;
 
         Color reflectedColor = raytrace(reflectionRay, depth-1);   // recursion
-        clr += (reflectedColor) * (refl) * (hit.closest_shape->get_mat().kd_);
+        clr += (reflectedColor) * (refl) * (hit.closest_shape->get_mat().kd_)*.3;
         //clr +=  reflectedColor * refl;
       }
     } else 

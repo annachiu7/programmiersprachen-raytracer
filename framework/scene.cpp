@@ -35,7 +35,6 @@ Scene loadSDF(std::string const& filename)
             ss>>mat.ks_.r;
             ss>>mat.ks_.g;
             ss>>mat.ks_.b;
-            ss>>mat.kr_;
             ss>>mat.m_;
 
             scene.materials[mat.name_]= mat;
