@@ -6,7 +6,6 @@
 #include "material.hpp"
 #include "ray.hpp"
 #include <glm/glm.hpp>
-#include "transform.hpp"
 //#include "optiHit.hpp"
 
 struct OptiHit;

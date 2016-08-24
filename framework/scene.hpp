@@ -22,7 +22,6 @@ struct Scene {
   //member
   std::shared_ptr<Composite> root;
   std::vector<Light> lights;
-  std::map<std::string, Transform> transforms;
   std::map<std::string, Material> materials;
   Camera camera;
   int width, height;
@@ -32,5 +31,6 @@ struct Scene {
 
 Scene loadSDF(std::string const& filename);
 
+glm::mat4 transform(glm::vec3 const& scale_, glm::vec4 const& rotate_, glm::vec3 const& translate_);
 
 #endif 
