@@ -5,7 +5,7 @@
 #include <catch.hpp>
 #include <algorithm>
 
-Class Triangle : public Shape{
+class Triangle : public Shape{
 public:
   Triangle();
   Triangle(Material const& mat, std::string const& name,
