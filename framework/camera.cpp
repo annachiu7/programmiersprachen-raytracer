@@ -23,25 +23,6 @@ up_{up}
 {}
 
 
-//getter
-glm::mat4 const& Camera::get_transf() const
-{
-  return transf_;
-}
-glm::mat4 const& Camera::get_transf_inv() const
-{
-  return transf_inv_;
-}
-//setter
-void Camera::set_transf(glm::mat4 const& mat)
-{
-  transf_ = mat;
-}
-void Camera::set_transf_inv(glm::mat4 const& mat)
-{
-  transf_inv_ = mat;
-}
-
 Ray Camera::calc_eye_ray(int x, int y, int height, int width)
 {
 	// -------- das einfache Kameramodell -------- //
@@ -52,5 +33,6 @@ Ray Camera::calc_eye_ray(int x, int y, int height, int width)
                         float(y)*1.0/float(height) -0.5, 
                         -1.0*(0.5/tan(fov_x_/2))}; // distance = 0.5 / tan(winkel/2)
   	Ray ray{origin_, direction};
+    ray = transformRay(transf_, ray);
   	return ray;
 }

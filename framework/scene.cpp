@@ -143,7 +143,7 @@ Scene loadSDF(std::string const& filename)
 
           }
         }
-#if 1
+
         else if (keyword == "transform")
         {
           std::string shapename;
@@ -172,10 +172,15 @@ Scene loadSDF(std::string const& filename)
           } else { translate={0,0,0}; }
 
           glm::mat4 accumulatedMat = transform(scale,rotate,translate);
-          allobjects[shapename]->set_transf(accumulatedMat);
-
+          if (allobjects.count(shapename)!= 0)
+          {
+            allobjects[shapename]->set_transf(accumulatedMat);
+          }
+          else {
+            scene.camera.transf_ = accumulatedMat;
+          }
         }
-#endif        
+
         else if (keyword == "render")
         {
         	ss>>keyword;

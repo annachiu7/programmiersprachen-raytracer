@@ -11,13 +11,6 @@ struct Camera
 	Camera(std::string const& name, double fov_x, glm::vec3 const& origin);
 	Camera(std::string const& name, double fov_x, glm::vec3 const& origin, glm::vec3 const& dir, glm::vec3 const& up);
 
-  //getter
-  glm::mat4 const& get_transf() const;
-  glm::mat4 const& get_transf_inv() const;
-  //setter
-  void set_transf(glm::mat4 const& mat);
-  void set_transf_inv(glm::mat4 const& mat);
-
 	std::string name_;
 	double fov_x_;
 	glm::vec3 origin_;

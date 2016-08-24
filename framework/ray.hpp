@@ -25,5 +25,7 @@ struct Ray
 	glm::vec3 origin_,direction_,surface_pt_;	
 };
 
+Ray transformRay(glm::mat4 const& mat, Ray const& ray);
+
 #endif
 	
