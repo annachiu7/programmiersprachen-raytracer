@@ -1,5 +1,4 @@
 #include "scene.hpp"
-#include "transform.hpp"
 
 Scene loadSDF(std::string const& filename)
 {
@@ -92,10 +91,14 @@ Scene loadSDF(std::string const& filename)
               auto comp0 = std::make_shared<Composite> (name);
               while (ss>>shape)
               {
-                comp0->add_shape(tmp_shapes[shape]);
-                tmp_shapes.erase(shape);
+                if (tmp_shapes.count(shape) != 0)
+                {
+                  comp0->add_shape(tmp_shapes[shape]);
+                  tmp_shapes.erase(shape);
+                }
               }
               tmp_shapes[name] = comp0;
+              std::cout << "another composite added to scene...\n";
             }
           }
 
@@ -168,7 +171,8 @@ Scene loadSDF(std::string const& filename)
             ss>>translate.z;
           } else { translate={0,0,0}; }
 
-          //allobjects[name].set_transf()
+          glm::mat4 accumulatedMat = transform(scale,rotate,translate);
+          allobjects[shapename]->set_transf(accumulatedMat);
 
         }
 #endif        
