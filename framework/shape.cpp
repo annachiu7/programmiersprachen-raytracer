@@ -11,14 +11,6 @@ Shape::Shape(Material const& mat, std::string const& name):
   name_{name}
   {}
 
-Shape::Shape(Material const& mat, std::string const& name, 
-              glm::mat4 const& world_transf,
-              glm::mat4 const& world_transf_inv):
-  mat_{mat},
-  name_{name},
-  world_transf_{world_transf},
-  world_transf_inv_{world_transf_inv}
-  {}
   
 
 Shape::Shape(std::string const& name):
@@ -48,14 +40,26 @@ std::string const& Shape::get_name() const
 	return name_;
 }
 
-glm::mat4 const& Shape::get_world_transf() const
+//getter
+glm::mat4 const& Shape::get_transf() const
 {
-  return world_transf_;
+  return transf_;
 }
 
-glm::mat4 const& Shape::get_world_transf_inv() const
+glm::mat4 const& Shape::get_transf_inv() const
 {
-  return world_transf_inv_;
+  return transf_inv_;
+}
+
+//setter
+void Shape::set_transf(glm::mat4 const& mat)
+{
+  transf_ = mat;
+}
+
+void Shape::set_transf_inv(glm::mat4 const& mat)
+{
+  transf_inv_ = mat;
 }
 
 std::ostream& operator<<(std::ostream& os, Shape const& s)

@@ -22,6 +22,26 @@ dir_{dir},
 up_{up}
 {}
 
+
+//getter
+glm::mat4 const& Camera::get_transf() const
+{
+  return transf_;
+}
+glm::mat4 const& Camera::get_transf_inv() const
+{
+  return transf_inv_;
+}
+//setter
+void Camera::set_transf(glm::mat4 const& mat)
+{
+  transf_ = mat;
+}
+void Camera::set_transf_inv(glm::mat4 const& mat)
+{
+  transf_inv_ = mat;
+}
+
 Ray Camera::calc_eye_ray(int x, int y, int height, int width)
 {
 	// -------- das einfache Kameramodell -------- //

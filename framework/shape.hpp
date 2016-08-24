@@ -16,9 +16,6 @@ class Shape
 public:
 	Shape();
 	Shape(Material const& mat, std::string const& name);
-	Shape(Material const& mat, std::string const& name, 
-          glm::mat4 const& world_transf,
-          glm::mat4 const& world_transf_inv);
 	Shape(std::string const& name);
 	~Shape();
 	
@@ -28,8 +25,11 @@ public:
 	//getter
 	Material const& get_mat() const;
 	std::string const& get_name() const;
-  glm::mat4 const& get_world_transf() const;
-  glm::mat4 const& get_world_transf_inv() const;
+  glm::mat4 const& get_transf() const;
+  glm::mat4 const& get_transf_inv() const;
+  //setter
+  void set_transf(glm::mat4 const& mat);
+  void set_transf_inv(glm::mat4 const& mat);
 
 	//aufgabe 6.3
 	virtual OptiHit intersect(Ray const& ray) const = 0 ;
@@ -42,8 +42,8 @@ public:
 protected:
 	Material mat_;
 	std::string name_;
-  glm::mat4 world_transf_;
-  glm::mat4 world_transf_inv_;
+  glm::mat4 transf_;
+  glm::mat4 transf_inv_;
 
 };
 
