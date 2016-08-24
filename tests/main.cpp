@@ -11,11 +11,11 @@ TEST_CASE("transform",""){
   Transform t1{};  
   glm::vec4 a{1.0,1.0,1.0,1.0};
   REQUIRE(t1.name_ == ""); 
-  auto b = t1.world_transform(a);
+  auto b = t1.world_transform()*a;
   REQUIRE(b.x == 1.0);
-  Transform t2{"bla",{1.0,1.0,1.0},{1.0,0.0,0.0},{0.0,0.0,0.0,0.0}};
-  b = t2.world_transform(a);
-  REQUIRE(b.x == 2.0);
+  Transform t2{"bla",{1.0,1.0,1.0},{2.0,0.0,0.0},{0.0,0.0,0.0,0.0}};
+  b = t2.world_transform()*a;
+  REQUIRE(b.x == 3.0);
 
 }
 

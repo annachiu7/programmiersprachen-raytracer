@@ -1,12 +1,34 @@
 #include "transform.hpp"
 
-glm::vec4 Transform::world_transform(glm::vec4 const& vec)
+Transform::Transform():
+  name_{""},
+  scale_{1.0,1.0,1.0},
+  translate_{0.0,0.0,0.0},
+  rotate_{0.0,0.0,0.0,0.0}
+  {}
+
+Transform::Transform(std::string const& nam,glm::vec3 const& trans,
+            glm::vec4 const& rotat):
+  name_{nam},
+  scale_{1.0,1.0,1.0},
+  translate_{trans},
+  rotate_{rotat}
+  {}
+
+Transform::Transform(std::string const& nam,glm::vec3 const& scal,
+          glm::vec3 const& trans,glm::vec4 const& rotat):
+  name_{nam},
+  scale_{scal},
+  translate_{trans},
+  rotate_{rotat}
+  {}
+
+glm::mat4 Transform::world_transform()
 {
   glm::mat4 trans(1.0f); 
   trans[3] = glm::vec4(glm::vec3(translate_),1.0f);
-  auto erg = trans * vec;
+  //auto erg = trans * vec;
   glm::mat4 scale(1.0f);
-  erg = scale * erg;
   scale[0][0] = scale_.x;
   scale[1][1] = scale_.y;
   scale[2][2] = scale_.z;
@@ -32,6 +54,7 @@ glm::vec4 Transform::world_transform(glm::vec4 const& vec)
     rotate[0][1] = sin(rotate_.x);
     rotate[1][1] = cos(rotate_.x);
   }
-  erg = rotate * erg;
-  return erg;
+  //erg = rotate * erg;
+  //erg = scale * erg;
+  return trans*rotate*scale;
 }

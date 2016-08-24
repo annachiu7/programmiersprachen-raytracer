@@ -2,17 +2,18 @@
 
 
 Shape::Shape():
-mat_{},
-name_{""}
-{}
+  mat_{},
+  name_{""}
+  {}
 
 Shape::Shape(Material const& mat, std::string const& name):
-mat_{mat},
-name_{name}
-{}
+  mat_{mat},
+  name_{name}
+  {}
 
-Shape::Shape(Material const& mat, std::string const& name, Transform const& world_transf,
-        Transform const& world_transf_inv):
+Shape::Shape(Material const& mat, std::string const& name, 
+              glm::mat4 const& world_transf,
+              glm::mat4 const& world_transf_inv):
   mat_{mat},
   name_{name},
   world_transf_{world_transf},
@@ -21,12 +22,12 @@ Shape::Shape(Material const& mat, std::string const& name, Transform const& worl
   
 
 Shape::Shape(std::string const& name):
-mat_{},
-name_{name}
-{}
+  mat_{},
+  name_{name}
+  {}
 
 Shape::~Shape()
-{}
+  {}
 
 
 //aufgabe 5.4{{{
@@ -47,12 +48,12 @@ std::string const& Shape::get_name() const
 	return name_;
 }
 
-Transform const& Shape::get_world_transf() const
+glm::mat4 const& Shape::get_world_transf() const
 {
   return world_transf_;
 }
 
-Transform const& Shape::get_world_transf_inv() const
+glm::mat4 const& Shape::get_world_transf_inv() const
 {
   return world_transf_inv_;
 }

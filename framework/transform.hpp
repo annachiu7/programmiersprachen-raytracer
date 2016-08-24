@@ -8,22 +8,16 @@
 
 struct Transform
 {
-  Transform():
-	  name_{""},
-    scale_{1.0,1.0,1.0},
-    translate_{0.0,0.0,0.0},
-    rotate_{0.0,0.0,0.0,0.0}
-    {}
+  Transform();
+//Camera transform construkter, da 
+//hier keine scale benoetigt wird
+  Transform(std::string const& nam,glm::vec3 const& trans,
+              glm::vec4 const& rotat);
 
   Transform(std::string const& nam,glm::vec3 const& scal,
-            glm::vec3 const& trans,glm::vec4 const& rotat):
-	  name_{nam},
-    scale_{scal},
-    translate_{trans},
-    rotate_{rotat}
-    {}
+            glm::vec3 const& trans,glm::vec4 const& rotat);
     
-  glm::vec4 world_transform(glm::vec4 const& vec);
+  glm::mat4 world_transform();
    
   std::string name_;
   glm::vec3 scale_, translate_;
