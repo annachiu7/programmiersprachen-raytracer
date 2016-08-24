@@ -3,8 +3,11 @@
 Scene loadSDF(std::string const& filename)
 {
   Scene scene;
+  std::map<std::string,std::shared_ptr<Shape>> allobjects;
   std::map<std::string,std::shared_ptr<Shape>> tmp_shapes;
-  
+  //float s1=1.0f,s2=1.0f,s3=1.0f,rw=0.0f,r1=0,r2=0,r3=0,t1=0,t2=0,t3=0;
+  glm::vec3 scale, translate;
+  glm::vec4 rotate;
 
   std::ifstream file;
   file.open(filename);
@@ -58,7 +61,8 @@ Scene loadSDF(std::string const& filename)
               ss>>color;
 
               std::shared_ptr<Shape> box0 = std::make_shared<Box> (scene.materials[color],name,min,max);
-              tmp_shapes[name] = box0;
+              allobjects[name] = box0;
+              tmp_shapes = allobjects;
               std::cout << "another box added to scene...\n";
             }
             if (keyword == "sphere")
@@ -75,7 +79,8 @@ Scene loadSDF(std::string const& filename)
               ss>>color;
 
               std::shared_ptr<Shape> sphere0 = std::make_shared<Sphere> (scene.materials[color],name, middlpt,r);
-              tmp_shapes[name] = sphere0;
+              allobjects[name] = sphere0;
+              tmp_shapes = allobjects;
               std::cout << "another sphere added to scene...\n";
             }
             if (keyword == "composite")
@@ -86,10 +91,14 @@ Scene loadSDF(std::string const& filename)
               auto comp0 = std::make_shared<Composite> (name);
               while (ss>>shape)
               {
-                comp0->add_shape(tmp_shapes[shape]);
-                tmp_shapes.erase(shape);
+                if (tmp_shapes.count(shape) != 0)
+                {
+                  comp0->add_shape(tmp_shapes[shape]);
+                  tmp_shapes.erase(shape);
+                }
               }
               tmp_shapes[name] = comp0;
+              std::cout << "another composite added to scene...\n";
             }
           }
 
@@ -134,6 +143,39 @@ Scene loadSDF(std::string const& filename)
 
           }
         }
+#if 1
+        else if (keyword == "transform")
+        {
+          std::string shapename;
+          ss>>shapename;
+          ss>>keyword;
+          if (keyword == "scale")
+          {
+            ss>>scale.x;
+            ss>>scale.y;
+            ss>>scale.z;
+          } else { scale={1,1,1}; }
+
+          if (keyword == "rotate")
+          {
+            ss>>rotate.x;
+            ss>>rotate.y;
+            ss>>rotate.z;
+            ss>>rotate.w;
+          } else { rotate={0,0,0,0}; }
+
+          if (keyword == "translate")
+          {
+            ss>>translate.x;
+            ss>>translate.y;
+            ss>>translate.z;
+          } else { translate={0,0,0}; }
+
+          glm::mat4 accumulatedMat = transform(scale,rotate,translate);
+          allobjects[shapename]->set_transf(accumulatedMat);
+
+        }
+#endif        
         else if (keyword == "render")
         {
         	ss>>keyword;
