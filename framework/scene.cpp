@@ -154,7 +154,7 @@ Scene loadSDF(std::string const& filename)
             ss>>scale.x;
             ss>>scale.y;
             ss>>scale.z;
-          } else { scale={1,1,1}; }
+          } //else { scale={1,1,1}; }
 
           if (keyword == "rotate")
           {
@@ -162,14 +162,14 @@ Scene loadSDF(std::string const& filename)
             ss>>rotate.y;
             ss>>rotate.z;
             ss>>rotate.w;
-          } else { rotate={0,0,0,0}; }
+          } //else { rotate={0,0,0,0}; }
 
           if (keyword == "translate")
           {
             ss>>translate.x;
             ss>>translate.y;
             ss>>translate.z;
-          } else { translate={0,0,0}; }
+          } //else { translate={0,0,0}; }
 
           glm::mat4 accumulatedMat = transform(scale,rotate,translate);
           if (allobjects.count(shapename)!= 0)

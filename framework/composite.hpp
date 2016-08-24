@@ -20,7 +20,7 @@ public:
   glm::vec3 calc_n(OptiHit const& hit) const override;
   void add_shape(std::shared_ptr<Shape>  s);
 
-private:
+//private:
   std::vector<std::shared_ptr<Shape>> shapes_;
 };
 #endif

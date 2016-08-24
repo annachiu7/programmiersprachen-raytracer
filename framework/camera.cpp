@@ -34,5 +34,6 @@ Ray Camera::calc_eye_ray(int x, int y, int height, int width)
                         -1.0*(0.5/tan(fov_x_/2))}; // distance = 0.5 / tan(winkel/2)
   	Ray ray{origin_, direction};
     ray = transformRay(transf_, ray);
+
   	return ray;
 }

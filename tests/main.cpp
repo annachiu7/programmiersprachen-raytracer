@@ -1,11 +1,25 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 #include "shape.hpp"
+#include "scene.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
 #include <iostream>
-//#include "transform.hpp"
 #include <glm/glm.hpp>
+
+TEST_CASE("scene transform","saved as member in shapes?"){
+	Scene s = loadSDF("../framework/defineMaterial.txt");
+	glm::mat4 mat = s.root->shapes_[1]->get_transf();
+	glm::mat4 testmat = transform({2,2,2},{0,0,0,0},{0,0,0});
+	std::cout<< mat[0][0] <<mat[0][1] <<mat[0][2] <<mat[0][3] <<"\n"
+	<<mat[1][0] <<mat[1][1] <<mat[1][2] <<mat[1][3] <<'\n'
+	<<mat[2][0] <<mat[2][1] <<mat[2][2] <<mat[2][3] <<'\n'
+	<<mat[3][0] <<mat[3][1] <<mat[3][2] <<mat[3][3] <<'\n'
+	<<"\n";
+	std::cout<< s.root->shapes_[1]->get_name();
+}
+
+
 //
 //TEST_CASE("transform",""){
 //  Transform t1{};  
