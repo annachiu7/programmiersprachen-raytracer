@@ -22,6 +22,7 @@ struct Scene {
   //member
   std::shared_ptr<Composite> root;
   std::vector<Light> lights;
+  std::map<std::string, Transform> transforms;
   std::map<std::string, Material> materials;
   Camera camera;
   int width, height;

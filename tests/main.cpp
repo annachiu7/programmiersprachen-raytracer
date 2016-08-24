@@ -4,7 +4,22 @@
 #include "box.hpp"
 #include "sphere.hpp"
 #include <iostream>
+#include "transform.hpp"
+#include <glm/glm.hpp>
 
+TEST_CASE("transform",""){
+  Transform t1{};  
+  glm::vec4 a{1.0,1.0,1.0,1.0};
+  REQUIRE(t1.name_ == ""); 
+  auto b = t1.world_transform(a);
+  REQUIRE(b.x == 1.0);
+  Transform t2{"bla",{1.0,1.0,1.0},{1.0,0.0,0.0},{0.0,0.0,0.0,0.0}};
+  b = t2.world_transform(a);
+  REQUIRE(b.x == 2.0);
+
+}
+
+/*
 TEST_CASE("ctor test","aufgabe5.2"){//{{{
   //Box b1{};
   auto b1 = std::make_shared<Box> ();
@@ -17,7 +32,6 @@ TEST_CASE("ctor test","aufgabe5.2"){//{{{
   REQUIRE (s1->get_middle().y == .0f);
   REQUIRE (s1->get_middle().z == .0f);
 }//}}}
-/*
 TEST_CASE("methoden area volume","aufgabe5.2"){//{{{
   //Box b1{};
   auto b1 = std::make_shared<Box> ();

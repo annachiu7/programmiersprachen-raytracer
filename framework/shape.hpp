@@ -5,6 +5,8 @@
 #include <string>
 #include "material.hpp"
 #include "ray.hpp"
+#include <glm/glm.hpp>
+#include "transform.hpp"
 //#include "optiHit.hpp"
 
 struct OptiHit;
@@ -14,6 +16,8 @@ class Shape
 public:
 	Shape();
 	Shape(Material const& mat, std::string const& name);
+	Shape(Material const& mat, std::string const& name, Transform const& world_transf,
+        Transform const& world_transf_inv);
 	Shape(std::string const& name);
 	~Shape();
 	
@@ -23,6 +27,8 @@ public:
 	//getter
 	Material const& get_mat() const;
 	std::string const& get_name() const;
+  Transform const& get_world_transf() const;
+  Transform const& get_world_transf_inv() const;
 
 	//aufgabe 6.3
 	virtual OptiHit intersect(Ray const& ray) const = 0 ;
@@ -35,6 +41,9 @@ public:
 protected:
 	Material mat_;
 	std::string name_;
+  Transform world_transf_;
+  Transform world_transf_inv_;
+
 };
 
 struct OptiHit
