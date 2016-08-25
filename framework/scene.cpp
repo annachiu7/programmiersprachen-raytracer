@@ -5,9 +5,11 @@ Scene loadSDF(std::string const& filename)
   Scene scene;
   std::map<std::string,std::shared_ptr<Shape>> allobjects;
   std::map<std::string,std::shared_ptr<Shape>> tmp_shapes;
+  std::map<std::string,std::map<std::string,glm::mat4>> shape_transformations;
+  int count = 0;
   //float s1=1.0f,s2=1.0f,s3=1.0f,rw=0.0f,r1=0,r2=0,r3=0,t1=0,t2=0,t3=0;
-  glm::vec3 scale, translate;
-  glm::vec4 rotate;
+//  glm::vec3 scale, translate;
+  //glm::vec4 rotate;
 
   std::ifstream file;
   file.open(filename);
@@ -26,7 +28,7 @@ Scene loadSDF(std::string const& filename)
         if (keyword == "define")
         {
           ss>>keyword;
-          if (keyword == "material")
+          if (keyword == "material")//{{{
           {
             ss>>mat.name_;
             ss>>mat.ka_.r;
@@ -43,11 +45,11 @@ Scene loadSDF(std::string const& filename)
 
             scene.materials[mat.name_]= mat;
             std::cout << "another material added to scene...\n";
-          }
+          }//}}}
           if (keyword == "shape")
           {
             ss>>keyword;
-            if (keyword =="box")
+            if (keyword =="box")//{{{
             {
               std::string name,color;
               glm::vec3 min, max;
@@ -65,8 +67,8 @@ Scene loadSDF(std::string const& filename)
               allobjects[name] = box0;
               tmp_shapes = allobjects;
               std::cout << "another box added to scene...\n";
-            }
-            if (keyword == "sphere")
+            }//}}}
+            if (keyword == "sphere")//{{{
             {
               std::string name, color;
               glm::vec3 middlpt;
@@ -83,8 +85,8 @@ Scene loadSDF(std::string const& filename)
               allobjects[name] = sphere0;
               tmp_shapes = allobjects;
               std::cout << "another sphere added to scene...\n";
-            }
-            if (keyword == "composite")
+            }//}}}
+            if (keyword == "composite")//{{{
             {
               std::string name, shape;
 
@@ -100,11 +102,11 @@ Scene loadSDF(std::string const& filename)
               }
               tmp_shapes[name] = comp0;
               std::cout << "another composite added to scene...\n";
-            }
+            }//}}}
           }
 
 
-          if (keyword == "camera")
+          if (keyword == "camera")//{{{
           {
             ss>>scene.camera.name_;
             ss>>scene.camera.fov_x_;
@@ -119,8 +121,8 @@ Scene loadSDF(std::string const& filename)
             ss>>scene.camera.up_.z;
 
             std::cout << "another camera added to scene...\n";
-          } 
-          if (keyword == "light")
+          } //}}}
+          if (keyword == "light")//{{{
           {
           	std::string name;
           	glm::vec3 pos;
@@ -142,44 +144,73 @@ Scene loadSDF(std::string const& filename)
             scene.lights.push_back(*light);
             std::cout << "another light added to scene...\n";
 
-          }
+          }//}}}
         }
 
-        else if (keyword == "transform")
+        if (keyword == "transform")//{{{
         {
+          //glm::vec3 scale, translate;
+          //glm::vec4 rotate;
+          count +=1;
+          std::map<std::string, glm::mat4> transformations;
           std::string shapename;
           ss>>shapename;
           ss>>keyword;
           if (keyword == "scale")
           {
+            glm::vec3 scale;
             ss>>scale.x;
             ss>>scale.y;
             ss>>scale.z;
-          } //else { scale={1,1,1}; }
+            glm::mat4 scaleMat = scale_Mat(scale);
+            transformations[keyword] = scaleMat;
+            shape_transformations[shapename] = transformations;
+          }
 
           if (keyword == "rotate")
           {
+            glm::vec4 rotate;
             ss>>rotate.x;
             ss>>rotate.y;
             ss>>rotate.z;
             ss>>rotate.w;
-          } //else { rotate={0,0,0,0}; }
+            glm::mat4 rotateMat = rotate_Mat(rotate);
+            if (rotate.y == 1.0f)
+            {
+            transformations["rotatex"] = rotateMat;
+            shape_transformations[shapename] = transformations;
+            }
+            if (rotate.z == 1.0f)
+            {
+            transformations["rotatey"] = rotateMat;
+            shape_transformations[shapename] = transformations;
+            }
+            if (rotate.w == 1.0f)
+            {
+            transformations["rotatez"] = rotateMat;
+            shape_transformations[shapename] = transformations;
+            }
+          } 
 
           if (keyword == "translate")
           {
+            glm::vec3 translate;
             ss>>translate.x;
             ss>>translate.y;
             ss>>translate.z;
-          } //else { translate={0,0,0}; }
+            glm::mat4 translateMat = translate_Mat(translate);
+            transformations[keyword] = translateMat;
+            shape_transformations[shapename] = transformations;
+          } //}}}
 
-          glm::mat4 accumulatedMat = transform(scale,rotate,translate);
-          if (allobjects.count(shapename)!= 0)
-          {
-            allobjects[shapename]->set_transf(accumulatedMat);
-          }
-          else {
-            scene.camera.transf_ = accumulatedMat;
-          }
+         // glm::mat4 accumulatedMat = transform(scale,rotate,translate);
+         // if (allobjects.count(shapename)!= 0)
+         // {
+         //   allobjects[shapename]->set_transf(accumulatedMat);
+         // }
+         // else {
+         //   scene.camera.transf_ = accumulatedMat;
+         // }
         }
 
         else if (keyword == "render")
@@ -193,8 +224,45 @@ Scene loadSDF(std::string const& filename)
         }
       }
     }
+  for (auto const& shapename : shape_transformations)
+  {
+    glm::mat4 scale;
+    glm::mat4 translate;
+    glm::mat4 rotate;
+    auto tmp = shape_transformations[shapename.first];
+
+    if(tmp.count("translate") != 0)//{{{
+    {
+      translate =  translate * tmp["translate"];
+    }
+    if(tmp.count("rotatex") !=0 )
+    {
+      rotate = rotate * tmp["rotatex"];
+    }
+    if(tmp.count("rotatey") !=0 )
+    {
+      rotate = rotate * tmp["rotatey"];
+    }
+    if(tmp.count("rotatez") !=0 )
+    {
+      rotate = rotate * tmp["rotatez"];
+    }
+    if(tmp.count("scale") !=0 )
+    {
+      scale = scale * tmp["scale"];
+    }//}}}
+    if ( allobjects.count(shapename.first) != 0)
+    {
+      auto accumulatedMatrix = translate * rotate * scale;
+      allobjects[shapename.first]->set_transf(accumulatedMatrix);
+    }else
+    {
+      scene.camera.translate_ = translate; 
+      scene.camera.rotate_ = rotate;
+    }
+  }
   auto root = std::make_shared<Composite> ("root");
-  for (auto const& shape : tmp_shapes)
+  for (auto const& shape : allobjects)
   {
     root->add_shape(shape.second);
   }
@@ -202,7 +270,8 @@ Scene loadSDF(std::string const& filename)
   return scene;
 }
 
-glm::mat4 transform(glm::vec3 const& scale_, glm::vec4 const& rotate_, glm::vec3 const& translate_)
+
+glm::mat4 transform(glm::vec3 const& scale_, glm::vec4 const& rotate_, glm::vec3 const& translate_)//{{{
 {
   glm::mat4 trans(1.0f); 
   trans[3] = glm::vec4(glm::vec3(translate_),1.0f);
@@ -214,26 +283,70 @@ glm::mat4 transform(glm::vec3 const& scale_, glm::vec4 const& rotate_, glm::vec3
   glm::mat4 rotate (1.0f);
   if(rotate_.y == 1)
   {
-    rotate[1][1] = cos(rotate_.x);
-    rotate[2][1] = -sin(rotate_.x);
-    rotate[1][2] = sin(rotate_.x);
-    rotate[2][2] = cos(rotate_.x);
+    rotate[1][1] = cos(rotate_.x*M_PI/180);
+    rotate[2][1] = -sin(rotate_.x*M_PI/180);
+    rotate[1][2] = sin(rotate_.x*M_PI/180);
+    rotate[2][2] = cos(rotate_.x*M_PI/180);
   }
   if(rotate_.z == 1)
   {
-    rotate[0][0] = cos(rotate_.x);
-    rotate[0][2] = -sin(rotate_.x);
-    rotate[2][0] = sin(rotate_.x);
-    rotate[2][2] = cos(rotate_.x);
+    rotate[0][0] = cos(rotate_.x*M_PI/180);
+    rotate[0][2] = -sin(rotate_.x*M_PI/180);
+    rotate[2][0] = sin(rotate_.x*M_PI/180);
+    rotate[2][2] = cos(rotate_.x*M_PI/180);
   }
   if(rotate_.w == 1)
   {
-    rotate[0][0] = cos(rotate_.x);
-    rotate[1][0] = -sin(rotate_.x);
-    rotate[0][1] = sin(rotate_.x);
-    rotate[1][1] = cos(rotate_.x);
+    rotate[0][0] = cos(rotate_.x*M_PI/180);
+    rotate[1][0] = -sin(rotate_.x*M_PI/180);
+    rotate[0][1] = sin(rotate_.x*M_PI/180);
+    rotate[1][1] = cos(rotate_.x*M_PI/180);
   }
   //erg = rotate * erg;
   //erg = scale * erg;
   return trans*rotate*scale;
-}
+}//}}}
+
+glm::mat4 rotate_Mat(glm::vec4 const& rotate_)//{{{
+{
+  glm::mat4 rotate (1.0f);
+  if(rotate_.y == 1.0f)
+  {
+    rotate[1][1] = cos(rotate_.x*M_PI/180);
+    rotate[2][1] = -sin(rotate_.x*M_PI/180);
+    rotate[1][2] = sin(rotate_.x*M_PI/180);
+    rotate[2][2] = cos(rotate_.x*M_PI/180);
+  }
+  if(rotate_.z == 1.0f)
+  {
+    rotate[0][0] = cos(rotate_.x*M_PI/180);
+    rotate[0][2] = -sin(rotate_.x*M_PI/180);
+    rotate[2][0] = sin(rotate_.x*M_PI/180);
+    rotate[2][2] = cos(rotate_.x*M_PI/180);
+  }
+  if(rotate_.w == 1.0f)
+  {
+    rotate[0][0] = cos(rotate_.x*M_PI/180);
+    rotate[1][0] = -sin(rotate_.x*M_PI/180);
+    rotate[0][1] = sin(rotate_.x*M_PI/180);
+    rotate[1][1] = cos(rotate_.x*M_PI/180);
+  }
+  return rotate;
+}//}}}
+
+glm::mat4 scale_Mat(glm::vec3 const& scale_)//{{{
+{
+  glm::mat4 scale(1.0f);
+  scale[0][0] = scale_.x;
+  scale[1][1] = scale_.y;
+  scale[2][2] = scale_.z;
+  return scale;
+}//}}}
+
+glm::mat4 translate_Mat(glm::vec3 const& translate_)//{{{
+{
+  glm::mat4 trans(1.0f); 
+  trans[3] = glm::vec4(glm::vec3(translate_),1.0f);
+  return trans;
+}//}}}
+

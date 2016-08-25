@@ -13,6 +13,14 @@ fov_x_{fov_x},
 origin_{origin}
 {}
 
+Camera::Camera(std::string const& name, double fov_x):
+name_{name},
+fov_x_{fov_x},
+origin_{0.0,0.0,0.0},
+dir_{0.0,0.0,-1.0},
+up_{}
+{}
+
 Camera::Camera(std::string const& name, double fov_x, glm::vec3 const& origin, 
 			   glm::vec3 const& dir, glm::vec3 const& up):
 name_{name},
@@ -33,7 +41,7 @@ Ray Camera::calc_eye_ray(int x, int y, int height, int width)
                         float(y)*1.0/float(height) -0.5, 
                         -1.0*(0.5/tan(fov_x_/2))}; // distance = 0.5 / tan(winkel/2)
   	Ray ray{origin_, direction};
-    ray = transformRay(transf_, ray);
+    //ray = transformRay(transf_, ray);
 
   	return ray;
 }
