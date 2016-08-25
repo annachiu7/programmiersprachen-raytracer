@@ -32,7 +32,7 @@ void Renderer::render()
 
       Ray ray = scene_.camera.calc_eye_ray(x,y,scene_.height,scene_.width);
 
-      p.color = raytrace(ray, 2);
+      p.color = raytrace(ray, 3);
 
       write(p);
     }
@@ -81,7 +81,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
       }
     // REFLECTION ------------(only glossy reflection, but it works!!!)
       Color refl = hit.closest_shape->get_mat().ks_;
-      if ((refl.r>0 || refl.g>0 || refl.b>0) && depth>0)
+      if (depth>0)
       {
         glm::vec3 v = ray.direction_;
         float vn = glm::dot(hit.n, v);
@@ -91,8 +91,27 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
         reflectionRay.origin_+= reflectionRay.direction_ * c;
 
         Color reflectedColor = raytrace(reflectionRay, depth-1);   // recursion
-        clr += (reflectedColor) * (refl) * (hit.closest_shape->get_mat().kd_)*.3;
-        //clr +=  reflectedColor * refl;
+
+        // REFRACTION -----------------------COMPLETE!!! IT WORKS!!!!!
+          bool refr = hit.closest_shape->get_mat().refr_;  // refraction index 
+          Color refractedColor;
+          if (refr && depth>0)
+          {
+            float q;
+            float c1 = glm::dot(hit.n, v);
+            if (c1 < 0) {c1=-c1; q=1/1.5;} else {q=1.5; hit.n=-hit.n;}  //if outside, need +cos; if inside, reverse normal
+            float c2 = 1-q*q*(1-c1*c1);
+            if (c2>0) {c2=sqrt(c2);} else {c2=0;}
+            glm::vec3 t = glm::normalize( q*v + (q*c1-c2)*hit.n );   // fresnel equation
+    
+            Ray refractionRay{hit.surface_pt, t};
+            refractionRay.origin_+= refractionRay.direction_*c;
+    
+            refractedColor = raytrace(refractionRay, depth-1);
+          }
+
+        clr += (reflectedColor) * (refl) *.3 + (refractedColor);
+        //clr += (reflectedColor) * (refl) * (hit.closest_shape->get_mat().kd_)*.3;
       }
     } else 
     {
