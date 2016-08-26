@@ -11,6 +11,7 @@ define material black 0 0 0 0 0 0 1 1 1 0 100
 define shape sphere bsphere .6 3 -15  3 rose
 define shape sphere asphere -2 1.5 -10 1.5 yellow
 define shape sphere csphere -.5 .6 -5 .6 blue
+define shape box abox -5 0 -5 -1 8 -1 blue
 //=======
 //define shape sphere bsphere .6 3 -5  3 rose
 //define shape sphere asphere -2 1.5 1 1.5 glass
@@ -26,10 +27,13 @@ define shape box wall -50 0 -50 50 50 -49 lightgray
 #scene xform
 transform bsphere scale 1 1 1
 transform bsphere rotate 0 0 0 0
-transform bsphere translate 0 0 0 
+transform bsphere translate 6 0 6 
 transform asphere scale 1 1 1
 transform asphere rotate 0 0 0 0
 transform asphere translate 0 0 0 
+transform abox scale 1 1 1
+transform abox rotate 52 1 0 0
+transform abox translate -3 0 0 
 #light - from right above
 define light sun  -50 200 100 .4 .4 .4 .8 .8 .8
 -------//define light sun 100 0 50 .2 .2 .2 .8 .8 .8
@@ -37,8 +41,9 @@ define light sun  -50 200 100 .4 .4 .4 .8 .8 .8
 define camera eye 45.0 
 #camera xform
 transform eye scale 1 1 1
-transform eye rotate 19 0 1 0
-transform eye translate 1 4 6
+transform eye rotate 49 0 1 0
+transform eye rotate -29 1 0 0
+transform eye translate 10 14 6
 # renderer
 render eye image.ppm 600 600
 	

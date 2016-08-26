@@ -261,7 +261,11 @@ Scene loadSDF(std::string const& filename)
       if ( allobjects.count(shape.first) != 0)
       {
         auto accumulatedMatrix = translate * rotate * scale;
+
         allobjects[shape.first]->set_transf(accumulatedMatrix);
+        auto inversaccumulatedMatrix = glm::inverse(accumulatedMatrix);
+        allobjects[shape.first]->set_transf_inv(inversaccumulatedMatrix);
+
       }else
       {
         scene.camera.translate_ = translate; 
