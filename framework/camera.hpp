@@ -22,7 +22,8 @@ struct Camera
   glm::mat4 rotate_;
   glm::mat4 translate_;
 
-  	Ray calc_eye_ray(int x, int y, int height, int width);
+	Ray calc_eye_ray(int x, int y, int height, int width);
+  glm::mat4 transformMatrix();
 };
 
 
