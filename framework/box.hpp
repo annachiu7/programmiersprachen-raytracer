@@ -17,9 +17,9 @@ public:
 	
 	std::ostream& print(std::ostream& os) const override;
 
-  OptiHit intersect(Ray const& ray) const override;
-
-  glm::vec3 calc_n(OptiHit const& hit) const override;
+	//raytracing funktions
+    OptiHit intersect(Ray const& ray) const override;
+    glm::vec3 calc_n(OptiHit const& hit) const override;
 
 private:
 	glm::vec3 min_;

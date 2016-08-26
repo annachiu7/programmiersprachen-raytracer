@@ -9,14 +9,34 @@
 
 TEST_CASE("scene transform","saved as member in shapes?"){
 	Scene s = loadSDF("../framework/defineMaterial.txt");
-	glm::mat4 mat = s.root->shapes_[1]->get_transf();
+	glm::mat4 mat = s.root->shapes_[0]->get_transf();
 	glm::mat4 testmat = transform({2,2,2},{0,0,0,0},{0,0,0});
-	std::cout<< mat[0][0] <<mat[0][1] <<mat[0][2] <<mat[0][3] <<"\n"
-	<<mat[1][0] <<mat[1][1] <<mat[1][2] <<mat[1][3] <<'\n'
-	<<mat[2][0] <<mat[2][1] <<mat[2][2] <<mat[2][3] <<'\n'
-	<<mat[3][0] <<mat[3][1] <<mat[3][2] <<mat[3][3] <<'\n'
+	std::cout<< mat[0][0]<< " " <<mat[1][0]<< " " <<mat[2][0]<< " " <<mat[3][0] <<"\n"
+	<<mat[0][1]<< " " <<mat[1][1]<< " " <<mat[2][1]<< " " <<mat[3][1] <<'\n'
+	<<mat[0][2]<< " " <<mat[1][2]<< " " <<mat[2][2]<< " " <<mat[3][2] <<'\n'
+	<<mat[0][3]<< " " <<mat[1][3]<< " " <<mat[2][3]<< " " <<mat[3][3] <<'\n'
 	<<"\n";
-	std::cout<< s.root->shapes_[1]->get_name();
+	std::cout<< s.root->shapes_[0]->get_name() << "\n";
+  glm::mat4 tmp = s.camera.translate_;
+	std::cout<< "\n" <<tmp[0][0]<< " " <<tmp[1][0]<< " " <<tmp[2][0]<< " " <<tmp[3][0] <<"\n"
+	<<tmp[0][1]<< " " <<tmp[1][1]<< " " <<tmp[2][1]<< " " <<tmp[3][1] <<'\n'
+	<<tmp[0][2]<< " " <<tmp[1][2]<< " " <<tmp[2][2]<< " " <<tmp[3][2]<< " " <<'\n'
+	<<tmp[0][3]<< " " <<tmp[1][3]<< " " <<tmp[2][3]<< " " <<tmp[3][3] <<'\n'
+	<<"\n";
+  glm::mat4 tmp2= s.camera.rotate_;
+	std::cout<< "\n" <<tmp2[0][0]<< " " <<tmp2[1][0]<< " " <<tmp2[2][0]<< " " <<tmp2[3][0] <<"\n"
+	<<tmp2[0][1]<< " " <<tmp2[1][1]<< " " <<tmp2[2][1]<< " " <<tmp2[3][1]<< " " <<'\n'
+	<<tmp2[0][2]<< " " <<tmp2[1][2]<< " " <<tmp2[2][2]<< " " <<tmp2[3][2] <<'\n'
+	<<tmp2[0][3]<< " " <<tmp2[1][3]<< " " <<tmp2[2][3]<< " " <<tmp2[3][3]<< " " <<'\n'
+	<<"\n";
+  std::cout << s.camera.name_ << "\n";
+  glm::mat4 tmp3= s.camera.translate_;
+	std::cout<< "\n" <<tmp3[0][0]<< " " <<tmp3[1][0]<< " " <<tmp3[2][0]<< " " <<tmp3[3][0] <<"\n"
+	<<tmp3[0][1]<< " " <<tmp3[1][1]<< " " <<tmp3[2][1]<< " " <<tmp3[3][1]<< " " <<'\n'
+	<<tmp3[0][2]<< " " <<tmp3[1][2]<< " " <<tmp3[2][2]<< " " <<tmp3[3][2] <<'\n'
+	<<tmp3[0][3]<< " " <<tmp3[1][3]<< " " <<tmp3[2][3]<< " " <<tmp3[3][3]<< " " <<'\n'
+	<<"\n";
+  std::cout << s.camera.name_ << "\n";
 }
 
 

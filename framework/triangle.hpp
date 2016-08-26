@@ -17,7 +17,11 @@ public:
   glm::vec3 const& get_a() const;
   glm::vec3 const& get_b() const;
   glm::vec3 const& get_c() const;
-  
+
+  //functions
+  OptiHit intersect(Ray const& ray) const override;
+  glm::vec3 calc_n(OptiHit const& hit) const override;
+
 private:
   glm::vec3 a_,b_,c_;
 };
