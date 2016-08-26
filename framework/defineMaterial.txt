@@ -6,29 +6,29 @@ define material blue .5 .5 1 .5 .5 1 .8 .8 .8 100
 define material white 1 1 1 1 1 1 .8 .8 .8 100
 define material lightgray .8 .8 .8 .8 .8 .8 .2 .2 . 100
 #geometry 
-define shape sphere bsphere .6 3 -5  3 rose
-define shape sphere asphere -4 1.5 1 1.5 yellow
-define shape sphere csphere -.5 .6 5 .6 blue
+define shape sphere bsphere .6 3 -15  3 rose
+define shape sphere asphere -2 1.5 -10 1.5 yellow
+define shape sphere csphere -.5 .6 -5 .6 blue
 define shape box ground -50 -1 -50 50 0 10 lightgray
 //define shape box wall -50 0 -50 50 50 -49 lightgray
 -------//#composite
 -------//define shape composite bsphere
 #scene xform
-transform bsphere scale 2 2 2
-transform bsphere rotate 30 0 1 0
-transform bsphere translate 0 0 0 
 transform bsphere scale 1 1 1
+transform bsphere rotate 0 0 0 0
+transform bsphere translate 0 0 0 
+transform asphere scale 1 1 1
 transform asphere rotate 0 0 0 0
 transform asphere translate 0 0 0 
 #light - from right above
 define light sun  -50 100 100 .4 .4 .4 .8 .8 .8
 -------//define light sun 100 0 50 .2 .2 .2 .8 .8 .8
 #camera
-define camera eye 45.0 -2 2 12 0 0 -1 0 1 0
+define camera eye 45.0 
 #camera xform
 transform eye scale 1 1 1
-transform eye rotate 1 0 1 0
-transform eye translate 0 0 0
+transform eye rotate 19 0 1 0
+transform eye translate 1 4 6
 # renderer
 render eye image.ppm 600 600
 	
