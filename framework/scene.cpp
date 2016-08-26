@@ -5,7 +5,7 @@ Scene loadSDF(std::string const& filename)
   Scene scene;
   std::map<std::string,std::shared_ptr<Shape>> allobjects;
   std::map<std::string,std::shared_ptr<Shape>> tmp_shapes;
-  std::map<std::string,std::map<std::string,glm::mat4>> shape_transformations;
+  std::multimap<std::string,std::map<std::string,glm::mat4>> shape_transformations;
   int count = 0;
   //float s1=1.0f,s2=1.0f,s3=1.0f,rw=0.0f,r1=0,r2=0,r3=0,t1=0,t2=0,t3=0;
 //  glm::vec3 scale, translate;
@@ -107,17 +107,20 @@ Scene loadSDF(std::string const& filename)
 
           if (keyword == "camera")//{{{
           {
-            ss>>scene.camera.name_;
-            ss>>scene.camera.fov_x_;
-            ss>>scene.camera.origin_.x;
-            ss>>scene.camera.origin_.y;
-            ss>>scene.camera.origin_.z;
-            ss>>scene.camera.dir_.x;
-            ss>>scene.camera.dir_.y;
-            ss>>scene.camera.dir_.z;
-            ss>>scene.camera.up_.x;
-            ss>>scene.camera.up_.y;
-            ss>>scene.camera.up_.z;
+            std::string name;
+            double fov_x;
+            ss>>name;
+            ss>>fov_x;
+            scene.camera = Camera(name,fov_x);
+//            ss>>scene.camera.origin_.x;
+//            ss>>scene.camera.origin_.y;
+//            ss>>scene.camera.origin_.z;
+//            ss>>scene.camera.dir_.x;
+//            ss>>scene.camera.dir_.y;
+//            ss>>scene.camera.dir_.z;
+//            ss>>scene.camera.up_.x;
+//            ss>>scene.camera.up_.y;
+//            ss>>scene.camera.up_.z;
 
             std::cout << "another camera added to scene...\n";
           } //}}}
@@ -163,7 +166,7 @@ Scene loadSDF(std::string const& filename)
             ss>>scale.z;
             glm::mat4 scaleMat = scale_Mat(scale);
             transformations[keyword] = scaleMat;
-            shape_transformations[shapename] = transformations;
+            shape_transformations.insert({shapename,transformations});
           }
 
           if (keyword == "rotate")
@@ -177,17 +180,17 @@ Scene loadSDF(std::string const& filename)
             if (rotate.y == 1.0f)
             {
             transformations["rotatex"] = rotateMat;
-            shape_transformations[shapename] = transformations;
+            shape_transformations.insert({shapename,transformations});
             }
             if (rotate.z == 1.0f)
             {
             transformations["rotatey"] = rotateMat;
-            shape_transformations[shapename] = transformations;
+            shape_transformations.insert({shapename,transformations});
             }
             if (rotate.w == 1.0f)
             {
             transformations["rotatez"] = rotateMat;
-            shape_transformations[shapename] = transformations;
+            shape_transformations.insert({shapename,transformations});
             }
           } 
 
@@ -199,7 +202,7 @@ Scene loadSDF(std::string const& filename)
             ss>>translate.z;
             glm::mat4 translateMat = translate_Mat(translate);
             transformations[keyword] = translateMat;
-            shape_transformations[shapename] = transformations;
+            shape_transformations.insert({shapename,transformations});
           } //}}}
 
          // glm::mat4 accumulatedMat = transform(scale,rotate,translate);
@@ -223,42 +226,46 @@ Scene loadSDF(std::string const& filename)
         }
       }
     }
-  for (auto const& shapename : shape_transformations)
+  for (auto const& shape : shape_transformations)
   {
-    glm::mat4 scale;
-    glm::mat4 translate;
-    glm::mat4 rotate;
-    auto tmp = shape_transformations[shapename.first];
+      auto shapetmp = shape_transformations.equal_range(shape.first);
+      glm::mat4 scale;
+      glm::mat4 translate;
+      glm::mat4 rotate;
+      for (auto it = shapetmp.first; it!= shapetmp.second; it++)
+      {
+        auto tmp = (*it).second;
 
-    if(tmp.count("translate") != 0)//{{{
-    {
-      translate =  translate * tmp["translate"];
-    }
-    if(tmp.count("rotatex") !=0 )
-    {
-      rotate = rotate * tmp["rotatex"];
-    }
-    if(tmp.count("rotatey") !=0 )
-    {
-      rotate = rotate * tmp["rotatey"];
-    }
-    if(tmp.count("rotatez") !=0 )
-    {
-      rotate = rotate * tmp["rotatez"];
-    }
-    if(tmp.count("scale") !=0 )
-    {
-      scale = scale * tmp["scale"];
-    }//}}}
-    if ( allobjects.count(shapename.first) != 0)
-    {
-      auto accumulatedMatrix = translate * rotate * scale;
-      allobjects[shapename.first]->set_transf(accumulatedMatrix);
-    }else
-    {
-      scene.camera.translate_ = translate; 
-      scene.camera.rotate_ = rotate;
-    }
+        if(tmp.count("translate") != 0)//{{{
+        {
+          translate =  translate * tmp["translate"];
+        }
+        if(tmp.count("rotatex") !=0 )
+        {
+          rotate = rotate * tmp["rotatex"];
+        }
+        if(tmp.count("rotatey") !=0 )
+        {
+          rotate = rotate * tmp["rotatey"];
+        }
+        if(tmp.count("rotatez") !=0 )
+        {
+          rotate = rotate * tmp["rotatez"];
+        }
+        if(tmp.count("scale") !=0 )
+        {
+          scale = scale * tmp["scale"];
+        }//}}}
+      }
+      if ( allobjects.count(shape.first) != 0)
+      {
+        auto accumulatedMatrix = translate * rotate * scale;
+        allobjects[shape.first]->set_transf(accumulatedMatrix);
+      }else
+      {
+        scene.camera.translate_ = translate; 
+        scene.camera.rotate_ = rotate;
+      }
   }
   auto root = std::make_shared<Composite> ("root");
   for (auto const& shape : allobjects)
