@@ -29,10 +29,11 @@ glm::vec3 const& Box::get_max() const
 }
 
 //functions
-OptiHit Box::intersect(Ray const& ray) const
+OptiHit Box::intersect(Ray const& rayman) const
 {
 
   OptiHit hit{this};
+  Ray ray = transformRay(get_transf_inv(), rayman);
   float tmin = -INFINITY, tmax = INFINITY;
 
   float t1 = (min_.x - ray.origin_.x)/ray.direction_.x;
@@ -57,8 +58,10 @@ OptiHit Box::intersect(Ray const& ray) const
                       ray.direction_.y*ray.direction_.y +
                       ray.direction_.z*ray.direction_.z ));
     hit.surface_pt = this->calc_surface_pt(ray, hit.distance);
+    hit.surface_pt = glm::vec3(get_transf()*glm::vec4(hit.surface_pt,1.0));
     hit.hit = true;  
     hit.n = this->calc_n(hit);
+    hit.n = glm::normalize(glm::vec3(glm::transpose(get_transf_inv())*glm::vec4(hit.n, 0.0)));
   }
   return hit;
 }

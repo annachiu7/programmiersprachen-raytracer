@@ -27,18 +27,18 @@ define shape box wall -50 0 -50 50 50 -49 lightgray
 #scene xform
 transform bsphere scale 1 1 1
 transform bsphere rotate 0 0 0 0
-transform bsphere translate 0 0 0 
+transform bsphere translate 0 2 3 
 transform asphere scale 1 1 1
 transform asphere rotate 0 0 0 0
-transform asphere translate 0 0 0 
+transform asphere translate 0 2 0 
 transform abox scale 1 1 1
-transform abox rotate 0 0 0 0
-transform abox translate 0 0 0 
+transform abox rotate 45 0 1 0
+transform abox translate 1 2 3 
 #light - from right above
 define light sun  -50 200 100 .4 .4 .4 .8 .8 .8
 -------//define light sun 100 0 50 .2 .2 .2 .8 .8 .8
 #camera
-define camera eye 45.0 5 5 5 -1 0 -1 1 0 0 
+define camera eye 45.0 5 5 5 -1 0 -1 0 1 0 
 //------#camera xform
 //------transform eye scale 1 1 1
 //------transform eye rotate 49 0 1 0

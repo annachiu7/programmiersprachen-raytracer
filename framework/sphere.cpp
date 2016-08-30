@@ -38,16 +38,19 @@ std::ostream& Sphere::print(std::ostream& os) const
 //}}}
 // aufgabe5.6
 
-OptiHit Sphere::intersect(Ray const& ray) const
+OptiHit Sphere::intersect(Ray const& rayman) const
 {
   float t = 0.0;
+  Ray ray = transformRay(get_transf_inv(),rayman);
 	bool res = glm::intersectRaySphere(ray.origin_, ray.direction_,
     middle_, radius_*radius_, t);
   if (res)
   {
 
     glm::vec3 p = ray.origin_ + t * ray.direction_;
+    p = glm::vec3(get_transf()*glm::vec4(p,1.0));
     glm::vec3 n = glm::normalize(p - middle_);
+    n = glm::normalize(glm::vec3(glm::transpose(get_transf_inv())*glm::vec4(n, 0.0)));
     return OptiHit{true, t, this, n, p};
   }
 	return OptiHit{};
