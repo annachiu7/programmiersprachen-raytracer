@@ -20,10 +20,10 @@ OptiHit Composite::intersect(Ray const& ray) const
   OptiHit tmphit;
   for (auto const& shape : shapes_)
   {
-    Ray rayman;
-    rayman.origin_ = glm::vec3(shape->get_transf_inv()* glm::vec4(ray.origin_,1.0f));
-    rayman.direction_ = glm::vec3(shape->get_transf_inv() * glm::vec4(ray.direction_,0.0f));
-    tmphit = shape->intersect(rayman);
+//    Ray rayman;
+//    rayman.origin_ = glm::vec3(get_transf_inv()* glm::vec4(ray.origin_,1.0f));
+//    rayman.direction_ = glm::vec3(get_transf_inv() * glm::vec4(ray.direction_,0.0f));
+    tmphit = shape->intersect(ray);
     if(tmphit.distance < hit.distance)
     {
       hit = tmphit;

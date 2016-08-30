@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include "ray.hpp"
+#include <iostream>
 
 struct Camera
 {
@@ -25,8 +26,8 @@ struct Camera
   glm::vec3 e = origin_;
   glm::vec3 n = glm::normalize(dir_);
   glm::vec3 up = up_;
-  glm::vec3 u = glm::normalize(glm::cross(n,up));
-  glm::vec3 v = glm::normalize(glm::cross(u,n));
+  glm::vec3 u = glm::cross(n,up);
+  glm::vec3 v = glm::cross(u,n);
 
 	Ray calc_eye_ray(int x, int y, int height, int width);
   glm::mat4 transformMatrix();
