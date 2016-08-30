@@ -48,22 +48,28 @@ Ray Camera::calc_eye_ray(int x, int y, int height, int width)
     transf_inv_ = glm::inverse(transf_);
     //ray = transformRray(ray);
 
-  	return ray;
+  	//return transformRay(transf_ , ray);
+    return ray;
 }
 glm::mat4 Camera::transformMatrix()
 {
-  glm::mat4 transformatrix; 
-  glm::vec4 e = translate_ * glm::vec4(origin_,1.0);
-  transformatrix[3] = e;
-  glm::vec4 n = rotate_ * glm::vec4(glm::vec3(dir_),0.0);
-  n = glm::vec4(glm::normalize(glm::vec3(n* -1.0f)),0.0);
-  transformatrix[2] = n ;
-  glm::vec3 u = glm::cross(glm::vec3(n), up_);
-  n = glm::normalize(n);
-  transformatrix[0] = glm::vec4(( u ),0.0) ;
-  glm::vec3 v = glm::normalize(glm::cross(u, glm::vec3(n)));
-  transformatrix[1] = glm::vec4(v,0.0);
+//  glm::mat4 transformatrix; 
+//  glm::vec4 e = translate_ * glm::vec4(origin_,1.0);
+//  transformatrix[3] = e;
+//  glm::vec4 n = rotate_ * glm::vec4(glm::vec3(dir_),0.0);
+//  n = glm::vec4(glm::normalize(glm::vec3(n)),0.0);
+//  transformatrix[2] = n ;
+//  glm::vec3 u = glm::cross(glm::vec3(n), up_);
+//  u = glm::normalize(u);
+//  transformatrix[0] = glm::vec4(( u ),0.0) ;
+//  glm::vec3 v = glm::normalize(glm::cross(u, glm::vec3(n)));
+//  transformatrix[1] = glm::vec4(v,0.0);
   //auto erg = transformRay(transformatrix, ray);
+  glm::mat4 transformatrix; 
+  transformatrix[3] = glm::vec4(e,1.0);
+  transformatrix[2] = glm::vec4(n,0.0) ;
+  transformatrix[1] = glm::vec4(v,0.0);
+  transformatrix[0] = glm::vec4(u,0.0);
 
   return transformatrix;
 }
