@@ -99,8 +99,9 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
           if (refr && depth>0)
           {
             float q;
+            float rindex = hit.closest_shape->get_mat().rindex_;
             float c1 = glm::dot(hit.n, v);
-            if (c1 < 0) {c1=-c1; q=1/1.5;} else {q=1.5; hit.n=-hit.n;}  //if outside, need +cos; if inside, reverse normal
+            if (c1 < 0) {c1=-c1; q=1/rindex;} else {q=rindex; hit.n=-hit.n;}  //if outside, need +cos; if inside, reverse normal
             float c2 = 1-q*q*(1-c1*c1);
             if (c2>0) {c2=sqrt(c2);} else {c2=0;}
             glm::vec3 t = glm::normalize( q*v + (q*c1-c2)*hit.n );   // fresnel equation
