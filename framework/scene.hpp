@@ -12,6 +12,8 @@
 #include "shape.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
+#include "triangle.hpp"
+#include "cylinder.hpp"
 #include "camera.hpp"
 #include "light.hpp"
 #include "composite.hpp"
