@@ -66,8 +66,9 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
         // diffuse light (generated when not shadow)
           // see if any other objects in the way? iteration through composite vectors
         OptiHit hitbetween = scene_.root->intersect(lightray);
+        float lightray_d = (light.pos_.x-lightray.origin_.x)/lightray.direction_.x;
 
-        if ( !hitbetween.hit )  
+        if ( !hitbetween.hit || hitbetween.distance>lightray_d)  
         {
           clr += (light.ld_) * (hit.closest_shape->get_mat().kd_) * std::max(nl,0.0f);
 
@@ -123,7 +124,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
 
     } else 
     {
-      clr = Color(0.1,0.1,0.1);
+      clr = Color(0.5,0.5,0.6);
     }
 
   return clr;
