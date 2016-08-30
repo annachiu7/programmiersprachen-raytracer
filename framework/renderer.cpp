@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
+#include <cmath>
 
 Renderer::Renderer(Scene const& scene)
   :scene_(scene)
@@ -111,8 +112,14 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
           }
 
         clr += (reflectedColor) * (refl) *.3 + (refractedColor);
-        //clr += (reflectedColor) * (refl) * (hit.closest_shape->get_mat().kd_)*.3;
       }
+
+    // TONE MAPPING ------------ R_out = (R_in / Luminance_in)^gamma * Luminance_out
+                                 // set Luminance_in = 1, so it's simpler
+      clr.r = pow(clr.r, scene_.gamma)*scene_.desiredluminance;
+      clr.g = pow(clr.g, scene_.gamma)*scene_.desiredluminance;
+      clr.b = pow(clr.b, scene_.gamma)*scene_.desiredluminance;
+
     } else 
     {
       clr = Color(0.1,0.1,0.1);

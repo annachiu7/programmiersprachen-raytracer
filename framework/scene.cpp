@@ -216,6 +216,12 @@ Scene loadSDF(std::string const& filename)
          // }
         }
 
+        if (keyword == "tonemap")
+        {
+          ss>> scene.desiredluminance;
+          ss>> scene.gamma;
+        }
+
         else if (keyword == "render")
         {
         	ss>>keyword;

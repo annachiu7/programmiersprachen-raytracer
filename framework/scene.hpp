@@ -27,6 +27,10 @@ struct Scene {
   std::vector<Light> lights;
   std::map<std::string, Material> materials;
   Camera camera;
+
+  float desiredluminance=1;
+  float gamma=1;
+
   int width, height;
   std::string filename;
   
