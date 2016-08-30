@@ -7,6 +7,17 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
+TEST_CASE("test_cylinder"){
+	Cylinder c{{},"cylinder",{0,0,0},1,1};
+	Ray ray{{0,0,3},{0,2,-2}};
+	OptiHit hit = c.intersect(ray);
+	//glm::vec3 n{0,0,-1}, up{0,1,0}, u = glm::normalize(glm::cross(n,up)), v = glm::normalize(glm::cross(u,n));
+	//std::cout << u.x<<' '<<u.y<<' '<<u.z <<'\n'<< v.x<<' '<<v.y<<' '<<v.z<<'\n';
+	REQUIRE(hit.hit == false);
+}
+
+
+/*
 TEST_CASE("scene transform","saved as member in shapes?"){
 	Scene s = loadSDF("../framework/defineMaterial.txt");
 	glm::mat4 mat = s.root->shapes_[0]->get_transf();
@@ -38,7 +49,7 @@ TEST_CASE("scene transform","saved as member in shapes?"){
 	<<"\n";
   std::cout << s.camera.name_ << "\n";
 }
-
+*/
 
 //
 //TEST_CASE("transform",""){
