@@ -268,8 +268,8 @@ Scene loadSDF(std::string const& filename)
 
       }else
       {
-        scene.camera.translate_ = translate; 
-        scene.camera.rotate_ = rotate;
+        //scene.camera.translate_ = translate; 
+        //scene.camera.rotate_ = rotate;
       }
   }
   auto root = std::make_shared<Composite> ("root");

@@ -38,7 +38,7 @@ transform abox translate 0 0 0
 define light sun  -50 200 100 .4 .4 .4 .8 .8 .8
 -------//define light sun 100 0 50 .2 .2 .2 .8 .8 .8
 #camera
-define camera eye 45.0 1 0 0 0 0 -1 0 1 0
+define camera eye 45.0 5 5 5 -1 0 -1 1 0 0 
 //------#camera xform
 //------transform eye scale 1 1 1
 //------transform eye rotate 49 0 1 0
