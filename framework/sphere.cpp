@@ -48,9 +48,9 @@ OptiHit Sphere::intersect(Ray const& rayman) const
   {
 
     glm::vec3 p = ray.origin_ + t * ray.direction_;
-    p = glm::vec3(get_transf()*glm::vec4(p,1.0));
     glm::vec3 n = glm::normalize(p - middle_);
     n = glm::normalize(glm::vec3(glm::transpose(get_transf_inv())*glm::vec4(n, 0.0)));
+    p = glm::vec3(get_transf()*glm::vec4(p,1.0));
     return OptiHit{true, t, this, n, p};
   }
 	return OptiHit{};

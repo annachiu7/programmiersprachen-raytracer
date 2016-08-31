@@ -58,9 +58,9 @@ OptiHit Box::intersect(Ray const& rayman) const
                       ray.direction_.y*ray.direction_.y +
                       ray.direction_.z*ray.direction_.z ));
     hit.surface_pt = this->calc_surface_pt(ray, hit.distance);
-    hit.surface_pt = glm::vec3(get_transf()*glm::vec4(hit.surface_pt,1.0));
     hit.hit = true;  
     hit.n = this->calc_n(hit);
+    hit.surface_pt = glm::vec3(get_transf()*glm::vec4(hit.surface_pt,1.0));
     hit.n = glm::normalize(glm::vec3(glm::transpose(get_transf_inv())*glm::vec4(hit.n, 0.0)));
   }
   return hit;
