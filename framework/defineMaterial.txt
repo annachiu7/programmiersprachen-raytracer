@@ -1,27 +1,32 @@
 #materials
 define material red          1 0 0   1 0 0   .8 .8 .8          0 1.0 100
 define material rose         1 .4 .5   1 .4 .5   .8 .8 .8      0 1.0 100
+define material orange         1 .55 .5   1 .55 .5   .8 .8 .8      0 1.0 100
 define material pink         .9 .4 .7   .9 .4 .7   .8 .8 .8      0 1.0 100
 define material yellow         1 1 0   1 1 0   .8 .8 .8          0 1.0 100
 define material blue         .5 .5 1   .5 .5 1   .8 .8 .8      0 1.0 100
-define material white         1 1 1   1 1 1   .8 .8 .8          0 1.0 100
+define material white         1 1 1   1 1 1   .0 .0 .0          0 1.0 100
 define material lightgray    .8 .8 .8   .8 .8 .8   .1 .1 .1      0 1.0 100
 define material gray         .5 .5 .5   .5 .5 .5   0 0 0      0 1.0 100
 define material glass         0 0 0   0 0 0   .5 .5 .5          1 1.5 100
-define material black         0 0 0   0 0 0   .8 .8 .8           0 1.0 100
+define material black         0 0 0   0 0 0   .1 .1 .1           0 1.0 100
 
 #geometry 
-define shape box tuberight    19.9 0 -2    20 4 2    gray
-define shape box tubebottom    20 0 -2    0 0.1 2    gray
-define shape box tubeback    20 0 -2.1    0 4 -2    gray
-define shape box tubefront    20 0 2    0 4 2.1    gray
-define shape box tubetop     20 3.9 -2    0 4 2    gray
-
-define shape sphere intube1   19 2 -.8   .3  glass
-define shape sphere intube2   19 2 .8   .3  glass
+//define shape box tuberight    19.9 0 -2    20 4 2    white
+//define shape box tubebottom    20 0 -2    0 0.1 2    white
+//define shape box tubeback    20 0 -2.1    0 4 -2    black
+//define shape box tubefront    20 0 2    0 4 2.1    black
+//define shape box tubetop     20 3.9 -2    0 4 2    white
+//
+//define shape sphere intube1   19 2 -.8   .3  glass
+//define shape sphere intube2   19 2 .8   .3  glass
 
 define shape sphere asphere    -7 1 -9    1      blue 
 define shape sphere bsphere    -.5 3 -5   3   rose
+define shape sphere csphere    -9.5 4 -15   4    orange
+define shape sphere dsphere    -5 .5 -4   .5    yellow
+
+//define shape box rbox      0 0 0    .5 .5 .5    blue
 
 define shape box ground -50 -1 -50 50 0 10 lightgray
 define shape box wall -50 0 -50 50 50 -49 lightgray
@@ -30,12 +35,14 @@ define shape box wall -50 0 -50 50 50 -49 lightgray
 -------//define shape composite bsphere
 
 #scene xform
-
-
+//transform rbox scale        1 1 1
+//transform rbox rotate     45  0 1 0
+//transform rbox rotate     -45  0 0 1
+//transform rbox translate  -5 0.5 -4
 
 #light 
 define light sun  -50 200 100   .2 .2 .2 .8 .8 .8
-define light inbox 19 3.8 0     .2 .2 .2 .4 .4 .4
+//define light inbox 19 3.8 0     .2 .2 .2 .4 .4 .4
 
 #tonemap
 //tonemap 0.8 1
@@ -44,7 +51,8 @@ define light inbox 19 3.8 0     .2 .2 .2 .4 .4 .4
 //define camera eye  45.0    17 2 -.8   1 0 0   0 1 0 
 //define camera eye  45.0    15 2 0   1 0 0   0 1 0 
 //define camera eye  45.0    -5 2 0   1 0 0   0 1 0 
-define camera eye  45.0    -5 2 3   0 0 -1   0 1 0 
+define camera eye  45.0    -5 2 2   0 0 -1   0 1 0 
+//define camera eye  45.0    0 2 7   0 0 -1   0 1 0 
 
 
 # renderer
