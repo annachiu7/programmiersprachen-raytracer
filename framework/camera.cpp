@@ -24,7 +24,7 @@ up_{}
 {}
 
 Camera::Camera(std::string const& name, double fov_x, glm::vec3 const& origin, 
-			   glm::vec3 const& dir, glm::vec3 const& up):
+         glm::vec3 const& dir, glm::vec3 const& up):
 name_{name},
 fov_x_{fov_x},
 origin_{origin},
@@ -35,18 +35,18 @@ up_{up}
 
 Ray Camera::calc_eye_ray(int x, int y, int height, int width)
 {
-	// -------- das einfache Kameramodell -------- //
-	// ----- Die Breite der Bildebene ist 1 ------ //
-	// Blickrichtung ist die negative z-Richtung!
-	// Die Position der Camera befindet sich im Ursprung
-  	glm::vec3 direction{float(x)*1.0/float(width) -0.5,
+  // -------- das einfache Kameramodell -------- //
+  // ----- Die Breite der Bildebene ist 1 ------ //
+  // Blickrichtung ist die negative z-Richtung!
+  // Die Position der Camera befindet sich im Ursprung
+    glm::vec3 direction{float(x)*1.0/float(width) -0.5,
                         float(y)*1.0/float(height) -0.5, 
                         -1.0*(0.5/tan(fov_x_*M_PI/360))}; // distance = 0.5 / tan(winkel/2)
     Ray ray{{0,0,0}, direction};
 
     transf_ =  transformMatrix(); // transformieren
 
-  	return transformRay(transf_ , ray);
+    return transformRay(transf_ , ray);
 }
 glm::mat4 Camera::transformMatrix()
 {
