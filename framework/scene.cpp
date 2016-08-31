@@ -2,23 +2,28 @@
 
 Scene loadSDF(std::string const& filename)
 {
-    Scene scene;
-    std::map<std::string,std::shared_ptr<Shape>> allobjects;
-    std::map<std::string,std::shared_ptr<Shape>> tmp_shapes;
-    std::multimap<std::string,std::map<std::string,glm::mat4>> shape_transformations;
-    int count = 0;
+  Scene scene;
+  std::map<std::string,std::shared_ptr<Shape>> allobjects;
+  std::map<std::string,std::shared_ptr<Shape>> tmp_shapes;
+  std::multimap<std::string,std::map<std::string,glm::mat4>> shape_transformations;
+  int count = 0;
+  //float s1=1.0f,s2=1.0f,s3=1.0f,rw=0.0f,r1=0,r2=0,r3=0,t1=0,t2=0,t3=0;
+//  glm::vec3 scale, translate;
+  //glm::vec4 rotate;
 
-    std::ifstream file;
-    file.open(filename);
-    std::string line;
-    if(file.is_open()) {
-        while(std::getline(file, line)) {
-            Material mat;
+  std::ifstream file;
+  file.open(filename);
+  std::string line;
+    if(file.is_open())
+    {
+      while(std::getline(file, line))
+      {
+          Material mat;
 
-            std::stringstream ss;
-            std::string keyword;
+          std::stringstream ss;
+          std::string keyword;
 
-            ss<<line;
+          ss<<line;
             ss>>keyword;
             if (keyword == "define") {
                 ss>>keyword;
@@ -183,15 +188,21 @@ Scene loadSDF(std::string const& filename)
                 } //}}}
 
             }
+        if (keyword == "tonemap")
+        {
+          ss>> scene.desiredluminance;
+          ss>> scene.gamma;
+        }
 
-            else if (keyword == "render") {
-                ss>>keyword;
-                ss>>scene.filename;
-                ss>>scene.width;
-                ss>>scene.height;
+        else if (keyword == "render")
+        {
+        	ss>>keyword;
+        	ss>>scene.filename;
+        	ss>>scene.width;
+        	ss>>scene.height;
 
-                std::cout << "rendering taking place...\n" ;
-            }
+        } 
+
         }
     }
     for (auto const& shape : shape_transformations) {
@@ -224,8 +235,7 @@ Scene loadSDF(std::string const& filename)
             allobjects[shape.first]->set_transf(accumulatedMatrix);
             auto inversaccumulatedMatrix = glm::inverse(accumulatedMatrix);
             allobjects[shape.first]->set_transf_inv(inversaccumulatedMatrix);
-
-        } 
+    }
     }
 
     auto root = std::make_shared<Composite> ("root");

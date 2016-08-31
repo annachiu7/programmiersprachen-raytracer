@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
+#include <cmath>
 
 Renderer::Renderer(Scene const& scene)
   :scene_(scene)
@@ -65,8 +66,9 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
         // diffuse light (generated when not shadow)
           // see if any other objects in the way? iteration through composite vectors
         OptiHit hitbetween = scene_.root->intersect(lightray);
+        float lightray_d = (light.pos_.x-lightray.origin_.x)/lightray.direction_.x;
 
-        if ( !hitbetween.hit )  
+        if ( !hitbetween.hit || hitbetween.distance>lightray_d)  
         {
           clr += (light.ld_) * (hit.closest_shape->get_mat().kd_) * std::max(nl,0.0f);
 
@@ -98,8 +100,9 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
           if (refr && depth>0)
           {
             float q;
+            float rindex = hit.closest_shape->get_mat().rindex_;
             float c1 = glm::dot(hit.n, v);
-            if (c1 < 0) {c1=-c1; q=1/1.5;} else {q=1.5; hit.n=-hit.n;}  //if outside, need +cos; if inside, reverse normal
+            if (c1 < 0) {c1=-c1; q=1/rindex;} else {q=rindex; hit.n=-hit.n;}  //if outside, need +cos; if inside, reverse normal
             float c2 = 1-q*q*(1-c1*c1);
             if (c2>0) {c2=sqrt(c2);} else {c2=0;}
             glm::vec3 t = glm::normalize( q*v + (q*c1-c2)*hit.n );   // fresnel equation
@@ -111,11 +114,17 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth) const
           }
 
         clr += (reflectedColor) * (refl) *.3 + (refractedColor);
-        //clr += (reflectedColor) * (refl) * (hit.closest_shape->get_mat().kd_)*.3;
       }
+
+    // TONE MAPPING ------------ R_out = (R_in / Luminance_in)^gamma * Luminance_out
+                                 // set Luminance_in = 1, so it's simpler
+      clr.r = pow(clr.r, scene_.gamma)*scene_.desiredluminance;
+      clr.g = pow(clr.g, scene_.gamma)*scene_.desiredluminance;
+      clr.b = pow(clr.b, scene_.gamma)*scene_.desiredluminance;
+
     } else 
     {
-      clr = Color(0.1,0.1,0.1);
+      clr = Color(0.5,0.5,0.6);
     }
 
   return clr;

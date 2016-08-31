@@ -12,16 +12,18 @@ struct Material
 	kd_{0,0,0},
 	ks_{0,0,0},
 	refr_{0},
+	rindex_{1.0},
 	m_{0.0f}
 	{}
 
 	Material(std::string const& name, Color const& ambient, Color const& diffuse, 
-		     Color const& specular, bool refract, float m):
+		     Color const& specular, bool refract, float rindex, float m):
 	name_{name},
 	ka_{ambient},
 	kd_{diffuse},
 	ks_{specular},
 	refr_{refract},
+	rindex_{rindex},
 	m_{m}
 	{}
 
@@ -40,6 +42,7 @@ struct Material
 	Color kd_; //diffuse
 	Color ks_; //specular
 	bool refr_; //refract?
+	float rindex_; //refraction index
 	float m_;
 	
 };
